@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/photo_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="io.rong.imkit.tools.PhotoFragment" />
+    <Button
+        android:id="@+id/savephoto_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/x20"
+        android:textSize="@dimen/x16"
+        android:padding="@dimen/x5"
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        android:background="@android:color/transparent"/>
+
+</RelativeLayout>

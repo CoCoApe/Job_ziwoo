@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tab_tour_hl" android:state_checked="true"></item>
+    <item android:drawable="@drawable/tab_tour"></item>
+</selector>

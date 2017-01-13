@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name">咨我</string>
+    <string name="user_protocol"><u>咨我用户协议</u></string>
+    <string name="consult">咨询</string>
+    <string name="react">干货</string>
+    <string name="tutor">导师</string>
+    <string name="mine">我</string>
+    <string name="tuijin">关系推进：</string>
+    <string name="weixi">婚姻维系：</string>
+    <string name="baituo">摆脱单身：</string>
+    <string name="wanhui">挽回失恋：</string>
+    <string name="consult_promptly">立即咨询</string>
+    <string name="consult_phone">1小时电话咨询</string>
+    <string name="user_name">用户名称</string>
+    <string name="name">姓名</string>
+    <string name="input_name">请输入姓名</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="age">年龄:</string>
+    <string name="area">地区:</string>
+    <string name="expect">期望:</string>
+    <string name="come_for">期望服务</string>
+    <string name="emotional_talent">情感达人</string>
+
+
+    <string name="agree">同意</string>
+    <string name="disagree">不同意</string>
+    <string name="quickPose">快速提问模板</string>
+    <string name="quickLogin">快速登录</string>
+    <string name="weixinLogin">微信登录</string>
+    <string name="wantToSolve">您的问题</string>
+    <string name="questionDescribe">请简单描述一下您想要解决的问题</string>
+    <string name="myCaseDescribe">对您的情况进行简单的描述</string>
+    <string name="otherCaseDescribe">对方的情况进行简单的描述</string>
+    <string name="describeLive">请描述一下你们相处的经历</string>
+    <string name="myCase">我的情况</string>
+    <string name="hisCase">对方情况</string>
+    <string name="inputAge">请输入年龄</string>
+    <string name="inputPhone">请输入联系方式</string>
+    <string name="hintPhone">请输入手机号码</string>
+    <string name="hintAuthCode">请输入验证码</string>
+    <string name="hintOldCode">请输入原始密码</string>
+    <string name="hintNewCode">请输入新密码</string>
+    <string name="hintCode">请输入密码</string>
+    <string name="getAuthCode">获取验证码</string>
+    <string name="experience">相处经历</string>
+    <string name="send">发  送</string>
+    <string name="save">保  存</string>
+    <string name="login">登  录</string>
+    <string name="register">注  册</string>
+    <string name="nickName">昵称</string>
+    <string name="simpleInfo">首个按效果付费的情感咨询平台\n已帮助0人解决问题</string>
+    <string name="custom_text">若取消信息通知,将不会第一时间收到答案回复;若想接收通知,请开启[自启动]和[接收通知]权限</string>
+    <string name="custom_phone">客服电话: 020 2917 2574</string>
+    <string name="custom_mail">官方邮箱: fuente@zhiwoo.com.cn</string>
+    <string name="custom_service">联系在线客服</string>
+    <string name="custom_exit">退出当前账号</string>
+    <string name="message_center">消息中心</string>
+    <string name="message_all">全部消息</string>
+    <string name="message_unRead">未读消息</string>
+    <string name="order_tutor">预约导师:</string>
+    <string name="order_time">预约时间:</string>
+    <string name="order_desc">咨询描述:</string>
+    <string name="order_no">没有写咨询描述</string>
+    <string name="order_user">咨询者:</string>
+    <string name="passWord">* * * * * *</string>
+    <string name="passWord2">密码</string>
+    <string name="city">城市</string>
+    <string name="phone">手机</string>
+    <string name="sex">性别</string>
+    <string name="noSex">不详</string>
+    <string name="noPhone">未绑定手机</string>
+    <string name="forWithdraw">填写提现信息</string>
+    <string name="Withdraw">填写提现信息</string>
+    <string name="input_Withdraw">请输入提现金额</string>
+    <string name="pay_channel">支付宝或微信</string>
+    <string name="input_channel">请输入支付宝或微信账号</string>
+    <string name="contact">联系方式</string>
+    <string name="input_contact">请输入联系方式</string>
+    <string name="confirm_withdraw">确认提现</string>
+    <string name="tobe_tutor">我要成为咨询师</string>
+    <string name="no_unRead">没有未读消息</string>
+    <string name="more">更多...</string>
+    <string name="chose_channel">选择支付平台</string>
+    <string name="obligate">填写基本信息</string>
+    <string name="buy_lesson">购买课程</string>
+    <string name="customer_service">客服</string>
+    <string name="buy_immediately">立即购买</string>
+    <string name="rate_of_praise">好评率:</string>
+    <string name="place_order">提交订单</string>
+
+
+    <string name="tutorName">导师名字</string>
+    <string name="input_tutorName">请输入导师名字</string>
+    <string name="afterPay">在完成付款后会有专人在一个工作日内联系你确认信息</string>
+    <string name="be_careful">注意事项:\n
+            1.填写资料后,会有我们的工作人员在24小时内致电预约咨询;\n
+            2.100元只是定金,具体电话咨询金额请询问咨询师、在线客服或拨打客服电话;\n
+            3.为保障用户权益,在付费咨询前可咨询应用内在线客服或拨打客服电话:020-29172574\n</string>
+
+    <string name="fuente">fuente</string>
+
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/main_title_bar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:paddingLeft="@dimen/x10"
+            android:paddingRight="@dimen/x10"
+            android:textSize="@dimen/x16"
+            android:id="@+id/userprotocol_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_protocol"
+            android:textColor="@android:color/black"/>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/content_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#eeeeee">
+        <Button
+            android:id="@+id/disagree_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/disagree"
+            android:textSize="@dimen/x17"
+            android:textColor="@android:color/holo_blue_dark"
+            android:background="@null"/>
+        <Button
+            android:id="@+id/agree_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/agree"
+            android:textSize="@dimen/x17"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:background="@null"/>
+    </LinearLayout>
+</LinearLayout>

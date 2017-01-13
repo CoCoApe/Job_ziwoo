@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        applicationId "cn.com.zhiwoo"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 11
+        versionName "3.0.2"
+        multiDexEnabled true
+        manifestPlaceholders = [
+                GETUI_APP_ID : "1Kk2dDz8G08W60CRF7OTn7",
+                GETUI_APP_KEY : "eGwIAcLIhg9OWwnbaoVSq5",
+                GETUI_APP_SECRET : "Y9KqwzdBr774xUD8jU8m38"
+        ]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86_64"
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file("zhiwoo.jks")
+            storePassword "421181ljc"
+            keyAlias "zhiwoo"
+            keyPassword "421181ljc"
+        }
+        release {
+            storeFile file("zhiwoo.jks")
+            storePassword "421181ljc"
+            keyAlias "zhiwoo"
+            keyPassword "421181ljc"
+        }
+    }
+//    productFlavors {
+//        zhiwoo_yingyongbao_3_0{}
+//        zhiwoo_oppo_3_0{}
+//    }
+//    productFlavors.all {
+//        flavor -> flavor.manifestPlaceholders = [ONEAPM_TEST_CHANNEL: name]
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets{
+        main {
+            jniLibs.srcDirs = ['libs'] // <-- Set your folder here!
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+    }
+}
+repositories {
+    mavenCentral()
+    flatDir{
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile files('libs/xUtils-2.6.14.jar')
+    compile files('libs/gson-2.3.1.jar')
+    compile 'fr.baloomba:viewpagerindicator:2.4.2'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.frank-zhu:pullzoomview:1.0.0'
+    compile 'com.loopeer.android.thirdparty.pulltorefresh:Android-PullToRefresh:2.1.1'
+    compile project(':IMKit')
+    compile name: 'SMSSDK-2.0.2', ext: 'aar'
+    compile name: 'SMSSDKGUI-2.0.2', ext: 'aar'
+    compile files('libs/libammsdk.jar')
+    compile 'org.dom4j:dom4j:2.0.0'
+    compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile files('libs/alipaySdk-20160427.jar')
+    compile 'com.bigkoo:svprogresshud:1.0.2'
+    compile 'com.demievil.library:refreshlayout:1.0.0@aar'
+    compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.8@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.qiniu:qiniu-android-sdk:7.2.0'
+    compile files('libs/jpush-android-2.1.5.jar')
+    compile 'joda-time:joda-time:2.9.3'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile files('libs/TalkingData_Analytics_Android_SDK_V2.2.46.jar')
+    compile 'com.android.support:support-v13:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.getui:sdk:2.9.5.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile files('libs/tncrash.jar')
+    compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.android.support:design:23.0.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+}

@@ -1,0 +1,45 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!-- Customize your theme here. -->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="TabBarButtonItemTheme">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textSize">@dimen/x12</item>
+        <item name="android:textColor">@color/tabbar_button_color</item>
+    </style>
+    <style name="Lunch.NoTitleBar.CustomBackground" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <style name="loginActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <style name="PayTipSelectDialogTheme" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <!--五星好评-->
+    <!--<style name="myRatingBar" parent="@android:style/Widget.RatingBar">-->
+        <!--&lt;!&ndash;指向star_rating_bar_full.xml文件 &ndash;&gt;-->
+        <!--<item name="android:progressDrawable">@drawable/star_rating_layerlist</item>-->
+        <!--<item name="android:minHeight">15dip</item>-->
+        <!--<item name="android:maxHeight">15dip</item>-->
+        <!--&lt;!&ndash; 是否不支持用户交互，只应作为指标。 &ndash;&gt;-->
+        <!--<item name="android:isIndicator">true</item>-->
+    <!--</style>-->
+    <style name="comment_checkBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/comment_checkbox_selector</item>
+    </style>
+</resources>

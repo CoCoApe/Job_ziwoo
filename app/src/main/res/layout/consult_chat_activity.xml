@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/chat_input_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:name="io.rong.imkit.fragment.MessageInputFragment"/>
+    <fragment
+        android:id="@+id/chat_messagelist_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chat_input_fragment"
+        android:name="io.rong.imkit.fragment.MessageListFragment"/>
+    <ImageView
+        android:id="@+id/pay_button"
+        android:layout_above="@+id/chat_input_fragment"
+        android:layout_width="@dimen/x45"
+        android:layout_height="@dimen/x45"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x20"
+        android:src="@drawable/paytip_btn"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="@dimen/x10"
+        />
+</RelativeLayout>

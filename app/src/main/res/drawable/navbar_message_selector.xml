@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/nav_btn_xinxi_hl2" android:state_selected="true"></item>
+    <item android:drawable="@drawable/btn_xx2" android:state_selected="false"></item>
+</selector>

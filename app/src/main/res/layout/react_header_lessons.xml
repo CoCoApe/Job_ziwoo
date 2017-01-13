@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/lesson_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/x1"
+            android:scrollIndicators="bottom"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/x10"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/header_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/x3"
+            app:fillColor="@color/globalBgColor"
+            app:pageColor="#888888"
+            app:strokeColor="#888888"
+            app:strokeWidth="0dp"
+            />
+    </LinearLayout>
+</RelativeLayout>

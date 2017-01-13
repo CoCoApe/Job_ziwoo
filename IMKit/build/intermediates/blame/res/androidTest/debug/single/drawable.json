@@ -1,0 +1,118 @@
+[
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_keyboard.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_keyboard.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_switch_btn.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_switch_btn.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_bg_menu.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_bg_menu.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_camera.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_camera.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_text.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_text.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_extend.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_extend.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_location.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_location.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_picture.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_picture.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_phone.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_phone.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_public_service_enter_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_public_service_enter_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_input.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_input.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_admin_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_admin_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_public_service_unfollow_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_public_service_unfollow_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_bg_item.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_bg_item.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ed_public_service_search_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ed_public_service_search_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_no_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_no_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_yes_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_yes_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_an_voice_sent.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_an_voice_sent.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_send.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_send.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_star_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_star_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_an_voice_receive.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_an_voice_receive.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_smiley.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_smiley.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_item_top_list_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_item_top_list_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_bg_editinput.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_bg_editinput.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_voice.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_voice.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_voice.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_voice.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_photo_checkbox.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_photo_checkbox.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_item_list_selector.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_item_list_selector.xml"
+    },
+    {
+        "merged": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_preview_checkbox.xml",
+        "source": "D:\\Refactoring\\zhiwoo\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_preview_checkbox.xml"
+    }
+]

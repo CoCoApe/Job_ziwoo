@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="expects">
+        <item>失恋挽回</item>
+        <item>关系推进</item>
+        <item>婚姻维系</item>
+        <item>摆脱单身</item>
+    </string-array>
+</resources>

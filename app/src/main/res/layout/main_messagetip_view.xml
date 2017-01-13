@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="wrap_content"  
+    android:layout_height="wrap_content"  
+    android:orientation="vertical"
+    android:background="@drawable/main_tipmessage_view_bg_shape">
+    <ListView
+        android:id="@+id/title_list"
+        android:layout_width="@dimen/x120"
+        android:layout_height="wrap_content"
+		android:divider="#3E3E3E"
+        android:background="@null"/>
+</LinearLayout>  

@@ -2,39 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/globalBgColor"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical"
-    android:background="@color/globalBgColor">
+    android:orientation="vertical">
 
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/consult_header_banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x175"/>
+        android:layout_height="@dimen/x175" />
     <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/x175">-->
-        <!--<com.viewpagerindicator.CirclePageIndicator-->
-            <!--android:id="@+id/header_indicator"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_margin="@dimen/x15"-->
-            <!--android:padding="@dimen/x2"-->
-            <!--app:fillColor="@color/globalBgColor"-->
-            <!--app:pageColor="#888888"-->
-            <!--app:strokeColor="#888888"-->
-            <!--app:strokeWidth="0dp"-->
-            <!--android:visibility="gone"-->
-            <!--/>-->
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/lesson_viewpager"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:scrollIndicators="bottom"/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/x175">-->
+    <!--<com.viewpagerindicator.CirclePageIndicator-->
+    <!--android:id="@+id/header_indicator"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="@dimen/x15"-->
+    <!--android:padding="@dimen/x2"-->
+    <!--app:fillColor="@color/globalBgColor"-->
+    <!--app:pageColor="#888888"-->
+    <!--app:strokeColor="#888888"-->
+    <!--app:strokeWidth="0dp"-->
+    <!--android:visibility="gone"-->
+    <!--/>-->
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:id="@+id/lesson_viewpager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scrollIndicators="bottom"/>-->
     <!--</RelativeLayout>-->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/x3"
-        android:background="@color/globalBgColor"/>
+        android:background="@color/globalBgColor" />
 </LinearLayout>

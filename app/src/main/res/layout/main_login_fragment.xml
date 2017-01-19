@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical">
-        <LinearLayout
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x88"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@drawable/login_login_textfield_bg"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/phone_edittext"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x88"
-            android:background="@drawable/login_login_textfield_bg">
-            <EditText
-                android:id="@+id/phone_edittext"
-                android:paddingLeft="@dimen/x15"
-                android:paddingRight="@dimen/x15"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:inputType="phone"
-                android:textColor="@android:color/white"
-                android:hint="@string/hintPhone"
-                android:background="@null"/>
-            <EditText
-                android:id="@+id/password_edittext"
-                android:paddingLeft="@dimen/x15"
-                android:paddingRight="@dimen/x15"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:hint="@string/hintCode"
-                android:inputType="textPassword"
-                android:background="@null"/>
-        </LinearLayout>
-        <Button
-            android:id="@+id/login_button"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/hintPhone"
+            android:inputType="phone"
+            android:paddingLeft="@dimen/x15"
+            android:paddingRight="@dimen/x15"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/password_edittext"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x44"
-            android:layout_marginTop="@dimen/x30"
-            android:text="@string/login"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/x17"
-            android:background="@drawable/main_login_button_bg_shape"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/hintCode"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/x15"
+            android:paddingRight="@dimen/x15"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x44"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/x30"
+        android:background="@drawable/main_login_button_bg_shape"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/x17" />
 </LinearLayout>

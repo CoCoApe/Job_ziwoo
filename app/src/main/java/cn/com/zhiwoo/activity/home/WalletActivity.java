@@ -9,7 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.HashMap;
 
@@ -19,8 +20,9 @@ import cn.com.zhiwoo.activity.react.ArticleDetailActivity;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.ReactArticle;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class WalletActivity extends BaseActivity {
@@ -93,18 +95,20 @@ public class WalletActivity extends BaseActivity {
                 params.put("pay_account",payAccount);
                 params.put("contact",phone);
                 params.put("amount",(int)(Float.parseFloat(amount) * 100) + "");//单位为分
-                NetworkTool.POST("http://121.201.7.33/zero/api/v1/commission_requests", params, new OnNetworkResponser() {
-                    @Override
-                    public void onSuccess(String result) {
-                        progressHUD.showSuccessWithStatus("提交成功");
-                        finish();
-                    }
+                OkGo.post(Api.WITHDRAWS_CASH)
+                        .params(params)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                progressHUD.showSuccessWithStatus("提交成功");
+                                finish();
+                            }
 
-                    @Override
-                    public void onFailure(HttpException e, String s) {
-                        progressHUD.showErrorWithStatus("提交失败");
-                    }
-                });
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                progressHUD.showErrorWithStatus("提交失败");
+                            }
+                        });
             }
             break;
         }

@@ -14,7 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,9 +31,8 @@ import cn.com.zhiwoo.bean.react.Commend;
 import cn.com.zhiwoo.bean.tutor.User;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
 import cn.com.zhiwoo.tool.PayTool;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.view.consult.PayTipSelectDialog;
 import io.rong.imkit.RongIM;
@@ -45,6 +45,8 @@ import io.rong.message.InformationNotificationMessage;
 import io.rong.message.RichContentMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static io.rong.imlib.model.Conversation.ConversationType;
 
@@ -288,38 +290,34 @@ public class ConsultChatActivity extends BaseActivity{
     private void sendNoRespond(){
         final Random random = new Random();
         final String demand_infos= AccountTool.getCurrentAccount(this).getDemand_infos();
-        NetworkTool.GET("http://api.zhiwoo.com.cn/own/control/keyWords?keys=234", null, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                RichContentMessage richContentMessage ;
-                Commend commend = new Gson().fromJson(result,Commend.class);
-                List<Commend.DataBean.RedeemBean> default_list = commend.getData().getRedeem();
-                Commend.DataBean.RedeemBean default_bean = default_list.get(random.nextInt(default_list.size()));
-                richContentMessage = RichContentMessage.obtain(default_bean.getTitle(),default_bean.getContent(),default_bean.getPic_url(),default_bean.getContent_url());
-                if (!TextUtils.isEmpty(expect) || !TextUtils.isEmpty(demand_infos)){
-                    if("关系推进".equals(expect) || "自我提升".equals(demand_infos)){
-                        List<Commend.DataBean.BoostBean> list = commend.getData().getBoost();
-                        Commend.DataBean.BoostBean bean = list.get(random.nextInt(list.size()));
-                        richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
-                    }else if("婚姻维系".equals(expect) || "长期关系".equals(demand_infos)){
-                        List<Commend.DataBean.KeepBean> list = commend.getData().getKeep();
-                        Commend.DataBean.KeepBean bean = list.get(random.nextInt(list.size()));
-                        richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
-                    }else if("摆脱单身".equals(expect) || "提升情商".equals(demand_infos)){
-                        List<Commend.DataBean.AwayBean> list = commend.getData().getAway();
-                        Commend.DataBean.AwayBean bean = list.get(random.nextInt(list.size()));
-                        richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
+        OkGo.get(Api.TEXT_IMAGE)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        RichContentMessage richContentMessage ;
+                        Commend commend = new Gson().fromJson(s,Commend.class);
+                        List<Commend.DataBean.RedeemBean> default_list = commend.getData().getRedeem();
+                        Commend.DataBean.RedeemBean default_bean = default_list.get(random.nextInt(default_list.size()));
+                        richContentMessage = RichContentMessage.obtain(default_bean.getTitle(),default_bean.getContent(),default_bean.getPic_url(),default_bean.getContent_url());
+                        if (!TextUtils.isEmpty(expect) || !TextUtils.isEmpty(demand_infos)){
+                            if("关系推进".equals(expect) || "自我提升".equals(demand_infos)){
+                                List<Commend.DataBean.BoostBean> list = commend.getData().getBoost();
+                                Commend.DataBean.BoostBean bean = list.get(random.nextInt(list.size()));
+                                richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
+                            }else if("婚姻维系".equals(expect) || "长期关系".equals(demand_infos)){
+                                List<Commend.DataBean.KeepBean> list = commend.getData().getKeep();
+                                Commend.DataBean.KeepBean bean = list.get(random.nextInt(list.size()));
+                                richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
+                            }else if("摆脱单身".equals(expect) || "提升情商".equals(demand_infos)){
+                                List<Commend.DataBean.AwayBean> list = commend.getData().getAway();
+                                Commend.DataBean.AwayBean bean = list.get(random.nextInt(list.size()));
+                                richContentMessage = RichContentMessage.obtain(bean.getTitle(),bean.getContent(),bean.getPic_url(),bean.getContent_url());
+                            }
+                        }
+                        RongIM.getInstance().getRongIMClient().sendMessage(ConversationType.PRIVATE, mTargetId, new InformationNotificationMessage("咨询师好像正在忙喔，相关内容预览戳下面!"), null, null, null, null);
+                        sendRichMessage(richContentMessage);
                     }
-                }
-                RongIM.getInstance().getRongIMClient().sendMessage(ConversationType.PRIVATE, mTargetId, new InformationNotificationMessage("咨询师好像正在忙喔，相关内容预览戳下面!"), null, null, null, null);
-                sendRichMessage(richContentMessage);
-            }
-
-            @Override
-            public void onFailure(HttpException e, String s) {
-
-            }
-        });
+                });
     }
 
 /**
@@ -399,16 +397,13 @@ public class ConsultChatActivity extends BaseActivity{
             params.put("target_id",account.getId());
             params.put("is_user","0");
         }
-        NetworkTool.POST("http://121.201.7.33/zero/api/v1/receive", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
+        OkGo.post(Api.AUTORESPONED)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
 
-            }
-
-            @Override
-            public void onFailure(HttpException e, String s) {
-
-            }
-        });
+                    }
+                });
     }
 }

@@ -1,134 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
+    android:orientation="vertical"
     android:padding="@dimen/x10">
 
     <ImageView
         android:id="@+id/tour_sub_icon"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x100"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
+
     <TextView
         android:id="@+id/tour_sub_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/x18"
+        android:layout_marginTop="@dimen/x15"
         android:textColor="@color/white"
-        android:layout_marginTop="@dimen/x15"/>
+        android:textSize="@dimen/x18" />
 
     <ScrollView
         android:id="@+id/tour_content_sc"
         android:layout_width="@dimen/x200"
         android:layout_height="@dimen/x48"
         android:scrollbarFadeDuration="1000">
+
         <TextView
             android:id="@+id/tour_sub_content"
             android:layout_width="@dimen/x200"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x13"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/x13" />
     </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/x10">
+
         <TextView
             android:id="@+id/ratingBar_1_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tuijin"
             android:layout_centerVertical="true"
-            android:textColor="@color/white"/>
+            android:text="@string/tuijin"
+            android:textColor="@color/white" />
+
         <ImageView
             android:id="@+id/ratingBar_1"
-            android:layout_height="@dimen/x10"
             android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/x10"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ratingBar_1_title"
             android:layout_marginLeft="@dimen/x5"
-            />
+            android:layout_toRightOf="@id/ratingBar_1_title" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/x5">
+
         <TextView
             android:id="@+id/ratingBar_2_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/weixi"
             android:layout_centerVertical="true"
-            android:textColor="@color/white"/>
+            android:text="@string/weixi"
+            android:textColor="@color/white" />
+
         <ImageView
             android:id="@+id/ratingBar_2"
-            android:layout_height="@dimen/x10"
             android:layout_width="@dimen/x70"
-            android:layout_toRightOf="@id/ratingBar_2_title"
-            android:layout_marginLeft="@dimen/x5"
+            android:layout_height="@dimen/x10"
             android:layout_centerVertical="true"
-            />
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_toRightOf="@id/ratingBar_2_title" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/x5">
+
         <TextView
             android:id="@+id/ratingBar_3_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/baituo"
             android:layout_centerVertical="true"
-            android:textColor="@color/white"/>
+            android:text="@string/baituo"
+            android:textColor="@color/white" />
+
         <ImageView
             android:id="@+id/ratingBar_3"
-            android:layout_height="@dimen/x10"
             android:layout_width="@dimen/x70"
-            android:layout_toRightOf="@id/ratingBar_3_title"
+            android:layout_height="@dimen/x10"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x5"
-            android:layout_centerVertical="true"/>
+            android:layout_toRightOf="@id/ratingBar_3_title" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/x5">
+
         <TextView
             android:id="@+id/ratingBar_4_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="@string/wanhui"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"/>
+            android:textColor="@color/white" />
+
         <ImageView
             android:id="@+id/ratingBar_4"
-            android:layout_height="@dimen/x10"
             android:layout_width="@dimen/x70"
-            android:layout_toRightOf="@id/ratingBar_4_title"
+            android:layout_height="@dimen/x10"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x5"
-            />
+            android:layout_toRightOf="@id/ratingBar_4_title" />
     </RelativeLayout>
+
     <Button
         android:id="@+id/tour_sub_consult_btn"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x25"
-        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/x10"
         android:background="@color/colorAccent"
-        android:text="@string/consult_promptly"
         android:gravity="center"
-        android:layout_marginTop="@dimen/x10"/>
+        android:text="@string/consult_promptly"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/tour_sub_phone_btn"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x25"
-        android:textColor="@color/white"
-        android:background="@color/colorAccent"
-        android:text="@string/consult_phone"
-        android:gravity="center"
         android:layout_marginTop="@dimen/x10"
-        />
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="@string/consult_phone"
+        android:textColor="@color/white" />
 </LinearLayout>

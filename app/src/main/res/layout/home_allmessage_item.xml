@@ -2,36 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/icon_imageview"
         android:layout_width="@dimen/x30"
         android:layout_height="@dimen/x30"
-        android:src="@drawable/default_user_icon"
+        android:layout_margin="@dimen/x5"
         android:scaleType="centerCrop"
-        android:layout_margin="@dimen/x5"/>
+        android:src="@drawable/default_user_icon" />
+
     <TextView
-        android:layout_toRightOf="@+id/icon_imageview"
         android:id="@+id/nickname_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nickName"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x5"
-        />
+        android:layout_toRightOf="@+id/icon_imageview"
+        android:text="@string/nickName" />
+
     <TextView
-        android:layout_alignParentRight="true"
         android:id="@+id/time_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/x10"
-        android:layout_centerVertical="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x10" />
+
     <View
         android:id="@+id/divider_view"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/x3"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#88888888"/>
+        android:layout_marginTop="@dimen/x3"
+        android:background="#88888888" />
 </RelativeLayout>

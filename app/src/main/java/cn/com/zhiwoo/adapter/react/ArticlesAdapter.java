@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.lidroid.xutils.BitmapUtils;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,12 @@ public class ArticlesAdapter extends BaseAdapter {
 
     private List<ReactArticle.QBean> articles = new ArrayList<>();
     private Context context;
-    private final BitmapUtils bitmapUtils;
 
     public ArticlesAdapter(Context context, ArrayList<ReactArticle.QBean> articles) {
         super();
         this.context = context;
         this.articles.clear();
         this.articles.addAll(articles);
-        bitmapUtils = new BitmapUtils(context);
-        bitmapUtils.configDefaultLoadingImage(R.drawable.react_article_bg_placeholer);
     }
 
 
@@ -66,7 +64,9 @@ public class ArticlesAdapter extends BaseAdapter {
 //            imageView.setLayoutParams(width,height);
         }
         ViewHolder viewHolder = getViewHolder(convertView);
-        bitmapUtils.display(viewHolder.imageView,articles.get(position).getPic_url());
+        Glide.with(context)
+                .load(articles.get(position).getPic_url())
+                .into(viewHolder.imageView);
         return convertView;
     }
     private ViewHolder getViewHolder(View view) {

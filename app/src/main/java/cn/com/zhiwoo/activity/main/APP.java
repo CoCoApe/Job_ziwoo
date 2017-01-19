@@ -8,12 +8,13 @@ import android.content.res.Configuration;
 import android.support.multidex.MultiDex;
 
 import com.igexin.sdk.PushManager;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
 import com.tendcloud.tenddata.TCAgent;
 import com.testin.agent.TestinAgent;
 
 import cn.com.zhiwoo.service.GeIntentService;
 import cn.com.zhiwoo.service.GePushService;
-import cn.com.zhiwoo.tool.AouthTool;
 import cn.com.zhiwoo.tool.PayTool;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
@@ -23,6 +24,7 @@ import io.rong.imkit.RongIM;
 
 public class APP extends Application {
     private Activity mainActivity;
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -42,9 +44,12 @@ public class APP extends Application {
         PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), GeIntentService.class);
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
-        AouthTool.config();
+        //短信验证初始化
         SMSSDK.initSDK(this, Global.SMS_APPKEY, Global.SMS_SECRET);
         TestinAgent.init(this,"279c8c7a996a03f452e6804a1f23a5e5","");
+        //OkGo初始化
+        OkGo.init(this);
+        OkGo.getInstance().setCacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST);
     }
 
     @Override

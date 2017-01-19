@@ -1,6 +1,7 @@
 package cn.com.zhiwoo.view.consult;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -78,7 +79,9 @@ public class SlideCutListView extends ListView {
 
     public SlideCutListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        screenWidth = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+        Point size = new Point();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
+        screenWidth = size.x;
         scroller = new Scroller(context);
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
@@ -210,7 +213,7 @@ public class SlideCutListView extends ListView {
 //                    recycleVelocityTracker();
 //                    // 手指离开的时候就不响应左右滚动
 //                    isSlide = false;
-                    if (itemView.getScrollX() >= screenWidth / 2 || itemView.getScrollX() <= -screenWidth / 2 ){
+                    if (itemView.getScrollX() >= screenWidth / 4 || itemView.getScrollX() <= -screenWidth / 4 ){
                         mRemoveListener.removeItem(removeDirection,slidePosition-1);
                     }else {
                         itemView.scrollTo(0, 0);

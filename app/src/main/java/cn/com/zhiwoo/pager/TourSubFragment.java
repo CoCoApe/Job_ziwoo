@@ -16,7 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lidroid.xutils.BitmapUtils;
+
+import com.bumptech.glide.Glide;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.consult.ConsultChatActivity;
@@ -120,9 +121,11 @@ public class TourSubFragment extends Fragment {
     private void setData() {
         name.setText(TextUtils.isEmpty(tour.getEnglishname())?tour.getNickName():tour.getNickName()+"("+tour.getEnglishname()+")");
         Tour.Points points = tour.getPoints();
-//        Glide.with(mActivity).load(tour.getHeadImageUrl()).into(icon);
-        BitmapUtils bitmapUtils = new BitmapUtils(mContext);
-        bitmapUtils.display(icon,tour.getHeadImageUrl());
+        Glide.with(this)
+                .load(tour.getHeadImageUrl())
+                .thumbnail(0.2f)
+                .override(200,200)
+                .into(icon);
         content.setText(tour.getShort_intro());
         if (null != points){
             ratingBar1.setImageResource(getRatingRes(points.getRelationImpel()));
@@ -130,9 +133,6 @@ public class TourSubFragment extends Fragment {
             ratingBar3.setImageResource(getRatingRes(points.getDispenseSingle()));
             ratingBar4.setImageResource(getRatingRes(points.getRetrieveLover()));
         }
-
-//        new BitmapUtils(mContext).display(icon, tour.getHeadImageUrl());
-
     }
 
     private void initView(View view) {

@@ -13,7 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.HashMap;
 
@@ -21,11 +22,11 @@ import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.Global;
-import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.MD5Utils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 @SuppressLint("ValidFragment")
@@ -68,38 +69,37 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         String phone = phoneEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
-            HashMap<String,String> param = new HashMap<>();
+            HashMap<String, String> param = new HashMap<>();
             param.put("password", MD5Utils.MD5(password, Global.ZW_SALT));
-            param.put("platform","1");
-            param.put("mobile",phone);
-            NetworkTool.POST("http://121.201.7.33/zero/api/v1/user/auth/mobile", param, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-
-                    LogUtils.log(getContext(),"登录成功: "+result);
-                    Gson gson = new Gson();
-                    Account account = gson.fromJson(result, Account.class);
-                    if (account != null && account.getAccessToken() != null) {
-                        AccountTool.saveAsCurrentAccount(getContext(),account);
-                        if (loginListener != null) {
-                            loginListener.loginSuccess();
+            param.put("platform", "1");
+            param.put("mobile", phone);
+            OkGo.post(Api.PHONE_LOGIN)
+                    .params(param)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            Gson gson = new Gson();
+                            Account account = gson.fromJson(s, Account.class);
+                            if (account != null && account.getAccessToken() != null) {
+                                AccountTool.saveAsCurrentAccount(getContext(), account);
+                                if (loginListener != null) {
+                                    loginListener.loginSuccess();
+                                }
+                                ChatTool.sharedTool().login();
+                                Intent intent1 = new Intent("userinfo_change");
+                                getContext().sendBroadcast(intent1);
+                                getActivity().onBackPressed();
+                            } else {
+                                Toast.makeText(getContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        ChatTool.sharedTool().login();
-                        Intent intent1 = new Intent("userinfo_change");
-                        getContext().sendBroadcast(intent1);
-                        getActivity().onBackPressed();
-                    } else {
-                        Toast.makeText(getContext(),"账号或密码错误",Toast.LENGTH_SHORT).show();
-                    }
-                }
 
-                @Override
-                public void onFailure(HttpException e, String s) {
-                    Toast.makeText(getContext(),"账号或密码错误",Toast.LENGTH_SHORT).show();
-                    LogUtils.log(getContext(),"登录失败: "+ s);
-                }
-            });
-        } else {
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            Toast.makeText(getContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else {
             Toast.makeText(getContext(),"请输入完整的信息",Toast.LENGTH_SHORT).show();
         }
     }

@@ -17,7 +17,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.ReactArticle;
 import cn.com.zhiwoo.bean.tutor.User;
 import cn.com.zhiwoo.utils.APPStatusUtils;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
@@ -56,6 +58,8 @@ import io.rong.message.RichContentMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 import io.rong.notification.PushNotificationMessage;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 // 读取全部消息和未读消息的时候,要减少数据库的读取操作.在数据库数据发生改变的时候,更新一下成员变量的内容即可
@@ -160,68 +164,71 @@ public class ChatTool {
         HashMap<String,String> params = new HashMap<>();
         params.put("access_token", token);
         params.put("user_id", userId);
-        NetworkTool.GET("http://121.201.7.33/zero/api/v1/rongcloud/user_token", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(final String result) {
-                String rmToken = null;
-                try {
-                    JSONObject object = new JSONObject(result);
-                    rmToken = object.getString("token");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (rmToken == null) {
-                    return;
-                }
-                //配置好友信息提供者
-                RongIM.setUserInfoProvider(new ChatUserInfoProvider(), true);
-                RongIM.connect(rmToken, new RongIMClient.ConnectCallback() {
+        OkGo.get(Api.FOR_TOKEN)
+                .params(params)
+                .execute(new StringCallback() {
                     @Override
-                    public void onTokenIncorrect() {
-                        LogUtils.log("融云token无效");
-                    }
-                    @Override
-                    public void onSuccess(String s) {
-                        LogUtils.log("融云登录成功!");
-                        if (RongIM.getInstance() != null) {
-                            //配置连接状态监听
-                            if (RongIM.getInstance().getRongIMClient() != null) {
-                                LogUtils.log(mContext, "设置融云监听");
-                                RongIMClientWrapper.setOnReceiveMessageListener(new MyReceiveMessageListener());
-                                RongIMClientWrapper.setConnectionStatusListener(new MyConnectionStatusListener());
-                                InputProvider.ExtendProvider[] provider = {
-                                        new ImageInputProvider(RongContext.getInstance()),//图片
-                                        new CameraInputProvider(RongContext.getInstance()),//相机
-                                };
-                                RongIM.resetInputExtensionProvider(Conversation.ConversationType.PRIVATE, provider);
-                                RongIM.setConversationBehaviorListener(new ClickMessageListener());
-
+                    public void onSuccess(String s, Call call, Response response) {
+                        String rmToken = null;
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            rmToken = object.getString("token");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (rmToken == null) {
+                            return;
+                        }
+                        //配置好友信息提供者
+                        RongIM.setUserInfoProvider(new ChatUserInfoProvider(), true);
+                        RongIM.connect(rmToken, new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                LogUtils.log("融云token无效");
                             }
+                            @Override
+                            public void onSuccess(String s) {
+                                LogUtils.log("融云登录成功!");
+                                if (RongIM.getInstance() != null) {
+                                    //配置连接状态监听
+                                    if (RongIM.getInstance().getRongIMClient() != null) {
+                                        LogUtils.log(mContext, "设置融云监听");
+                                        RongIMClientWrapper.setOnReceiveMessageListener(new MyReceiveMessageListener());
+                                        RongIMClientWrapper.setConnectionStatusListener(new MyConnectionStatusListener());
+                                        InputProvider.ExtendProvider[] provider = {
+                                                new ImageInputProvider(RongContext.getInstance()),//图片
+                                                new CameraInputProvider(RongContext.getInstance()),//相机
+                                        };
+                                        RongIM.resetInputExtensionProvider(Conversation.ConversationType.PRIVATE, provider);
+                                        RongIM.setConversationBehaviorListener(new ClickMessageListener());
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                LogUtils.log("融云登录出错");
+                                Toast.makeText(mContext,"登录出错",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        LogUtils.log("获取融云token出错： " + response.body());
+                        String result = response.body().toString();
+                        JsonParser parser = new JsonParser();
+                        JsonObject jsonObj = parser.parse(result.replace(" ","")).getAsJsonObject();
+                        if (jsonObj.get("error_code").getAsInt() == 1) {
+                            // token 失效
+                            AccountTool.unregistCurrentAccount(mContext);
+                            Toast.makeText(mContext,"您的账号在其他设备登录过，请重新登录",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, LoginActivity.class);
+                            mContext.startActivity(intent);
                         }
                     }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                        LogUtils.log("融云登录出错");
-                        Toast.makeText(mContext,"登录出错",Toast.LENGTH_SHORT).show();
-                    }
                 });
-            }
-
-            @Override
-            public void onFailure(HttpException e, String s) {
-                LogUtils.log("获取融云token出错： " + s);
-                JsonParser parser = new JsonParser();
-                JsonObject jsonObj = parser.parse(s.replace(" ","")).getAsJsonObject();
-                if (jsonObj.get("error_code").getAsInt() == 1) {
-                    // token 失效
-                    AccountTool.unregistCurrentAccount(mContext);
-                    Toast.makeText(mContext,"您的账号在其他设备登录过，请重新登录",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    mContext.startActivity(intent);
-                }
-            }
-        });
 
     }
 
@@ -245,24 +252,22 @@ public class ChatTool {
             HashMap<String,String> params = new HashMap<>();
             params.put("access_token","Z:0:!:5");
             params.put("friend_id",s);
-            NetworkTool.GET("http://121.201.7.33/zero/api/v1/user/friend", params, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                    if (result != null) {
-                        if (!(userInfos.containsKey(s))) {
-                            //把新的userinfo放进去
-                            Gson gson = new Gson();
-                            User user = gson.fromJson(result, User.class);
-                            UserInfo userInfo1 = new UserInfo(user.getId(),user.getNickName(), Uri.parse(user.getHeadImageUrl()));
-                            userInfos.put(s,userInfo1);
+            OkGo.get(Api.GET_USERINFO)
+                    .params(params)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            if (s != null) {
+                                if (!(userInfos.containsKey(s))) {
+                                    //把新的userinfo放进去
+                                    Gson gson = new Gson();
+                                    User user = gson.fromJson(s, User.class);
+                                    UserInfo userInfo1 = new UserInfo(user.getId(),user.getNickName(), Uri.parse(user.getHeadImageUrl()));
+                                    userInfos.put(s,userInfo1);
+                                }
+                            }
                         }
-                    }
-                }
-
-                @Override
-                public void onFailure(HttpException e, String s) {
-                }
-            });
+                    });
         }
 
     }
@@ -278,29 +283,25 @@ public class ChatTool {
         HashMap<String,String> params = new HashMap<>();
         params.put("access_token","Z:0:!:5");
         params.put("friend_id",s);
-        NetworkTool.GET("http://121.201.7.33/zero/api/v1/user/friend", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                if (result != null) {
-                    LogUtils.log(result);
-                    if (!(userInfos.containsKey(s))) {
-                        //把新的userinfo放进去
-                        Gson gson = new Gson();
-                        User user = gson.fromJson(result, User.class);
-                        UserInfo userInfo1 = new UserInfo(user.getId(), user.getNickName(), Uri.parse(user.getHeadImageUrl()));
-                        userInfos.put(s,userInfo1);
-                        if (callBack != null) {
-                            callBack.onsuccess(userInfo1);
+        OkGo.get(Api.GET_USERINFO)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s != null) {
+                            if (!(userInfos.containsKey(s))) {
+                                //把新的userinfo放进去
+                                Gson gson = new Gson();
+                                User user = gson.fromJson(s, User.class);
+                                UserInfo userInfo1 = new UserInfo(user.getId(), user.getNickName(), Uri.parse(user.getHeadImageUrl()));
+                                userInfos.put(s,userInfo1);
+                                if (callBack != null) {
+                                    callBack.onsuccess(userInfo1);
+                                }
+                            }
                         }
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(HttpException e, String s) {
-
-            }
-        });
+                });
     }
     public interface loadUserInfoCallBack {
         void onsuccess(UserInfo userInfo);
@@ -494,48 +495,51 @@ public class ChatTool {
             HashMap<String,String> params = new HashMap<>();
             params.put("access_token","Z:0:!:5");
             params.put("friend_id",id);
-            NetworkTool.GET("http://121.201.7.33/zero/api/v1/user/friend", params, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                    if (result != null) {
-                        //把新的userinfo放进去
-                        Gson gson = new Gson();
-                        User user = gson.fromJson(result, User.class);
-                        UserInfo userInfo1 = new UserInfo(user.getId(),user.getNickName(), Uri.parse(user.getHeadImageUrl()));
-                        Message message1 = new Message(userInfo1.getUserId(), userInfo1.getPortraitUri().toString(), userInfo1.getName(), 1, System.currentTimeMillis());
-                        long uid = messageDataTool.saveMessage(message1);
-                        if (uid > 0) {
-                            LogUtils.log("保存消息成功!");
-                            Intent intent = new Intent("message_change");
-                            mContext.sendBroadcast(intent);
-                        } else {
-                            LogUtils.log("保存消息失败!");
+            OkGo.get(Api.GET_USERINFO)
+                    .params(params)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            if (s != null) {
+                                //把新的userinfo放进去
+                                Gson gson = new Gson();
+                                User user = gson.fromJson(s, User.class);
+                                UserInfo userInfo1 = new UserInfo(user.getId(),user.getNickName(), Uri.parse(user.getHeadImageUrl()));
+                                Message message1 = new Message(userInfo1.getUserId(), userInfo1.getPortraitUri().toString(), userInfo1.getName(), 1, System.currentTimeMillis());
+                                long uid = messageDataTool.saveMessage(message1);
+                                if (uid > 0) {
+                                    LogUtils.log("保存消息成功!");
+                                    Intent intent = new Intent("message_change");
+                                    mContext.sendBroadcast(intent);
+                                } else {
+                                    LogUtils.log("保存消息失败!");
+                                }
+                            } else {
+                                Message message1 = new Message(id, "", "", 1, System.currentTimeMillis());
+                                long uid = messageDataTool.saveMessage(message1);
+                                if (uid > 0) {
+                                    LogUtils.log("保存消息成功!");
+                                    Intent intent = new Intent("message_change");
+                                    mContext.sendBroadcast(intent);
+                                } else {
+                                    LogUtils.log("保存消息失败!");
+                                }
+                            }
                         }
-                    } else {
-                        Message message1 = new Message(id, "", "", 1, System.currentTimeMillis());
-                        long uid = messageDataTool.saveMessage(message1);
-                        if (uid > 0) {
-                            LogUtils.log("保存消息成功!");
-                            Intent intent = new Intent("message_change");
-                            mContext.sendBroadcast(intent);
-                        } else {
-                            LogUtils.log("保存消息失败!");
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            Message message1 = new Message(id, "", "", 1, System.currentTimeMillis());
+                            long uid = messageDataTool.saveMessage(message1);
+                            if (uid > 0) {
+                                LogUtils.log("保存消息成功!");
+                                Intent intent = new Intent("message_change");
+                                mContext.sendBroadcast(intent);
+                            } else {
+                                LogUtils.log("保存消息失败!");
+                            }
                         }
-                    }
-                }
-                @Override
-                public void onFailure(HttpException e, String s) {
-                    Message message1 = new Message(id, "", "", 1, System.currentTimeMillis());
-                    long uid = messageDataTool.saveMessage(message1);
-                    if (uid > 0) {
-                        LogUtils.log("保存消息成功!");
-                        Intent intent = new Intent("message_change");
-                        mContext.sendBroadcast(intent);
-                    } else {
-                        LogUtils.log("保存消息失败!");
-                    }
-                }
-            });
+                    });
             if (!APPStatusUtils.isAppRunningOnTop(mContext, "cn.com.zhiwoo")) {
                 LogUtils.log("不在前台收到了消息,即收到后台消息");
                 //自己手动发出本地通知,再在点击通知后,唤醒APP

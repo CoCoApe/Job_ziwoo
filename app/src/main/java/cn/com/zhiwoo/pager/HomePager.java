@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lidroid.xutils.BitmapUtils;
+import com.bumptech.glide.Glide;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -36,14 +36,14 @@ import cn.com.zhiwoo.activity.home.WalletActivity;
 import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.pager.base.BasePager;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.wxUtils.Constants;
 import cn.com.zhiwoo.utils.wxUtils.Util;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomePager extends BasePager {
 
     private TextView nameTextView;
-    private ImageView iconImageView;
+    private CircleImageView iconImageView;
     private ImageView bgImageView;
     private ListView listView;
     private String[] icons;
@@ -94,7 +94,7 @@ public class HomePager extends BasePager {
         relativeLayout.setOnClickListener(this);
 
         bgImageView = (ImageView) relativeLayout.findViewById(R.id.bg_iamgeview);
-        iconImageView = (ImageView) relativeLayout.findViewById(R.id.icon_imageview);
+        iconImageView = (CircleImageView) relativeLayout.findViewById(R.id.icon_imageview);
         nameTextView = (TextView) relativeLayout.findViewById(R.id.name_textview);
     }
 
@@ -257,10 +257,10 @@ public class HomePager extends BasePager {
     @Override
     public void onSelected() {
         super.onSelected();
-        BitmapUtils bitmapUtils = new BitmapUtils(mActivity);
         if (AccountTool.isLogined(mActivity)) {
-            bitmapUtils.display(iconImageView,AccountTool.getCurrentAccount(mActivity).getHeadImageUrl());
-            bitmapUtils.display(bgImageView, AccountTool.getCurrentAccount(mActivity).getHeadImageUrl());
+            String image_url = AccountTool.getCurrentAccount(mActivity).getHeadImageUrl();
+            Glide.with(mActivity).load(image_url).into(iconImageView);
+            Glide.with(mActivity).load(image_url).into(bgImageView);
             nameTextView.setText(AccountTool.getCurrentAccount(mActivity).getNickName());
         }
 
@@ -268,11 +268,10 @@ public class HomePager extends BasePager {
     private class MyBroadCastRecevier extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.log("home -> 收到 个人信息改变的通知");
-            BitmapUtils bitmapUtils = new BitmapUtils(mActivity.getBaseContext());
-            bitmapUtils.display(bgImageView,AccountTool.getCurrentAccount(mActivity.getBaseContext()).getHeadImageUrl());
-            bitmapUtils.display(iconImageView,AccountTool.getCurrentAccount(mActivity.getBaseContext()).getHeadImageUrl());
-            nameTextView.setText(AccountTool.getCurrentAccount(mActivity.getBaseContext()).getNickName());
+            String image_url = AccountTool.getCurrentAccount(mActivity).getHeadImageUrl();
+            Glide.with(mActivity).load(image_url).into(iconImageView);
+            Glide.with(mActivity).load(image_url).into(bgImageView);
+            nameTextView.setText(AccountTool.getCurrentAccount(mActivity).getNickName());
         }
     }
 //    private TextView nameTextView;

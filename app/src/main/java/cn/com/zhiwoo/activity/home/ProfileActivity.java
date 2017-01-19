@@ -21,9 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
-import com.lidroid.xutils.BitmapUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -94,8 +94,9 @@ public class ProfileActivity extends BaseActivity {
         titleView.setText("个人信息");
 
         Account account = AccountTool.getCurrentAccount(this);
-        BitmapUtils bitmapUtils = new BitmapUtils(this);
-        bitmapUtils.display(iconImageView, account.getHeadImageUrl());
+        Glide.with(this)
+                .load(account.getHeadImageUrl())
+                .into(iconImageView);
         nickNameTextView.setText(account.getNickName());
         String sex = "保密";
         if (account.getSex() == 1) {

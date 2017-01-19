@@ -7,16 +7,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.HashMap;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.base.BaseActivity;
 import cn.com.zhiwoo.bean.react.Lesson;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
 import cn.com.zhiwoo.tool.PayTool;
+import cn.com.zhiwoo.utils.Api;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class BuyLessonActivity extends BaseActivity {
@@ -71,17 +73,19 @@ public class BuyLessonActivity extends BaseActivity {
                 params.put("name",name);
                 params.put("phone",phone);
                 params.put("course_type","1");
-                NetworkTool.POST("http://121.201.7.33/zero/api/v1/buy_course", params, new OnNetworkResponser() {
-                    @Override
-                    public void onSuccess(String result) {
-                        Toast.makeText(getBaseContext(),"购买课程成功!",Toast.LENGTH_SHORT).show();
-                    }
+                OkGo.post(Api.OLD_LESSON_BUY)
+                        .params(params)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                Toast.makeText(getBaseContext(),"购买课程成功!",Toast.LENGTH_SHORT).show();
+                            }
 
-                    @Override
-                    public void onFailure(HttpException e, String s) {
-                        Toast.makeText(getBaseContext(),"购买出错,请主动联系客服!",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                Toast.makeText(getBaseContext(),"购买出错,请主动联系客服!",Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
 
             @Override

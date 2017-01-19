@@ -1,53 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/x280"
-    android:padding="@dimen/x20"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/consult_moudle_bg_shape">
+    android:background="@drawable/consult_moudle_bg_shape"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/quickPose"
-        android:textSize="@dimen/x18"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textAlignment="center"/>
+        android:textSize="@dimen/x18" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/x50"
         android:layout_marginTop="@dimen/x20">
+
         <ImageView
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x12"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/title1"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/title1" />
         <!--android:text="@string/wantToSolve"
         android:textSize="@dimen/x12"
             android:textColor="@android:color/black"-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="7"
-            android:orientation="vertical"
             android:layout_marginLeft="@dimen/x30"
-            android:gravity="bottom">
+            android:layout_weight="7"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
             <Spinner
                 android:id="@+id/come_for_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x48"
                 android:background="@drawable/spinner_down"
                 android:entries="@array/expects"
-                android:gravity="center"/>
+                android:gravity="center" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
-                android:background="@color/moulde_underline"/>
+                android:background="@color/moulde_underline" />
         </LinearLayout>
     </LinearLayout>
 
@@ -55,37 +58,39 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/x50"
         android:layout_marginTop="@dimen/x5">
+
         <ImageView
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x12"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/title2"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/title2" />
 
         <LinearLayout
             android:id="@+id/male_radiogroup"
-            android:orientation="vertical"
-            android:layout_weight="7"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_weight="7"
             android:gravity="bottom"
-            android:layout_marginLeft="@dimen/x30">
+            android:orientation="vertical">
+
             <EditText
                 android:id="@+id/condition_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x48"
                 android:background="@null"
                 android:hint="@string/myCaseDescribe"
-                android:textColorHint="@android:color/darker_gray"
-                android:textSize="@dimen/x11"
                 android:textAlignment="center"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="@dimen/x11" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
-                android:background="@color/moulde_underline"
-                />
+                android:background="@color/moulde_underline" />
         </LinearLayout>
     </LinearLayout>
 
@@ -93,82 +98,88 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/x50"
         android:layout_marginTop="@dimen/x5">
+
         <ImageView
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x12"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/title3"
-            android:scaleType="fitXY"/>
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="7"
-           android:gravity="bottom"
-           android:orientation="vertical"
-           android:layout_marginLeft="@dimen/x30">
-           <EditText
-               android:id="@+id/otherCondition_edittext"
-               android:layout_width="match_parent"
-               android:layout_height="@dimen/x48"
-               android:background="@null"
-               android:hint="@string/otherCaseDescribe"
-               android:textSize="@dimen/x11"
-               android:textAlignment="center"
-               android:textColor="@android:color/black"
-               android:textColorHint="@android:color/darker_gray"
-               />
-           <View
-               android:layout_width="match_parent"
-               android:layout_height="@dimen/x1"
-               android:background="@color/moulde_underline"
-               />
-       </LinearLayout>
+            android:scaleType="fitXY"
+            android:src="@drawable/title3" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_weight="7"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/otherCondition_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x48"
+                android:background="@null"
+                android:hint="@string/otherCaseDescribe"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="@dimen/x11" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x1"
+                android:background="@color/moulde_underline" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/x50"
         android:layout_marginTop="@dimen/x5">
+
         <ImageView
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x12"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:src="@drawable/title4"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/title4" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x30"
             android:layout_weight="7"
             android:gravity="bottom"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/x30">
+            android:orientation="vertical">
+
             <EditText
                 android:id="@+id/exprence_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x48"
                 android:background="@null"
                 android:hint="@string/describeLive"
-                android:textSize="@dimen/x11"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/darker_gray"/>
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="@dimen/x11" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
-                android:background="@color/moulde_underline"/>
+                android:background="@color/moulde_underline" />
         </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/send_moudle_button"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/x50"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x30"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/x50"
+        android:background="@drawable/main_login_button_bg_shape"
         android:text="@string/send"
-        android:textSize="@dimen/x12"
         android:textColor="@android:color/white"
-        android:background="@drawable/main_login_button_bg_shape"/>
+        android:textSize="@dimen/x12" />
 </LinearLayout>

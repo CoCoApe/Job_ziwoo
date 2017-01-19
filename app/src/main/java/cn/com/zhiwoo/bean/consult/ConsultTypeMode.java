@@ -48,12 +48,22 @@ public class ConsultTypeMode {
         this.num = num;
         this.mode = mode;
     }
+
+    public ConsultTypeMode(int imageName) {
+        this.imageName = imageName;
+    }
+
     public static ArrayList<ConsultTypeMode> allConsultTypeModes() {
         ArrayList<ConsultTypeMode> modes = new ArrayList<>();
-        ConsultTypeMode mode1 = new ConsultTypeMode(R.drawable.consult_icon_tuijin,"关系推进",56642,MODE_tuijin);
-        ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_icon_weixi,"婚姻维系",26889,MODE_weixi);
-        ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_icon_baituo,"摆脱单身",52521,MODE_baituo);
-        ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_icon_wanhui,"失恋挽回",36965,MODE_wanhui);
+//        ConsultTypeMode mode1 = new ConsultTypeMode(R.drawable.consult_icon_tuijin,"关系推进",56642,MODE_tuijin);
+//        ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_icon_weixi,"婚姻维系",26889,MODE_weixi);
+//        ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_icon_baituo,"摆脱单身",52521,MODE_baituo);
+//        ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_icon_wanhui,"失恋挽回",36965,MODE_wanhui);
+          ConsultTypeMode mode1 = new ConsultTypeMode(R.drawable.consult_tuijin);
+          ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_weixi);
+          ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_baituo);
+          ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_wanhui);
+
         modes.add(mode1);
         modes.add(mode2);
         modes.add(mode3);

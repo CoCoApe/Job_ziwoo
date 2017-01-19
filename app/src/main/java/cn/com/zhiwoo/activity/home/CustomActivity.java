@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
-import com.lidroid.xutils.BitmapUtils;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -33,6 +32,7 @@ import cn.com.zhiwoo.activity.main.MainActivity;
 import cn.com.zhiwoo.bean.tutor.User;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
+import cn.com.zhiwoo.utils.GlideCacheUtil;
 import cn.com.zhiwoo.utils.LogUtils;
 import io.rong.imlib.model.UserInfo;
 
@@ -43,6 +43,7 @@ public class CustomActivity extends BaseActivity {
     private Switch notifySwitch;
     private Button unregistButton;
     private TextView copyright_textview;
+    private File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class CustomActivity extends BaseActivity {
         super.initView();
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.home_custom_activity, null);
         flContent.addView(linearLayout);
-
         notifySwitch = (Switch) linearLayout.findViewById(R.id.notify_switch);
         notifySwitch.setOnClickListener(this);
         notifySwitch.setClickable(false);
@@ -90,22 +90,7 @@ public class CustomActivity extends BaseActivity {
     }
 
     private void loadCacheFilesize() {
-        File file = new File(getExternalCacheDir().getAbsolutePath() + "/xBitmapCache");
-        if (!file.exists()) {
-            file = new File(getCacheDir().getAbsolutePath() + "/xBitmapCache");
-        }
-        if (!file.exists()) {
-            LogUtils.log("没找到缓存目录");
-            return;
-        }
-        LogUtils.log("缓存路径: " + file.getAbsolutePath());
-        long size = 0;
-        try {
-            size = getFileSize(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        cacheSizeTextView.setText("当前缓存:" + formetFileSize(size));
+        cacheSizeTextView.setText(GlideCacheUtil.getInstance().getCacheSize(getApplication()));
     }
 
     @Override
@@ -200,8 +185,7 @@ public class CustomActivity extends BaseActivity {
         actionSheetDialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BitmapUtils bitmapUtils = new BitmapUtils(getBaseContext());
-                bitmapUtils.clearCache();
+                GlideCacheUtil.getInstance().clearImageDiskCache(getApplication());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -227,8 +211,8 @@ public class CustomActivity extends BaseActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(getBaseContext(), MainActivity.class);
-                            startActivity(i);
+                            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(intent);
                             overridePendingTransition(0, 0);
                         }
                     }, 500);
@@ -240,34 +224,7 @@ public class CustomActivity extends BaseActivity {
         });
     }
 
-    /*** 获取文件夹大小 ***/
-    private long getFileSize(File f) throws Exception {
-        long size = 0;
-        File flist[] = f.listFiles();
-        for (File aFlist : flist) {
-            if (aFlist.isDirectory()) {
-                size = size + getFileSize(aFlist);
-            } else {
-                size = size + aFlist.length();
-            }
-        }
-        return size;
-    }
-    /*** 转换文件大小单位(b/kb/mb/gb) ***/
-    private String formetFileSize(long fileS) {// 转换文件大小
-        DecimalFormat df = new DecimalFormat("#.00");
-        String fileSizeString;
-        if (fileS < 1024) {
-            fileSizeString = "0";
-        } else if (fileS < 1048576) {
-            fileSizeString = df.format((double) fileS / 1024) + "K";
-        } else if (fileS < 1073741824) {
-            fileSizeString = df.format((double) fileS / 1048576) + "M";
-        } else {
-            fileSizeString = df.format((double) fileS / 1073741824) + "G";
-        }
-        return fileSizeString;
-    }
+
     private boolean isNotificationAllow() {
         try {
             PackageManager pm = getPackageManager();

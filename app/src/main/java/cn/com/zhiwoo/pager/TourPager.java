@@ -19,7 +19,8 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.demievil.library.RefreshLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,10 @@ import cn.com.zhiwoo.adapter.tutor.TourAdapter;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.pager.base.BasePager;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class TourPager extends BasePager {
@@ -102,29 +104,30 @@ public class TourPager extends BasePager {
     }
     private void loadData() {
         mHud.showWithStatus("正在叫导师过来...", SVProgressHUD.SVProgressHUDMaskType.Clear);
-        NetworkTool.GET("http://121.201.7.33/zero/api/tutors", null, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                result = result.replace("关系推进", "relationImpel");
-                result = result.replace("失恋挽回", "retrieveLover");
-                result = result.replace("婚姻维系", "matrimonyHold");
-                result = result.replace("摆脱单身", "dispenseSingle");
-                Gson gson = new Gson();
-                tours = gson.fromJson(result, (new TypeToken<List<Tour>>() {
-                }).getType());
-                initSubPagers(tours);
-                refreshLayout.setRefreshing(false);
-                listView.setAdapter(new TourAdapter(mActivity, tours, new OnTourConsultButtonClickListener()));
-                mViewPager.setAdapter(new TourSubPagerAdapter(fm));
-                mHud.dismiss();
-            }
+        OkGo.get(Api.TUTOR)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        s = s.replace("关系推进", "relationImpel");
+                        s = s.replace("失恋挽回", "retrieveLover");
+                        s = s.replace("婚姻维系", "matrimonyHold");
+                        s = s.replace("摆脱单身", "dispenseSingle");
+                        Gson gson = new Gson();
+                        tours = gson.fromJson(s, (new TypeToken<List<Tour>>() {
+                        }).getType());
+                        initSubPagers(tours);
+                        refreshLayout.setRefreshing(false);
+                        listView.setAdapter(new TourAdapter(mActivity, tours, new OnTourConsultButtonClickListener()));
+                        mViewPager.setAdapter(new TourSubPagerAdapter(fm));
+                        mHud.dismiss();
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                refreshLayout.setRefreshing(false);
-                mHud.showErrorWithStatus("网络不佳,请稍后再试");
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        refreshLayout.setRefreshing(false);
+                        mHud.showErrorWithStatus("网络不佳,请稍后再试");
+                    }
+                });
     }
 
     private void initSubPagers(ArrayList<Tour> list) {

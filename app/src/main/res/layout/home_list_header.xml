@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_header_rl"
     android:layout_width="match_parent"
     android:layout_height="@dimen/x175"
-    android:maxHeight="@dimen/x175"
-    android:id="@+id/home_header_rl">
+    android:maxHeight="@dimen/x175">
+
     <ImageView
         android:id="@+id/bg_iamgeview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x175"
-        android:src="@drawable/default_user_icon"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_user_icon" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/x175"
-        android:background="#eeeeeeee"/>
+        android:background="#eeeeeeee" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/icon_imageview"
             android:layout_width="@dimen/x100"
             android:layout_height="@dimen/x100"
-            android:src="@drawable/default_user_icon"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_user_icon" />
+
         <TextView
             android:id="@+id/name_textview"
-            android:textSize="@dimen/x15"
-            android:layout_marginTop="@dimen/x10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/user_name"
+            android:layout_marginTop="@dimen/x10"
             android:gravity="center"
-            android:textColor="@android:color/black"/>
+            android:text="@string/user_name"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x15" />
     </LinearLayout>
 </RelativeLayout>

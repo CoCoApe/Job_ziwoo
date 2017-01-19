@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.BitmapUtils;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -20,11 +20,8 @@ import cn.com.zhiwoo.tool.ChatTool;
 public class UnreadMessageAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Message> unreadMessages = new ArrayList<>();
-    private BitmapUtils bitmapUtils ;
     public UnreadMessageAdapter(Context context) {
         this.context = context;
-        this.bitmapUtils = new BitmapUtils(context);
-        this.bitmapUtils.configDefaultLoadingImage(R.drawable.default_user_icon);
         unreadMessages = ChatTool.sharedTool().getTipMessages();
     }
     @Override
@@ -54,7 +51,9 @@ public class UnreadMessageAdapter extends BaseAdapter {
             viewHolder.dividerView.setVisibility(View.VISIBLE);
         }
         Message message = unreadMessages.get(position);
-        bitmapUtils.display(viewHolder.iconImageView,message.getUserIcon());
+        Glide.with(context)
+                .load(message.getUserIcon())
+                .into(viewHolder.iconImageView);
         viewHolder.nickNmaeTextView.setText(message.getUserName());
         viewHolder.unredCountTextView.setText(message.getUnreadCount() + "");
         return convertView;

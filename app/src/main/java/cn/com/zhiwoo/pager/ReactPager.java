@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
-import com.lidroid.xutils.BitmapUtils;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +27,9 @@ import cn.com.zhiwoo.activity.react.ArticleDetailActivity;
 import cn.com.zhiwoo.bean.react.BigPic;
 import cn.com.zhiwoo.bean.react.ReactArticle;
 import cn.com.zhiwoo.pager.base.BasePager;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class ReactPager extends BasePager {
@@ -47,9 +50,7 @@ public class ReactPager extends BasePager {
     private ImageView saveIb;
     private ImageView eqIb;
     private ImageView relationshipIb;
-//    private ArticlesAdapter2 articlesAdapter;
     private RecyclerAdapter recyclerAdapter;
-    private BitmapUtils bitmapUtils;
 
     public ReactPager(Activity activity) {
         super(activity);
@@ -68,8 +69,6 @@ public class ReactPager extends BasePager {
 
         reactImage = (ImageView) view.findViewById(R.id.react_default_image);
         flContent.addView(view);
-        bitmapUtils = new BitmapUtils(mActivity);
-        bitmapUtils.configDefaultLoadingImage(R.drawable.react_article_bg_placeholer);
         monomerIb = (ImageView) mDrawerLayout.findViewById(R.id.drawer_monomer_imageButton);
         saveIb = (ImageView) mDrawerLayout.findViewById(R.id.drawer_save_imageButton);
         eqIb = (ImageView) mDrawerLayout.findViewById(R.id.drawer_eq_imageButton);
@@ -113,63 +112,59 @@ public class ReactPager extends BasePager {
     }
     private void loadData() {
         mHud.showWithStatus("正在加载...", SVProgressHUD.SVProgressHUDMaskType.Clear);
-        NetworkTool.GET("http://api.zhiwoo.com.cn/own/inc/api_pic", null, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                if (null != result){
-                    Log.i("aaaa", "onSuccess: qweqweqweqwe");
-                    BigPic bigPic = new Gson().fromJson(result,BigPic.class);
-                    if (null != bigPic){
-                        BitmapUtils bitmapUtils = new BitmapUtils(mActivity);
-                        bitmapUtils.display(reactImage,bigPic.getQ_pic());
-                        bigUrl = bigPic.getQ_art();
+        OkGo.get(Api.BIG_PIC)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (null != s){
+                            BigPic bigPic = new Gson().fromJson(s,BigPic.class);
+                            if (null != bigPic){
+//                                BitmapUtils bitmapUtils = new BitmapUtils(mActivity);
+//                                bitmapUtils.display(reactImage,bigPic.getQ_pic());
+                                Glide.with(mActivity)
+                                        .load(bigPic.getQ_pic())
+                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                        .thumbnail(0.1f)
+                                        .into(reactImage);
+                                bigUrl = bigPic.getQ_art();
+                            }
+                        }
                     }
-                }
-            }
-            @Override
-            public void onFailure(HttpException e, String s) {
-            }
-        });
-        NetworkTool.GET("http://api.zhiwoo.com.cn/own/", null, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                Gson gson = new Gson();
-                articles = (ArrayList<ReactArticle.QBean>) gson.fromJson(result,ReactArticle.class).getQ();
-                for (int i = 0; i < articles.size(); i++) {
-                    ReactArticle.QBean bean = articles.get(i);
-                    switch (bean.getApp_tag()){
-                        case 1:
-                            articleList1.add(bean);
-                            break;
-                        case 2:
-                            articleList2.add(bean);
-                            break;
-                        case 3:
-                            articleList3.add(bean);
-                            break;
-                        case 4:
-                            articleList4.add(bean);
-                            break;
+                });
+        OkGo.get(Api.ARTICLE)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        Gson gson = new Gson();
+                        articles = (ArrayList<ReactArticle.QBean>) gson.fromJson(s,ReactArticle.class).getQ();
+                        for (int i = 0; i < articles.size(); i++) {
+                            ReactArticle.QBean bean = articles.get(i);
+                            switch (bean.getApp_tag()){
+                                case 1:
+                                    articleList1.add(bean);
+                                    break;
+                                case 2:
+                                    articleList2.add(bean);
+                                    break;
+                                case 3:
+                                    articleList3.add(bean);
+                                    break;
+                                case 4:
+                                    articleList4.add(bean);
+                                    break;
+                            }
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                        mHud.dismiss();
                     }
-                }
-                swipeRefreshLayout.setRefreshing(false);
-                mHud.dismiss();
-            }
-
-            @Override
-            public void onFailure(HttpException e, String s) {
-//                pullToRefreshListView.onRefreshComplete();
-                swipeRefreshLayout.setRefreshing(false);
-                mHud.showErrorWithStatus("网络不佳,请稍后再试");
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        mHud.showErrorWithStatus("网络不佳,请稍后再试");
+                    }
+                });
     }
 
-
-//    @Override
-//    public void onClick(View v) {
-//
-//    }
 
     private void updataList(List<ReactArticle.QBean> list){
         if (null != list){
@@ -207,7 +202,10 @@ public class ReactPager extends BasePager {
         @Override
         public void onBindViewHolder(RecyclerViewHolder holder, int position) {
             final ReactArticle.QBean article = getArticles.get(position);
-            bitmapUtils.display(holder.itemImage,article.getPic_url());
+            Glide.with(mActivity).
+                    load(article.getPic_url())
+                    .placeholder(R.drawable.react_article_bg_placeholer)
+                    .into(holder.itemImage);
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

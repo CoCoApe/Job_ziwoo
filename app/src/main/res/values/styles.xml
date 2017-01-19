@@ -42,4 +42,16 @@
     <style name="comment_checkBox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/comment_checkbox_selector</item>
     </style>
+    
+
+    <style name="lesson_buy_dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="lesson_buy_dialog_animation" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/lesson_buy_dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/lesson_buy_dialog_exit</item>
+    </style>
 </resources>

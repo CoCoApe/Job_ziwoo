@@ -1,160 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eeeeee">
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x10"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:background="@android:color/white">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentTop="true"
+                android:background="#88888888" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:text="接收到信息通知"
+                android:textColor="@android:color/black" />
+
+            <Switch
+                android:id="@+id/notify_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x10"
+                android:clickable="false" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="#66666666" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x20"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginTop="@dimen/x5"
+            android:text="@string/custom_text" />
+
         <LinearLayout
-            android:layout_marginTop="@dimen/x10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
+                android:id="@+id/phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x40"
                 android:background="@android:color/white">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#88888888"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_alignParentTop="true"
+                    android:background="#66666666" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="接收到信息通知"
-                    android:textColor="@android:color/black"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x10"/>
-                <Switch
-                    android:id="@+id/notify_switch"
-                    android:clickable="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x10"
-                    android:layout_centerVertical="true"/>
+                    android:layout_marginLeft="@dimen/x10"
+                    android:text="@string/custom_phone"
+                    android:textColor="@android:color/black" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#66666666"
-                    android:layout_alignParentBottom="true"/>
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:background="#66666666" />
             </RelativeLayout>
-            <TextView
-                android:layout_marginLeft="@dimen/x10"
-                android:layout_marginRight="@dimen/x10"
-                android:layout_marginTop="@dimen/x5"
-                android:layout_marginBottom="@dimen/x20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_text"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:id="@+id/phone_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/x40"
-                    android:background="@android:color/white">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="#66666666"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:textColor="@android:color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/custom_phone"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x10"/>
-                    <View
-                        android:layout_marginLeft="@dimen/x10"
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="#66666666"
-                        android:layout_alignParentBottom="true"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/mail_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/x40"
-                    android:background="@android:color/white">
-                    <TextView
-                        android:textColor="@android:color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/custom_mail"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x10"/>
-                    <View
-                        android:layout_marginLeft="@dimen/x10"
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="#66666666"
-                        android:layout_alignParentBottom="true"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/customer_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/x40"
-                    android:background="@android:color/white">
-                    <TextView
-                        android:textColor="@android:color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/custom_service"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x10"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="#66666666"
-                        android:layout_alignParentBottom="true"/>
-                </RelativeLayout>
-            </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/cache_layout"
+                android:id="@+id/mail_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x40"
-                android:background="@android:color/white"
-                android:layout_marginTop="@dimen/x20">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="#66666666"
-                    android:layout_alignParentTop="true"/>
+                android:background="@android:color/white">
+
                 <TextView
-                    android:id="@+id/cachesize_textview"
-                    android:textColor="@android:color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x10"/>
+                    android:layout_marginLeft="@dimen/x10"
+                    android:text="@string/custom_mail"
+                    android:textColor="@android:color/black" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#66666666"
-                    android:layout_alignParentBottom="true"/>
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:background="#66666666" />
             </RelativeLayout>
-            <Button
-                android:id="@+id/unregister_button"
-                android:layout_marginTop="@dimen/x45"
+
+            <RelativeLayout
+                android:id="@+id/customer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x40"
-                android:text="@string/custom_exit"
-                android:layout_marginLeft="@dimen/x10"
-                android:layout_marginRight="@dimen/x10"
-                android:background="@drawable/unregist_button_selector"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/x16"/>
-            <TextView
-                android:id="@+id/copyright_textview"
-                android:layout_marginTop="@dimen/x80"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:text="@string/custom_service"
+                    android:textColor="@android:color/black" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#66666666" />
+            </RelativeLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/cache_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:layout_marginTop="@dimen/x20"
+            android:background="@android:color/white">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentTop="true"
+                android:background="#66666666" />
+
+            <TextView
+                android:id="@+id/cachesize_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:text="@string/current_cache"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/cachesize_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toEndOf="@id/cachesize_name"
+                android:layout_toRightOf="@+id/cachesize_name"
+                android:textColor="@android:color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="#66666666" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/unregister_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginTop="@dimen/x45"
+            android:background="@drawable/unregist_button_selector"
+            android:text="@string/custom_exit"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/x16" />
+
+        <TextView
+            android:id="@+id/copyright_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x80"
+            android:textAlignment="center" />
+    </LinearLayout>
 </LinearLayout>

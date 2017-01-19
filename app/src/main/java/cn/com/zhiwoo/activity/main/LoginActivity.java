@@ -19,7 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -33,13 +34,14 @@ import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.wxUtils.Constants;
 import cn.com.zhiwoo.view.main.NoScrollViewPager;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
@@ -208,43 +210,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             HashMap<String,String> params = new HashMap<>();
             params.put("code",code);
             params.put("platform","1");
-            NetworkTool.POST("http://121.201.7.33/zero/api/v1/user/auth/weixin", params, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                    Gson gson = new Gson();
-                    Account account = gson.fromJson(result, Account.class);
-                    if (account != null && account.getAccessToken() != null) {
-                        if (!TextUtils.isEmpty(account.getMobile())){
-                            AccountTool.saveAsCurrentAccount(getBaseContext(), account);
-                            if (AccountTool.isLogined(getBaseContext())) {
-                                //新账号登录成功,配置好聊天工具
-                                LogUtils.log("新账号登录,配置聊天工具");
-                                APP app = (APP) getApplication();
-                                ChatTool.config(app.getMainActivity());
+            OkGo.post(Api.WEIXIN_LOGIN)
+                    .params(params)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            Gson gson = new Gson();
+                            Account account = gson.fromJson(s, Account.class);
+                            if (account != null && account.getAccessToken() != null) {
+                                if (!TextUtils.isEmpty(account.getMobile())){
+                                    AccountTool.saveAsCurrentAccount(getBaseContext(), account);
+                                    if (AccountTool.isLogined(getBaseContext())) {
+                                        //新账号登录成功,配置好聊天工具
+                                        LogUtils.log("新账号登录,配置聊天工具");
+                                        APP app = (APP) getApplication();
+                                        ChatTool.config(app.getMainActivity());
+                                    }
+                                    ChatTool.sharedTool().login();
+                                    isLoginFromLike();
+                                    Intent intent1 = new Intent("userinfo_change");
+                                    sendBroadcast(intent1);
+                                    onBackPressed();
+                                } else {
+                                    AccountTool.saveAsCurrentAccount(getBaseContext(), account);
+                                    phoneBindFragment = PhoneBindFragment.newInstance(account);
+                                    fragments.add(phoneBindFragment);
+                                    loginPagerAdapter.notifyDataSetChanged();
+                                    viewPager.setCurrentItem(2);
+                                }
+                            }else {
+                                Toast.makeText(getBaseContext(),"登录失败1",Toast.LENGTH_SHORT).show();
                             }
-                            ChatTool.sharedTool().login();
-                            isLoginFromLike();
-                            Intent intent1 = new Intent("userinfo_change");
-                            sendBroadcast(intent1);
-                            onBackPressed();
-                        } else {
-                            AccountTool.saveAsCurrentAccount(getBaseContext(), account);
-                            phoneBindFragment = PhoneBindFragment.newInstance(account);
-                            fragments.add(phoneBindFragment);
-                            loginPagerAdapter.notifyDataSetChanged();
-                            viewPager.setCurrentItem(2);
                         }
-                    }else {
-                        Toast.makeText(getBaseContext(),"登录失败1",Toast.LENGTH_SHORT).show();
-                    }
 
-                }
-
-                @Override
-                public void onFailure(HttpException e, String s) {
-                    Toast.makeText(getBaseContext(),"登录失败2",Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            Toast.makeText(getBaseContext(),"登录失败2",Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
     private class PhoneBindCastRecevier extends BroadcastReceiver{

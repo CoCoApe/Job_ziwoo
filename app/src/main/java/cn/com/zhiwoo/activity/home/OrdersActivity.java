@@ -8,7 +8,8 @@ import android.widget.ListView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +20,10 @@ import cn.com.zhiwoo.adapter.home.OrderAdapter;
 import cn.com.zhiwoo.bean.home.Order;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class OrdersActivity extends BaseActivity {
@@ -47,35 +49,37 @@ public class OrdersActivity extends BaseActivity {
         Account account = AccountTool.getCurrentAccount(getBaseContext());
         params.put("access_token",account.getAccessToken());
         params.put("user_id", account.getId());
-        //[{"id":59,"user_id":1040,"tutor_id":9,"name":"test","gender":0,"age":null,"contact":"1234567890","problem":null,"prepaid":0,"status":0,"created_at":"2016-05-26T07:44:34.911Z","updated_at":"2016-05-26T07:44:34.911Z"}]
-        NetworkTool.GET("http://121.201.7.33/zero/api/v1/consults", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                LogUtils.log("全部预约" + result);
-                Gson gson = new Gson();
-                orders = gson.fromJson(result, new TypeToken<ArrayList<Order>>() {
-                }.getType());
-                for (Order order : orders) {
-                    order.loadMoreInfo();
-                }
-                new Handler().postDelayed(new Runnable() {
+        OkGo.get(Api.ORDERS)
+                .params(params)
+                .execute(new StringCallback() {
                     @Override
-                    public void run() {
-                        if (orders.size() == 0) {
-                            progressHUD.showSuccessWithStatus("您当前没有订单");
-                        } else {
-                            progressHUD.showSuccessWithStatus("订单加载成功");
-                            listView.setAdapter(new OrderAdapter(getBaseContext(), orders));
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtils.log("全部预约" + s);
+                        Gson gson = new Gson();
+                        orders = gson.fromJson(s, new TypeToken<ArrayList<Order>>() {
+                        }.getType());
+                        for (Order order : orders) {
+                            order.loadMoreInfo();
                         }
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (orders.size() == 0) {
+                                    progressHUD.showSuccessWithStatus("您当前没有订单");
+                                } else {
+                                    progressHUD.showSuccessWithStatus("订单加载成功");
+                                    listView.setAdapter(new OrderAdapter(getBaseContext(), orders));
+                                }
+                            }
+                        }, 500);
                     }
-                }, 500);
-            }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                progressHUD.showErrorWithStatus("订单加载失败");
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        progressHUD.showErrorWithStatus("订单加载失败");
+                        super.onError(call, response, e);
+                    }
+                });
     }
 
     @Override

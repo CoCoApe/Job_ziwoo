@@ -1,25 +1,43 @@
 package cn.com.zhiwoo.activity.home;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.com.zhiwoo.R;
+import cn.com.zhiwoo.bean.main.Account;
+import cn.com.zhiwoo.bean.react.LessonEvent;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.PayTool;
+import cn.com.zhiwoo.utils.Api;
 import de.greenrobot.event.EventBus;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by 25820 on 2017/1/10.
@@ -28,14 +46,16 @@ import de.greenrobot.event.EventBus;
 public class AllLessonsFragment extends Fragment {
     private ListView mListView;
     private Activity mActivity;
-    private List<String> mList = new ArrayList<>();
+    private List<LessonEvent.DataBean> mList = new ArrayList<>();
     private AllLessonsAdapter allLessonsAdapter;
+    private Account account;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
     }
+
 
     @Nullable
     @Override
@@ -52,21 +72,80 @@ public class AllLessonsFragment extends Fragment {
     private void initView() {
         allLessonsAdapter = new AllLessonsAdapter();
         mListView.setAdapter(allLessonsAdapter);
-
+        account = AccountTool.getCurrentAccount(mActivity);
     }
 
     private void initData() {
-        mList.add("课程=====1");
-        mList.add("课程=====2");
-        mList.add("课程=====3");
-        mList.add("课程=====4");
-        Collections.reverse(mList);
-        allLessonsAdapter.notifyDataSetChanged();
+        Map<String,String> params = new HashMap<>();
+        params.put("userId",account.getId());
+        params.put("isCost","1");
+        Log.i("isget", "initData: "+account.getId());
+        OkGo.post(Api.LESSONS)
+                .cacheKey("AllLessons")
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LessonEvent lessonEvent = new Gson().fromJson(s,LessonEvent.class);
+                        mList.clear();
+                        mList.addAll(lessonEvent.getData());
+                        Collections.reverse(mList);
+                        allLessonsAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void initListener() {
 
     }
+
+    private void showDialog(final LessonEvent.DataBean bean, final int position) {
+        View view = View.inflate(getContext(),R.layout.lesson_buy_dialog_layout,null);
+        final Dialog lesson_buy_dialog = new AlertDialog.Builder(getContext(),R.style.lesson_buy_dialog)
+                .setView(view).create();
+        view.findViewById(R.id.dialog_lesson_name).setSelected(true);
+        view.findViewById(R.id.dialog_lesson_buy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lesson_buy_dialog.dismiss();
+                PayTool payTool = new PayTool(mActivity, new PayTool.OnPayResultListener() {
+                    @Override
+                    public void paySuccess() {
+                        isPay(bean);
+                        mList.remove(position);
+                        allLessonsAdapter.notifyDataSetChanged();
+                        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.lesson_pager);
+                        viewPager.setCurrentItem(1);
+                        EventBus.getDefault().post(bean);
+                    }
+                    @Override
+                    public void payFailure() {
+
+                    }
+                });
+                PayTool.Product product = new PayTool.Product(bean.getCourse_name(),Float.valueOf(bean.getPay()));
+                payTool.pay(product);
+            }
+        });
+
+        lesson_buy_dialog.setCanceledOnTouchOutside(true);
+        Window dialogWindow = lesson_buy_dialog.getWindow();
+        if (dialogWindow != null) {
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            dialogWindow.setWindowAnimations(R.style.lesson_buy_dialog_animation); // 添加动画
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+            lp.x = 0; // 新位置X坐标
+            lp.y = -30; // 新位置Y坐标
+            view.measure(0, 0);
+            lp.width = getResources().getDisplayMetrics().widthPixels; // 宽度
+            lp.height = (int) (getResources().getDisplayMetrics().heightPixels * 0.6); // 高度
+//            lp.height = view.getMeasuredHeight();
+            lp.alpha = 9f; // 透明度
+            dialogWindow.setAttributes(lp);
+            lesson_buy_dialog.show();
+        }
+    }
+
 
     class AllLessonsAdapter extends BaseAdapter{
 
@@ -92,29 +171,33 @@ public class AllLessonsFragment extends Fragment {
             }
             Button buyBtn = (Button) convertView.findViewById(R.id.all_lesson_item_buy);
             TextView textView = (TextView) convertView.findViewById(R.id.all_lesson_item_content);
-            textView.setText(mList.get(position));
+            final LessonEvent.DataBean bean = mList.get(position);
+            textView.setText(bean.getCourse_name());
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (AccountTool.isLogined(mActivity)){
-                        PayTool payTool = new PayTool(mActivity, new PayTool.OnPayResultListener() {
-                            @Override
-                            public void paySuccess() {
-                                mList.remove(position);
-                                allLessonsAdapter.notifyDataSetChanged();
-                                EventBus.getDefault().post(new LessonEvent("课程1",0.01f,"http://yqall02.baidupcs.com/file/754e3c6b9d7f55541587208fcf755b6b?bkt=p3-0000bf57292ac4ace2cd8259eeae9d0c9e11&fid=3859092981-250528-878528322779116&time=1484119511&sign=FDTAXGERLBH-DCb740ccc5511e5e8fedcff06b081203-hjp9DBWpipYuLbYvFMuZY541sxY%3D&to=yqhb&fm=Yan,B,T,t&sta_dx=8325058&sta_cs=1&sta_ft=mp3&sta_ct=0&sta_mt=0&fm2=Yangquan,B,T,t&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=0000bf57292ac4ace2cd8259eeae9d0c9e11&sl=76480590&expires=8h&rt=sh&r=570511750&mlogid=246829529371701007&vuk=3859092981&vbdid=2480269028&fin=crash.mp3&fn=crash.mp3&slt=pm&uta=0&rtype=1&iv=0&isw=0&dp-logid=246829529371701007&dp-callid=0.1.1&csl=80&csign=D%2BbeukNG0g1BaX8zKFT4%2Bo1rdxk%3D"));
-                            }
-                            @Override
-                            public void payFailure() {
-
-                            }
-                        });
-                        PayTool.Product product = new PayTool.Product("咨我课程购买",0.01f);
-                        payTool.pay(product);
+                        showDialog(bean,position);
                     }
                 }
             });
             return convertView;
         }
+    }
+
+    private void isPay(LessonEvent.DataBean bean){
+        Map<String,String> params = new HashMap<>();
+        params.put("courseId",bean.getCourse_id());
+        params.put("userId",account.getId());
+        params.put("pay",bean.getPay());
+        params.put("modify","1");
+        OkGo.post(Api.IS_COST_LESSON)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        initData();
+                    }
+                });
     }
 }

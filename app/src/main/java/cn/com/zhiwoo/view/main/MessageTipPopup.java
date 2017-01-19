@@ -20,7 +20,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.lidroid.xutils.BitmapUtils;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -149,7 +150,6 @@ public class MessageTipPopup extends PopupWindow {
 	private void populateActions() {
 		// 设置列表的适配器
 		mListView.setAdapter(new BaseAdapter() {
-			private BitmapUtils bitmapUtils = new BitmapUtils(mContext);
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null) {
@@ -184,12 +184,16 @@ public class MessageTipPopup extends PopupWindow {
 								tipMessage.setUserIcon(userInfo.getPortraitUri().toString());
 								tipMessage.setUserName(userInfo.getName());
 								viewHolder.titleTextView.setText(tipMessage.getUserName());
-								bitmapUtils.display(viewHolder.imageView, tipMessage.getUserIcon());
+								Glide.with(mContext)
+										.load(tipMessage.getUserIcon())
+										.into(viewHolder.imageView);
 							}
 						});
 					} else  {
 						viewHolder.titleTextView.setText(tipMessage.getUserName());
-						bitmapUtils.display(viewHolder.imageView, tipMessage.getUserIcon());
+						Glide.with(mContext)
+								.load(tipMessage.getUserIcon())
+								.into(viewHolder.imageView);
 					}
 
 					if (tipMessage.getUnreadCount() > 99) {
@@ -212,12 +216,16 @@ public class MessageTipPopup extends PopupWindow {
 									tipMessage.setUserIcon(userInfo.getPortraitUri().toString());
 									tipMessage.setUserName(userInfo.getName());
 									viewHolder.titleTextView.setText(tipMessage.getUserName());
-									bitmapUtils.display(viewHolder.imageView, tipMessage.getUserIcon());
+									Glide.with(mContext)
+											.load(tipMessage.getUserIcon())
+											.into(viewHolder.imageView);
 								}
 							});
 						} else  {
 							viewHolder.titleTextView.setText(tipMessage.getUserName());
-							bitmapUtils.display(viewHolder.imageView, tipMessage.getUserIcon());
+							Glide.with(mContext)
+									.load(tipMessage.getUserIcon())
+									.into(viewHolder.imageView);
 						}
 
 						if (tipMessage.getUnreadCount() > 99) {

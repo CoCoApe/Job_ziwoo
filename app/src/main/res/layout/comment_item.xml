@@ -9,47 +9,53 @@
         android:layout_width="@dimen/x48"
         android:layout_height="@dimen/x48"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_user_icon"/>
+        android:src="@drawable/default_user_icon" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/x5"
         android:layout_toRightOf="@+id/comment_item_icon"
-        android:layout_marginLeft="@dimen/x5">
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/comment_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x14"/>
+            android:textSize="@dimen/x14" />
+
         <TextView
             android:id="@+id/comment_item_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x11"/>
+            android:textSize="@dimen/x11" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/x3"
-            android:gravity="center_vertical|end"
-            android:layout_marginRight="@dimen/x20">
+            android:gravity="center_vertical|end">
+
             <CheckBox
                 android:id="@+id/comment_item_likes"
+                style="@style/comment_checkBox"
                 android:layout_width="@dimen/x50"
                 android:layout_height="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
-                android:textSize="@dimen/x10"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/x2"
-                style="@style/comment_checkBox"
-                android:text="998"/>
+                android:text="998"
+                android:textSize="@dimen/x10" />
+
             <CheckBox
                 android:id="@+id/comment_item_popularity"
                 android:layout_width="@dimen/x50"
                 android:layout_height="@dimen/x30"
+                android:button="@drawable/comment_popularity_checked"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/x10"
                 android:paddingLeft="@dimen/x2"
-                android:button="@drawable/comment_popularity_checked"/>
+                android:textSize="@dimen/x10" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

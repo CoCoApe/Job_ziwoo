@@ -12,10 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
+
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +22,8 @@ import java.io.FileNotFoundException;
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.utils.LogUtils;
 import io.rong.imkit.tools.PhotoFragment;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
     PhotoFragment mPhotoFragment;
@@ -105,35 +106,59 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             appDir.mkdir();
         }
         final String fileName = System.currentTimeMillis() + ".jpg";
-        HttpUtils httpUtils = new HttpUtils();
-        httpUtils.download(url, new File(appDir, fileName).getAbsolutePath(), new RequestCallBack<File>() {
-            @Override
-            public void onSuccess(ResponseInfo<File> responseInfo) {
-                File file = responseInfo.result;
-                // 其次把文件插入到系统图库
-                try {
-                    String url = MediaStore.Images.Media.insertImage(getContentResolver(),
-                            file.getAbsolutePath(), fileName, null);
-                    LogUtils.log("保存图片 : URL = " + url);
-                    if (url != null) {
-                        Toast.makeText(getBaseContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
-                    }
-                } catch (FileNotFoundException e) {
-                    LogUtils.log("保存图片出错 : " + e.toString());
-                    Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-                // 最后通知图库更新
-                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(file.getAbsolutePath())));
-            }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                LogUtils.log("保存失败 : " + s);
-                Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
-            }
-        });
+        OkGo.get(url)
+                .tag(this)
+                .execute(new FileCallback(new File(appDir, fileName).getAbsolutePath()) {
+                    @Override
+                    public void onSuccess(File file, Call call, Response response) {
+                        try {
+                            String url = MediaStore.Images.Media.insertImage(getContentResolver(),
+                                    file.getAbsolutePath(), fileName, null);
+                            LogUtils.log("保存图片 : URL = " + url);
+                            if (url != null) {
+                                Toast.makeText(getBaseContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (FileNotFoundException e) {
+                            LogUtils.log("保存图片出错 : " + e.toString());
+                            Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                        // 最后通知图库更新
+                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(file.getAbsolutePath())));
+                    }
+                });
+//        HttpUtils httpUtils = new HttpUtils();
+//        httpUtils.download(url, new File(appDir, fileName).getAbsolutePath(), new RequestCallBack<File>() {
+//            @Override
+//            public void onSuccess(ResponseInfo<File> responseInfo) {
+//                File file = responseInfo.result;
+//                // 其次把文件插入到系统图库
+//                try {
+//                    String url = MediaStore.Images.Media.insertImage(getContentResolver(),
+//                            file.getAbsolutePath(), fileName, null);
+//                    LogUtils.log("保存图片 : URL = " + url);
+//                    if (url != null) {
+//                        Toast.makeText(getBaseContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (FileNotFoundException e) {
+//                    LogUtils.log("保存图片出错 : " + e.toString());
+//                    Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                }
+//                // 最后通知图库更新
+//                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(file.getAbsolutePath())));
+//            }
+//
+//            @Override
+//            public void onFailure(HttpException e, String s) {
+//                LogUtils.log("保存失败 : " + s);
+//                Toast.makeText(getBaseContext(),"图片保存失败",Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

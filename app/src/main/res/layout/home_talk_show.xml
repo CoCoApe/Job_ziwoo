@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/lesson_tab"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x30"/>
+        android:layout_height="@dimen/x30" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/lesson_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 
     <!--<Button-->
-        <!--android:id="@+id/home_talk_show_button_start"-->
-        <!--android:layout_width="@dimen/x80"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="播放"-->
-        <!--android:layout_marginTop="@dimen/x50"/>-->
+    <!--android:id="@+id/home_talk_show_button_start"-->
+    <!--android:layout_width="@dimen/x80"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="播放"-->
+    <!--android:layout_marginTop="@dimen/x50"/>-->
     <!--<Button-->
-        <!--android:id="@+id/home_talk_show_button_stop"-->
-        <!--android:layout_width="@dimen/x80"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="停止"-->
-        <!--android:layout_marginTop="@dimen/x20"/>-->
+    <!--android:id="@+id/home_talk_show_button_stop"-->
+    <!--android:layout_width="@dimen/x80"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="停止"-->
+    <!--android:layout_marginTop="@dimen/x20"/>-->
 
 </LinearLayout>

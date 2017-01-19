@@ -8,7 +8,8 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.HashMap;
 
@@ -16,10 +17,10 @@ import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.base.BaseActivity;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
 import cn.com.zhiwoo.tool.PayTool;
-import cn.com.zhiwoo.utils.LogUtils;
+import cn.com.zhiwoo.utils.Api;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class ReservationActivity extends BaseActivity {
@@ -78,44 +79,37 @@ public class ReservationActivity extends BaseActivity {
                         params.put("access_token",account.getAccessToken());
                         params.put("user_id",account.getId());
                         params.put("tutor_id",tourId);
-
                         String name = nameEditText.getText().toString();
                         if (!TextUtils.isEmpty(name)) {
                             params.put("name",name);
                         }
-
                         String gender = radioGroup.getCheckedRadioButtonId() == R.id.male ? "男" : "女";
                         params.put("gender",gender);
-
                         String age = ageEditText.getText().toString();
                         if (!TextUtils.isEmpty(age)) {
                             params.put("age",age);
                         }
-
                         params.put("contact",phone);
-
                         String problem = problemEditText.getText().toString();
                         if (!TextUtils.isEmpty(problem)) {
                             params.put("problem",problem);
                         }
-
                         params.put("prepaid","100");
+                        OkGo.post(Api.BOOKING)
+                                .params(params)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        Toast.makeText(getBaseContext(),"预约成功",Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
 
-                        NetworkTool.POST("http://121.201.7.33/zero/api/v1/consults", params, new OnNetworkResponser() {
-                            @Override
-                            public void onSuccess(String result) {
-//                                progressHUD.showSuccessWithStatus("预约成功");
-                                Toast.makeText(getBaseContext(),"预约成功",Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailure(HttpException e, String s) {
-//                                progressHUD.showErrorWithStatus("预约失败");
-                                Toast.makeText(getBaseContext(),"提交预约失败,请主动联系客服",Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        });
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        Toast.makeText(getBaseContext(),"提交预约失败,请主动联系客服",Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                });
                     }
 
                     @Override
@@ -145,20 +139,19 @@ public class ReservationActivity extends BaseActivity {
                         if (!TextUtils.isEmpty(problem)) {
                             params.put("problem",problem);
                         }
+                        OkGo.post(Api.BOOKING)
+                                .params(params)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        finish();
+                                    }
 
-                        NetworkTool.POST("http://121.201.7.33/zero/api/v1/consults", params, new OnNetworkResponser() {
-                            @Override
-                            public void onSuccess(String result) {
-                                LogUtils.log("未支付定金,提交订单成功,result: " + result);
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailure(HttpException e, String s) {
-                                LogUtils.log("未支付定金,提交订单失败");
-                                finish();
-                            }
-                        });
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        finish();
+                                    }
+                                });
                     }
                 });
                 // [支付]

@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.BitmapUtils;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -18,14 +19,11 @@ import cn.com.zhiwoo.bean.tutor.Tour;
 public class TourAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Tour> tours;
-    private BitmapUtils bitmapUtils;
     private OnConsultButtonClickListener onConsultButtonClickListener;
     public TourAdapter(Context context, ArrayList<Tour> tours, OnConsultButtonClickListener onConsultButtonClickListener) {
         super();
         this.context = context;
         this.tours = tours;
-        this.bitmapUtils = new BitmapUtils(context);
-        this.bitmapUtils.configDefaultLoadingImage(R.drawable.default_user_icon);
         this.onConsultButtonClickListener = onConsultButtonClickListener;
     }
     @Override
@@ -52,7 +50,9 @@ public class TourAdapter extends BaseAdapter {
         //绑定数据
         Tour tour = tours.get(position);
         Tour.Points points = tour.getPoints();
-        bitmapUtils.display(viewHolder.iconImageView, tour.getHeadImageUrl());
+        Glide.with(context)
+                .load(tour.getHeadImageUrl())
+                .into(viewHolder.iconImageView);
         viewHolder.nameTextView.setText(tour.getNickName());
         viewHolder.short_introTextView.setText(tour.getShort_intro());
         viewHolder.relationImpelImageView.setImageResource(getRatingRes(points.getRelationImpel()));

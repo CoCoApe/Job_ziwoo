@@ -2,53 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/mode_ll"
-        android:layout_width="@dimen/x60"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/x4"
-        android:gravity="center">
-        <ImageView
-            android:id="@+id/mode_imageview"
-            android:layout_width="@dimen/x48"
-            android:layout_height="@dimen/x48"
-            android:src="@drawable/consult_icon_weixi" />
-        <TextView
-            android:id="@+id/mode_title_textview"
-            android:fontFamily="sans-serif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/x10"
-            android:textColor="@android:color/black"
-            android:text="@string/tuijin"/>
-    </LinearLayout>
+
     <ImageView
-        android:id="@+id/dot_imageview"
-        android:layout_width="@dimen/x20"
-        android:layout_height="@dimen/x20"
-        android:src="@drawable/consult_cell_dot"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        />
-    <TextView
-        android:id="@+id/mode_num_textview"
-        android:layout_toRightOf="@+id/mode_ll"
-        android:layout_toLeftOf="@+id/dot_imageview"
-        android:layout_width="@dimen/x120"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-        android:gravity="center"
-        android:textSize="@dimen/x14"
-        android:layout_centerVertical="true"
-        />
+        android:id="@+id/mode_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:scaleType="centerCrop" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/mode_ll"-->
+    <!--android:layout_width="@dimen/x60"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="@dimen/x4"-->
+    <!--android:gravity="center">-->
+    <!--<ImageView-->
+    <!--android:id="@+id/mode_imageview"-->
+    <!--android:layout_width="@dimen/x48"-->
+    <!--android:layout_height="@dimen/x48"-->
+    <!--android:src="@drawable/consult_icon_weixi"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/mode_title_textview"-->
+    <!--android:fontFamily="sans-serif"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="@dimen/x10"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--android:text="@string/tuijin"/>-->
+    <!--</LinearLayout>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/dot_imageview"-->
+    <!--android:layout_width="@dimen/x20"-->
+    <!--android:layout_height="@dimen/x20"-->
+    <!--android:src="@drawable/consult_cell_dot"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_marginRight="@dimen/x20"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/mode_num_textview"-->
+    <!--android:layout_toRightOf="@+id/mode_ll"-->
+    <!--android:layout_toLeftOf="@+id/dot_imageview"-->
+    <!--android:layout_width="@dimen/x120"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/x10"-->
+    <!--android:layout_marginRight="@dimen/x10"-->
+    <!--android:gravity="center"-->
+    <!--android:textSize="@dimen/x14"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--/>-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="#88888888">
-    </View>
+        android:background="#88888888"/>
 </RelativeLayout>

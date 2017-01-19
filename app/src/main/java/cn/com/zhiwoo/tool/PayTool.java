@@ -12,7 +12,8 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.aliUtils.PayResult;
@@ -46,6 +48,8 @@ import cn.com.zhiwoo.utils.aliUtils.SignUtils;
 import cn.com.zhiwoo.utils.wxUtils.MD5;
 import cn.com.zhiwoo.utils.wxUtils.Util;
 import cn.com.zhiwoo.view.main.PayStyleChoseDialog;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class PayTool {
@@ -82,13 +86,8 @@ public class PayTool {
     public PayTool(Activity mActivity,OnPayResultListener onPayResultListener) {
         this.mActivity = mActivity;
         this.onPayResultListener = onPayResultListener;
-
-//        iwxapi = WXAPIFactory.createWXAPI(mActivity.getBaseContext(), Constants.APP_ID);
-//        iwxapi.registerApp(Constants.APP_ID);
-
         iwxapi = WXAPIFactory.createWXAPI(mActivity.getBaseContext(), WX_APP_ID);
         iwxapi.registerApp(WX_APP_ID);
-
 
         // 动态注册广播
         IntentFilter filter = new IntentFilter();
@@ -200,12 +199,20 @@ public class PayTool {
         //获取 prepayid
         String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         //获取商品Prepayid的基本参数
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("appid",WX_APP_ID);
+//        contentValues.put("body", product.body);
+//        contentValues.put("mch_id", WX_PARTNER_ID);
+//        nonceStr = genNonceStr();
+//        contentValues.put("nonce_str", nonceStr);
+//        contentValues.put("notify_url", "http://weixin.qq.com");
+//        contentValues.put("out_trade_no", genOutTradNo());
+//        contentValues.put("spbill_create_ip", "196.168.1.1");
+//        contentValues.put("total_fee", (int)(product.price * 100) + "");
+//        contentValues.put("trade_type", "APP");
         List<NameValuePair> packageParams = new LinkedList<>();
-//        packageParams.add(new BasicNameValuePair("appid",Constants.APP_ID));
         packageParams.add(new BasicNameValuePair("appid",WX_APP_ID));
-
         packageParams.add(new BasicNameValuePair("body", product.body));
-//        packageParams.add(new BasicNameValuePair("mch_id", Constants.PARTNER_ID));
         packageParams.add(new BasicNameValuePair("mch_id", WX_PARTNER_ID));
         nonceStr = genNonceStr();
         packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
@@ -216,6 +223,7 @@ public class PayTool {
         packageParams.add(new BasicNameValuePair("trade_type", "APP"));
         //根据参数生成对应的XML文件(参看 文档 预支付订单 )
         String xmlString = createPrepayidParamXml(packageParams);
+//        String xmlString = createPrepayidParamXml(contentValues);
         String xml = null;
         try {
             xml = new String(xmlString.getBytes(), "ISO8859-1");
@@ -256,12 +264,21 @@ public class PayTool {
         }
         return document.asXML();
     }
+//    private String createPrepayidParamXml(ContentValues content){
+//        String packageSign = getSign(content);
+//        content.put("sign", packageSign);
+//        Document document = DocumentHelper.createDocument();
+//        Element root = document.addElement("xml");
+//        for (Map.Entry<String, Object> entry : content.valueSet()){
+//            root.addElement(entry.getKey()).addText((String) entry.getValue());
+//        }
+//        return document.asXML();
+//    }
     /**
      * 按照微信的要求获取 参数的签名
      */
     private String getSign(List<NameValuePair> params) {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < params.size(); i++) {
             sb.append(params.get(i).getName());
             sb.append('=');
@@ -274,7 +291,18 @@ public class PayTool {
         // 进行md5摘要前，params内容为原始内容，未经过url encode处理
         return MD5.getMD5(sb.toString()).toUpperCase();
     }
-
+//    private String getSign(ContentValues content){
+//        StringBuilder sb = new StringBuilder();
+//        for (Map.Entry<String, Object> entry : content.valueSet()){
+//            sb.append(entry.getKey())
+//              .append('=')
+//              .append(entry.getValue())
+//              .append('&');
+//        }
+//        sb.append("key=");
+//        sb.append(WX_PARTNER_KEY);
+//        return MD5.getMD5(sb.toString()).toUpperCase();
+//    }
     /**
      * 生成随机串
      */
@@ -329,15 +357,21 @@ public class PayTool {
      */
     private void sendPayReq(String prepayId) {
         PayReq request = new PayReq();
-//        request.appId = Constants.APP_ID;
         request.appId = WX_APP_ID;
         request.nonceStr = nonceStr;
         request.packageValue = "Sign=WXPay";
-//        request.partnerId = Constants.PARTNER_ID;
         request.partnerId = WX_PARTNER_ID;
         request.prepayId= prepayId;
         request.timeStamp = System.currentTimeMillis() / 1000 + "";
         //获取参数的签名
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("appid", request.appId);
+//        contentValues.put("noncestr", request.nonceStr);
+//        contentValues.put("package", request.packageValue);
+//        contentValues.put("partnerid", request.partnerId);
+//        contentValues.put("prepayid", request.prepayId);
+//        contentValues.put("timestamp", request.timeStamp);
+//        request.sign= getSign(contentValues);
         List<NameValuePair> signParams = new LinkedList<>();
         signParams.add(new BasicNameValuePair("appid", request.appId));
         signParams.add(new BasicNameValuePair("noncestr", request.nonceStr));
@@ -348,7 +382,6 @@ public class PayTool {
         request.sign= getSign(signParams);
         String sendPayReqParamStr = "appId = " + request.appId + " partnerId = " + request.partnerId + " packageValue = " + request.packageValue + " prepayId = " + request.prepayId + " nonceStr = " + request.nonceStr + " timeStamp = " + request.timeStamp + " sign = " + request.sign;
         wxPayHandeler.sendEmptyMessage(PayTool.StartSendPayReq);
-//        LogUtils.log(mActivity.getBaseContext(), payParamStr);
         // 调起支付
         iwxapi.sendReq(request);
     }
@@ -493,10 +526,9 @@ public class PayTool {
      *            待签名订单信息
      */
     private String sign(String content) {
-//        return SignUtils.sign(content, cn.com.zhiwoo.Utils.aliUtils.Constants.RSA_PRIVATE);
         return SignUtils.sign(content, ALi_RSA_PRIVATE);
-
     }
+
     public static void config(final Context context) {
         String jsonStr = null;
         try {
@@ -528,31 +560,28 @@ public class PayTool {
                 e.printStackTrace();
             }
         } else {
-            NetworkTool.GET("http://www.ljson.com/info.php", null, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        WX_APP_ID = jsonObject.getString("WX_APP_ID");
-                        WX_PARTNER_ID = jsonObject.getString("WX_PARTNER_ID");
-                        WX_PARTNER_KEY = jsonObject.getString("WX_PARTNER_KEY");
-                        ALi_PARTNER = jsonObject.getString("ALi_PARTNER");
-                        ALi_RSA_PRIVATE = jsonObject.getString("ALi_RSA_PRIVATE");
-                        ALi_SELLER = jsonObject.getString("ALi_SELLER");
-                        FileOutputStream fos = context.openFileOutput(Global.INFO_DATA_FILE_NAME,
-                                    Context.MODE_PRIVATE);
-                        fos.write(result.getBytes());
-                        fos.close();
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
-                        LogUtils.log("支付工具配置失败");
-                    }
-                }
-                @Override
-                public void onFailure(HttpException e, String s) {
-                    LogUtils.log("支付工具配置失败");
-                }
-            });
+            OkGo.get(Api.PAY_TOOL)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                WX_APP_ID = jsonObject.getString("WX_APP_ID");
+                                WX_PARTNER_ID = jsonObject.getString("WX_PARTNER_ID");
+                                WX_PARTNER_KEY = jsonObject.getString("WX_PARTNER_KEY");
+                                ALi_PARTNER = jsonObject.getString("ALi_PARTNER");
+                                ALi_RSA_PRIVATE = jsonObject.getString("ALi_RSA_PRIVATE");
+                                ALi_SELLER = jsonObject.getString("ALi_SELLER");
+                                FileOutputStream fos = context.openFileOutput(Global.INFO_DATA_FILE_NAME,
+                                        Context.MODE_PRIVATE);
+                                fos.write(s.getBytes());
+                                fos.close();
+                            } catch (JSONException | IOException e) {
+                                e.printStackTrace();
+                                LogUtils.log("支付工具配置失败");
+                            }
+                        }
+                    });
         }
     }
 

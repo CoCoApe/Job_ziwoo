@@ -1,182 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:background="@drawable/tourdetail_topbg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/tourdetail_topbg"
         android:paddingBottom="@dimen/x5">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/detail_icon_imageview"
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
-            android:src="@drawable/default_user_icon"
-            app:civ_border_width="@dimen/x2"
             android:layout_margin="@dimen/x5"
-            app:civ_border_color="@color/globalBgColor"/>
+            android:src="@drawable/default_user_icon"
+            app:civ_border_color="@color/globalBgColor"
+            app:civ_border_width="@dimen/x2" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/x5"
-            android:layout_marginRight="@dimen/x5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginRight="@dimen/x5"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/detail_name_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_orange_light"
-                android:layout_marginTop="@dimen/x5"
                 android:layout_marginBottom="@dimen/x5"
-                android:textSize="@dimen/x20"
-                android:text="@string/tutor"/>
+                android:layout_marginTop="@dimen/x5"
+                android:text="@string/tutor"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="@dimen/x20" />
+
             <TextView
                 android:id="@+id/detail_shortintro_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/x14"
+                android:ellipsize="end"
                 android:lines="3"
-                android:ellipsize="end"/>
+                android:textSize="@dimen/x14" />
+
             <View
                 android:id="@+id/detail_divider_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x1"
-                android:background="#88888888"
+                android:layout_marginBottom="@dimen/x3"
                 android:layout_marginTop="@dimen/x3"
-                android:layout_marginBottom="@dimen/x3"/>
+                android:background="#88888888" />
+
             <TextView
                 android:id="@+id/detail_longintro_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/x5"
-                android:textSize="@dimen/x16"/>
+                android:textSize="@dimen/x16" />
         </LinearLayout>
     </LinearLayout>
     <!--android:layout_marginLeft="@dimen/x5"-->
     <!--android:layout_marginRight="@dimen/x5"-->
     <LinearLayout
-        android:paddingBottom="@dimen/x5"
-        android:paddingRight="@dimen/x2"
-        android:background="@drawable/home_cell_bg_xia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/x5"
         android:layout_marginBottom="@dimen/x20"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/x5"
+        android:background="@drawable/home_cell_bg_xia"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/x5"
+        android:paddingRight="@dimen/x2">
+
         <LinearLayout
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/x5"
-            android:layout_marginBottom="@dimen/x5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x5"
+            android:layout_marginTop="@dimen/x5"
+            android:gravity="center_horizontal">
+
             <LinearLayout
-                android:layout_marginRight="@dimen/x10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x10"
                 android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tuijin"/>
+                    android:text="@string/tuijin" />
+
                 <ImageView
                     android:id="@+id/detail_relationImpel_imageview"
                     android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/x12"/>
+                    android:layout_height="@dimen/x12" />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginLeft="@dimen/x10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
                 android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/weixi"/>
+                    android:text="@string/weixi" />
+
                 <ImageView
                     android:id="@+id/detail_matrimonyHold_imageview"
                     android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/x12"/>
+                    android:layout_height="@dimen/x12" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/x5"
-            android:layout_marginBottom="@dimen/x5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x5"
+            android:layout_marginTop="@dimen/x5"
+            android:gravity="center_horizontal">
+
             <LinearLayout
-                android:layout_marginRight="@dimen/x10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x10"
                 android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/baituo"/>
+                    android:text="@string/baituo" />
+
                 <ImageView
                     android:id="@+id/detail_dispenseSingle_imageview"
                     android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/x12"/>
+                    android:layout_height="@dimen/x12" />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginLeft="@dimen/x10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
                 android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/wanhui"/>
+                    android:text="@string/wanhui" />
+
                 <ImageView
                     android:id="@+id/detail_retrieveLover_imageview"
                     android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/x12"/>
+                    android:layout_height="@dimen/x12" />
             </LinearLayout>
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
             android:layout_marginLeft="@dimen/x3"
             android:layout_marginRight="@dimen/x3"
-            android:background="#88888888"/>
+            android:background="#88888888" />
+
         <LinearLayout
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:gravity="end">
+
             <TextView
-                android:textSize="@dimen/x18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="@string/rate_of_praise"
-                android:layout_gravity="center_vertical"/>
+                android:textSize="@dimen/x18" />
+
             <TextView
                 android:id="@+id/detail_likerate_textview"
-                android:textSize="@dimen/x18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="98%"
                 android:textColor="@android:color/holo_orange_light"
-                android:layout_gravity="center_vertical"/>
+                android:textSize="@dimen/x18" />
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/detail_consult_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/x18"
-        android:text="@string/consult_promptly"
-        android:background="@color/globalBgColor"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
-        android:textColor="@android:color/white"/>
+        android:background="@color/globalBgColor"
+        android:text="@string/consult_promptly"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/x18" />
 
     <ListView
         android:id="@+id/comment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/x10"/>
+        android:layout_marginTop="@dimen/x10" />
 </LinearLayout>

@@ -1,49 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/tour_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/afterPay"/>
+            android:text="@string/afterPay"
+            android:textAlignment="center" />
+
         <TextView
-            android:layout_marginTop="@dimen/x30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/x10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x30"
             android:text="@string/forWithdraw"
-            android:textSize="@dimen/x30"
+            android:textAlignment="center"
             android:textColor="@color/globalBgColor"
-            android:textAlignment="center"/>
+            android:textSize="@dimen/x30" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
-            android:background="@color/globalBgColor"/>
+            android:background="@color/globalBgColor" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:gravity="center"
                 android:text="@string/tutorName"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
                 android:textSize="@dimen/x16"
-                android:gravity="center"/>
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:background="@color/globalBgColor"
+                android:layout_marginBottom="@dimen/x3"
                 android:layout_marginTop="@dimen/x3"
-                android:layout_marginBottom="@dimen/x3"/>
+                android:background="@color/globalBgColor" />
+
             <EditText
                 android:id="@+id/name_edittext"
                 android:layout_width="0dp"
@@ -51,32 +59,36 @@
                 android:layout_weight="7"
                 android:background="@null"
                 android:hint="@string/input_tutorName"
-                android:textSize="@dimen/x15"
                 android:textAlignment="center"
-                />
+                android:textSize="@dimen/x15" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
-            android:background="@color/globalBgColor"/>
+            android:background="@color/globalBgColor" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:gravity="center"
                 android:text="@string/Withdraw"
-                android:textSize="@dimen/x16"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="@dimen/x16"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/globalBgColor"
+                android:layout_marginBottom="@dimen/x3"
                 android:layout_marginTop="@dimen/x3"
-                android:layout_marginBottom="@dimen/x3"/>
+                android:background="@color/globalBgColor" />
+
             <EditText
                 android:id="@+id/amount_edittext"
                 android:layout_width="0dp"
@@ -84,33 +96,37 @@
                 android:layout_weight="7"
                 android:background="@null"
                 android:hint="@string/input_Withdraw"
-                android:textSize="@dimen/x15"
-                android:textAlignment="center"
                 android:inputType="phone"
-                />
+                android:textAlignment="center"
+                android:textSize="@dimen/x15" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
-            android:background="@color/globalBgColor"/>
+            android:background="@color/globalBgColor" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:gravity="center"
                 android:text="@string/pay_channel"
-                android:textSize="@dimen/x16"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="@dimen/x16"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:background="@color/globalBgColor"
+                android:layout_marginBottom="@dimen/x3"
                 android:layout_marginTop="@dimen/x3"
-                android:layout_marginBottom="@dimen/x3"/>
+                android:background="@color/globalBgColor" />
+
             <EditText
                 android:id="@+id/payaccount_edittext"
                 android:layout_width="0dp"
@@ -118,60 +134,64 @@
                 android:layout_weight="7"
                 android:background="@null"
                 android:hint="@string/input_channel"
-                android:textSize="@dimen/x15"
                 android:textAlignment="center"
-                />
+                android:textSize="@dimen/x15" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
-            android:background="@color/globalBgColor"/>
+            android:background="@color/globalBgColor" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:gravity="center"
                 android:text="@string/contact"
-                android:textSize="@dimen/x16"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="@dimen/x16"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:background="@color/globalBgColor"
+                android:layout_marginBottom="@dimen/x3"
                 android:layout_marginTop="@dimen/x3"
-                android:layout_marginBottom="@dimen/x3"/>
+                android:background="@color/globalBgColor" />
+
             <EditText
                 android:id="@+id/phone_edittext"
-                android:inputType="phone"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:background="@null"
                 android:hint="@string/input_contact"
-                android:textSize="@dimen/x15"
+                android:inputType="phone"
                 android:textAlignment="center"
-                />
+                android:textSize="@dimen/x15" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/x1"
-            android:background="@color/globalBgColor"/>
+            android:background="@color/globalBgColor" />
 
         <Button
             android:id="@+id/commit_button"
-            android:layout_marginTop="@dimen/x100"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x44"
-            android:background="@color/globalBgColor"
-            android:text="@string/confirm_withdraw"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/x100"
+            android:background="@color/globalBgColor"
+            android:text="@string/confirm_withdraw"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/x18"/>
+            android:textSize="@dimen/x18" />
 
     </LinearLayout>
 
@@ -181,22 +201,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:src="@drawable/home_wallent_normal_bg"/>
+            android:src="@drawable/home_wallent_normal_bg" />
+
         <Button
             android:id="@+id/tobetour_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x30"
             android:layout_marginLeft="@dimen/x10"
             android:layout_marginRight="@dimen/x10"
-            android:layout_marginBottom="@dimen/x30"
+            android:background="@color/globalBgColor"
             android:text="@string/tobe_tutor"
-            android:textSize="@dimen/x17"
             android:textColor="@android:color/white"
-            android:background="@color/globalBgColor"/>
+            android:textSize="@dimen/x17" />
     </LinearLayout>
 </LinearLayout>

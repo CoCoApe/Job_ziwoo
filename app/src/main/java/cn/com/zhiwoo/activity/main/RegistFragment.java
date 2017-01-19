@@ -16,7 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,13 +27,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.com.zhiwoo.R;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.MD5Utils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 @SuppressLint("ValidFragment")
@@ -123,7 +125,7 @@ public class RegistFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SMSSDK.initSDK(getContext(), Global.SMS_APPKEY, Global.SMS_SECRET);
+        SMSSDK.initSDK(getContext(), Global.SMS_APPKEY, Global.SMS_SECRET,false);
         eh = new EventHandler(){
             @Override
             public void afterEvent(int event, int result, Object data) {
@@ -233,18 +235,19 @@ public class RegistFragment extends Fragment implements View.OnClickListener {
             HashMap<String,String> param = new HashMap<>();
             param.put("mobile",this.phone);
             param.put("password", MD5Utils.MD5(password, Global.ZW_SALT));
-            NetworkTool.POST("http://121.201.7.33/zero/api/v1/user/register/mobile", param, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                    LogUtils.log(getContext(), "成功结果:" + result);
-                    Toast.makeText(getContext(),"注册成功",Toast.LENGTH_SHORT).show();
-                }
+            OkGo.post(Api.PHONE_REGIST)
+                    .params(param)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            Toast.makeText(getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+                        }
 
-                @Override
-                public void onFailure(HttpException e, String s) {
-                    Toast.makeText(getContext(),"注册失败",Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            Toast.makeText(getContext(),"注册失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             Toast.makeText(getContext(),"请先获取验证码",Toast.LENGTH_SHORT).show();
         }

@@ -3,7 +3,8 @@ package cn.com.zhiwoo.tool;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,9 +12,12 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 
 import cn.com.zhiwoo.bean.main.Account;
+import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
 import io.rong.imkit.RongIM;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class AccountTool {
@@ -93,23 +97,25 @@ public class AccountTool {
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
         params.put("headimgurl", url);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setHeadImageUrl(url);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setHeadImageUrl(url);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
     public static void updateNickname(final String nickname, final Context context, final UpdateResultListener updateResultListener) {
         if (nickname == null) return;
@@ -118,48 +124,50 @@ public class AccountTool {
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
         params.put("nickname", nickname);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setNickName(nickname);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setNickName(nickname);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                LogUtils.log("错误信息: " + s);
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
     public static void updateSex(final int sex, final Context context, final UpdateResultListener updateResultListener) {
         HashMap<String,String> params = new HashMap<>();
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
         params.put("gender", ""+sex);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setSex(sex);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setSex(sex);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                LogUtils.log("错误信息: " + s);
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
     }
     public static void updatePhone(final String phone, final Context context, final UpdateResultListener updateResultListener) {
         if (phone == null) return;
@@ -167,23 +175,25 @@ public class AccountTool {
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
         params.put("mobile", phone);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setMobile(phone);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setMobile(phone);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
     public static void updateCity(final String city, final Context context, final UpdateResultListener updateResultListener) {
         if (city == null) return;
@@ -191,24 +201,27 @@ public class AccountTool {
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
         params.put("city", city);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setCity(city);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setCity(city);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
+
     public static void updatePassword(String oldPassword,String newPassword,Context context, final UpdateResultListener updateResultListener) {
         if (oldPassword == null || newPassword == null) return;
         HashMap<String,String> params = new HashMap<>();
@@ -216,21 +229,23 @@ public class AccountTool {
         params.put("user_id",currentAccount.getId());
         params.put("password",oldPassword);
         params.put("new_password",newPassword);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
     public interface UpdateResultListener {
         void updateSuccess();
@@ -249,26 +264,28 @@ public class AccountTool {
         params.put("province",province);
         params.put("city", city);
         params.put("demand_infos",demand_infos);
-        NetworkTool.PUT("http://121.201.7.33/zero/api/v1/user/update", params, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                currentAccount.setMobile(phone);
-                currentAccount.setBirth(birth);
-                currentAccount.setProvince(province);
-                currentAccount.setCity(city);
-                currentAccount.setDemand_infos(demand_infos);
-                saveAsCurrentAccount(context, currentAccount);
-                if (updateResultListener != null) {
-                    updateResultListener.updateSuccess();
-                }
-            }
+        OkGo.put(Api.UPDATE)
+                .params(params)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        currentAccount.setMobile(phone);
+                        currentAccount.setBirth(birth);
+                        currentAccount.setProvince(province);
+                        currentAccount.setCity(city);
+                        currentAccount.setDemand_infos(demand_infos);
+                        saveAsCurrentAccount(context, currentAccount);
+                        if (updateResultListener != null) {
+                            updateResultListener.updateSuccess();
+                        }
+                    }
 
-            @Override
-            public void onFailure(HttpException e, String s) {
-                if (updateResultListener != null) {
-                    updateResultListener.updateFailure();
-                }
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        if (updateResultListener != null) {
+                            updateResultListener.updateFailure();
+                        }
+                    }
+                });
     }
 }

@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/x45"
     android:background="@color/white"
-    android:padding="@dimen/x10"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/x10">
+
     <ImageView
         android:id="@+id/topBar_left_image"
         android:layout_width="@dimen/x15"
         android:layout_height="@dimen/x15"
-        android:src="@drawable/nav_btn_logo_left"/>
+        android:src="@drawable/nav_btn_logo_left" />
+
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="@dimen/x25"
         android:layout_weight="1">
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/x20"
-            android:textAlignment="center"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/topBar_middle_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/nav_btn_logo_2"/>
+            android:src="@drawable/nav_btn_logo_2" />
     </FrameLayout>
 
     <ImageView
         android:id="@+id/topBar_right_image"
         android:layout_width="@dimen/x20"
         android:layout_height="@dimen/x20"
-        android:src="@drawable/navbar_message_selector"/>
+        android:src="@drawable/navbar_message_selector" />
 
 </LinearLayout>

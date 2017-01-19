@@ -2,43 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/x280"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_gravity="center"
     android:gravity="center_horizontal"
-    android:layout_gravity="center">
+    android:orientation="vertical">
+
     <TextView
-        android:textColor="#000000"
         android:id="@+id/confirm_title"
-        android:layout_marginTop="@dimen/x15"
-        android:layout_marginBottom="@dimen/x15"
-        android:textSize="@dimen/x20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/x15"
+        android:layout_marginTop="@dimen/x15"
+        android:gravity="center"
         android:text="@string/chose_channel"
-        android:gravity="center"/>
+        android:textColor="#000000"
+        android:textSize="@dimen/x20" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#88222222"/>
+        android:background="#88222222" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/x80"
-        android:layout_marginTop="@dimen/x10"
-        android:layout_marginBottom="@dimen/x5">
+        android:layout_marginBottom="@dimen/x5"
+        android:layout_marginTop="@dimen/x10">
+
         <ImageView
             android:id="@+id/wxpay_imageview"
-            android:layout_margin="@dimen/x10"
             android:layout_width="0dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/weixinpay_logo"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_margin="@dimen/x10"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/weixinpay_logo" />
+
         <ImageView
             android:id="@+id/alipay_imageview"
             android:layout_width="0dp"
-            android:layout_margin="@dimen/x10"
-            android:scaleType="centerInside"
-            android:src="@drawable/alipay_logo"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_margin="@dimen/x10"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/alipay_logo" />
     </LinearLayout>
 </LinearLayout>

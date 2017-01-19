@@ -19,9 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.lidroid.xutils.BitmapUtils;
-import com.lidroid.xutils.exception.HttpException;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,10 @@ import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.tutor.Comments;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.tool.AccountTool;
-import cn.com.zhiwoo.tool.NetworkTool;
-import cn.com.zhiwoo.tool.OnNetworkResponser;
+import cn.com.zhiwoo.utils.Api;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 public class TourDetailActivity extends BaseActivity {
@@ -44,22 +46,18 @@ public class TourDetailActivity extends BaseActivity {
     private ImageView iconImageView;
     private TextView nameTextView;
     private View dividerView;
-//    private TextView longintroTextView;
     private ImageView relationImpelImageView;
     private ImageView matrimonyHoldImageView;
     private ImageView retrieveLoverImageView;
     private ImageView dispenseSingleImageView;
     private TextView likerateTextView;
     private Button consultButton;
-    private BitmapUtils bitmapUtils;
     private Tour tour;
     private TextView shortintroTextView;
     private ListView listView;
     private CommentAdapter adapter;
     private Account account;
     private List<Comments.CodeBean> mList = new ArrayList<>();
-    private static final String COMMENTS_URL = "http://api.zhiwoo.com.cn/own/control/tutorIf?tutorId=";
-    public static final String LIKES_URL = "http://api.zhiwoo.com.cn/own/control/userPl?";
 
 
     @Override
@@ -71,7 +69,6 @@ public class TourDetailActivity extends BaseActivity {
         nameTextView = (TextView) linearLayout.findViewById(R.id.detail_name_textview);
         shortintroTextView = (TextView) linearLayout.findViewById(R.id.detail_shortintro_textview);
         dividerView = linearLayout.findViewById(R.id.detail_divider_view);
-//        longintroTextView = (TextView) linearLayout.findViewById(R.id.detail_longintro_textview);
         relationImpelImageView = (ImageView) linearLayout.findViewById(R.id.detail_relationImpel_imageview);
         matrimonyHoldImageView = (ImageView) linearLayout.findViewById(R.id.detail_matrimonyHold_imageview);
         retrieveLoverImageView = (ImageView) linearLayout.findViewById(R.id.detail_retrieveLover_imageview);
@@ -88,15 +85,10 @@ public class TourDetailActivity extends BaseActivity {
         titleView.setText("咨询师详情");
         adapter = new CommentAdapter();
         listView.setAdapter(adapter);
-        bitmapUtils = new BitmapUtils(this);
-        bitmapUtils.configDefaultLoadingImage(R.drawable.default_user_icon);
-        bitmapUtils.display(iconImageView, tour.getHeadImageUrl());
         nameTextView.setText(tour.getNickName());
         shortintroTextView.setText(tour.getShort_intro());
-//        longintroTextView.setText(tour.getLong_intro());
         if (tour.getLong_intro().length() <= 0) {
             dividerView.setVisibility(View.GONE);
-//            longintroTextView.setVisibility(View.GONE);
         }
         dispenseSingleImageView.setImageResource(getRatingRes(points.getDispenseSingle()));
         matrimonyHoldImageView.setImageResource(getRatingRes(points.getMatrimonyHold()));
@@ -107,32 +99,30 @@ public class TourDetailActivity extends BaseActivity {
     }
 
     private void initCommentData(Tour tour) {
-        StringBuilder sb = new StringBuilder(COMMENTS_URL);
-        Log.i("qqqqq", "initCommentData: "+sb.toString());
+        StringBuilder sb = new StringBuilder(Api.COMMENTS);
         if (AccountTool.isLogined(this)){
             account = AccountTool.getCurrentAccount(this);
-            sb.append(tour.getId())
+            sb.append("?tutorId=")
+                    .append(tour.getId())
                     .append("&usId=")
                     .append(AccountTool.getCurrentAccount(this).getId());
         }else {
-            sb.append(tour.getId());
+            sb.append("?tutorId=")
+                    .append(tour.getId());
         }
         String url = sb.toString();
-        NetworkTool.GET(url, null, new OnNetworkResponser() {
-            @Override
-            public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)){
-                    Comments comments = new Gson().fromJson(result,Comments.class);
-                    mList.clear();
-                    mList.addAll(comments.getCode());
-                    adapter.notifyDataSetChanged();
-                }
-            }
-            @Override
-            public void onFailure(HttpException e, String s) {
-
-            }
-        });
+        OkGo.get(url)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (!TextUtils.isEmpty(s)){
+                            Comments comments = new Gson().fromJson(s,Comments.class);
+                            mList.clear();
+                            mList.addAll(comments.getCode());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -154,8 +144,6 @@ public class TourDetailActivity extends BaseActivity {
 
                 Intent intent = new Intent(getBaseContext(), ConsultChatActivity.class);
                 Bundle bundle = new Bundle();
-                //[测试id]
-//                tour.setId("1652");
                 bundle.putSerializable("user", tour);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -214,7 +202,10 @@ public class TourDetailActivity extends BaseActivity {
             final CheckBox box_like = (CheckBox) convertView.findViewById(R.id.comment_item_likes);
             TextView tv_popularity = (TextView) convertView.findViewById(R.id.comment_item_popularity);
             if (!TextUtils.isEmpty(bean.getUser_headimg())){
-                bitmapUtils.display(image_icon,bean.getUser_headimg());
+                Glide.with(TourDetailActivity.this)
+                        .load(bean.getUser_headimg())
+                        .override(120,120)
+                        .into(image_icon);
             }
             tv_name.setText(bean.getUser_nickname());
             tv_content.setText(bean.getUser_pl());
@@ -257,21 +248,19 @@ public class TourDetailActivity extends BaseActivity {
 
     private void sendLike(String url){
         if (!TextUtils.isEmpty(url)){
-            NetworkTool.GET(url, null, new OnNetworkResponser() {
-                @Override
-                public void onSuccess(String result) {
-                }
+            OkGo.get(url)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
 
-                @Override
-                public void onFailure(HttpException e, String s) {
-                }
-            });
+                        }
+                    });
         }
     }
     private String getLikeUrl(String userId,int plId,int isLike){
         StringBuilder sb = new StringBuilder();
-        sb.append(LIKES_URL)
-                .append("plId=")
+        sb.append(Api.COMMENT_LIKES)
+                .append("?plId=")
                 .append(plId)
                 .append("&userId=")
                 .append(userId)

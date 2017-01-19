@@ -7,7 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.BitmapUtils;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,11 +23,8 @@ import cn.com.zhiwoo.utils.LogUtils;
 public class AllMessageAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Message> allMessages = new ArrayList<>();
-    private BitmapUtils bitmapUtils;
     public AllMessageAdapter(Context context) {
         this.context = context;
-        this.bitmapUtils = new BitmapUtils(context);
-        this.bitmapUtils.configDefaultLoadingImage(R.drawable.default_user_icon);
         allMessages = ChatTool.sharedTool().getAllMessages();
         for (Message message :
                 allMessages) {
@@ -60,7 +58,9 @@ public class AllMessageAdapter extends BaseAdapter {
             viewHolder.dividerView.setVisibility(View.VISIBLE);
         }
         Message message = allMessages.get(position);
-        bitmapUtils.display(viewHolder.iconImageView, message.getUserIcon());
+        Glide.with(context)
+                .load(message.getUserIcon())
+                .into(viewHolder.iconImageView);
         LogUtils.log("usericon : " + message.getUserIcon());
         viewHolder.nickNmaeTextView.setText(message.getUserName());
         Date date = new Date(message.getLastTime());

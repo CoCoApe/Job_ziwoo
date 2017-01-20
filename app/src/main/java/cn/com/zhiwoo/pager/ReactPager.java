@@ -119,14 +119,13 @@ public class ReactPager extends BasePager {
                         if (null != s){
                             BigPic bigPic = new Gson().fromJson(s,BigPic.class);
                             if (null != bigPic){
-//                                BitmapUtils bitmapUtils = new BitmapUtils(mActivity);
-//                                bitmapUtils.display(reactImage,bigPic.getQ_pic());
                                 Glide.with(mActivity)
                                         .load(bigPic.getQ_pic())
                                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                         .thumbnail(0.1f)
                                         .into(reactImage);
                                 bigUrl = bigPic.getQ_art();
+                                mHud.dismiss();
                             }
                         }
                     }
@@ -155,7 +154,6 @@ public class ReactPager extends BasePager {
                             }
                         }
                         swipeRefreshLayout.setRefreshing(false);
-                        mHud.dismiss();
                     }
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -240,9 +238,6 @@ public class ReactPager extends BasePager {
             case R.id.drawer_relationship_imageButton :
                 updataList(articleList4);
                 break;
-//            case R.id.topBar_left_image:
-//                mDrawerLayout.openDrawer(drawerView);
-//                break;
             case R.id.react_default_image:
                 if (null != bigUrl){
                     ReactArticle.QBean article = new ReactArticle.QBean();

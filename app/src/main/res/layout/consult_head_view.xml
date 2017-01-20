@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/globalBgColor"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
@@ -9,7 +10,8 @@
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/consult_header_banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x175" />
+        android:layout_height="@dimen/x175"
+        app:canLoop="true" />
     <!--<RelativeLayout-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="@dimen/x175">-->

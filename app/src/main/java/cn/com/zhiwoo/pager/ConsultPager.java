@@ -165,15 +165,18 @@ public class ConsultPager extends BasePager{
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         Banner bean = new Gson().fromJson(s,Banner.class);
-                        if (bannerList.size() == 0){
+                        if (null != bean){
+                            bannerList.clear();
                             bannerList.addAll(bean.getData());
                         }
-                        banner.setPages(new CBViewHolderCreator() {
+                        banner.setPages(new CBViewHolderCreator<BannerImageHolderView>() {
                             @Override
                             public BannerImageHolderView createHolder() {
                                 return new BannerImageHolderView();
                             }
-                        },bannerList);
+                        },bannerList)
+                            .setPageIndicator(new int[]{R.drawable.dot_unselect, R.drawable.dot_select})
+                            .startTurning(5000);
                     }
                 });
     }
@@ -240,7 +243,7 @@ public class ConsultPager extends BasePager{
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override

@@ -115,7 +115,7 @@ public class SlideCutListView extends ListView {
                     return super.dispatchTouchEvent(event);
                 }
                 // 获取我们点击的item view
-                itemView = getChildAt(slidePosition - getFirstVisiblePosition());
+                    itemView = getChildAt(slidePosition - getFirstVisiblePosition());
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -179,7 +179,7 @@ public class SlideCutListView extends ListView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (isSlide && slidePosition != AdapterView.INVALID_POSITION) {
+        if (isSlide && slidePosition != 0) {//AdapterView.INVALID_POSITION
             requestDisallowInterceptTouchEvent(true);
             addVelocityTracker(ev);
             final int action = ev.getAction();
@@ -283,4 +283,26 @@ public class SlideCutListView extends ListView {
         void removeItem(RemoveDirection direction, int position);
     }
 
+//    private float xDistance, yDistance, xLast, yLast;
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                xDistance = yDistance = 0f;
+//                xLast = ev.getX();
+//                yLast = ev.getY();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                final float curX = ev.getX();
+//                final float curY = ev.getY();
+//                xDistance += Math.abs(curX - xLast);
+//                yDistance += Math.abs(curY - yLast);
+//                xLast = curX;
+//                yLast = curY;
+//                if (xDistance > yDistance) {
+//                    return false;
+//                }
+//        }
+//        return super.onInterceptTouchEvent(ev);
+//    }
 }

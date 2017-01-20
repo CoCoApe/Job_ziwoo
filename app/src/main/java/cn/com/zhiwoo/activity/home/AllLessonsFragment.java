@@ -79,7 +79,6 @@ public class AllLessonsFragment extends Fragment {
         Map<String,String> params = new HashMap<>();
         params.put("userId",account.getId());
         params.put("isCost","1");
-        Log.i("isget", "initData: "+account.getId());
         OkGo.post(Api.LESSONS)
                 .cacheKey("AllLessons")
                 .params(params)
@@ -89,8 +88,8 @@ public class AllLessonsFragment extends Fragment {
                         LessonEvent lessonEvent = new Gson().fromJson(s,LessonEvent.class);
                         mList.clear();
                         mList.addAll(lessonEvent.getData());
-                        Collections.reverse(mList);
                         allLessonsAdapter.notifyDataSetChanged();
+                        Log.i("OkGo_post", "onSuccess: "+s);
                     }
                 });
     }
@@ -135,12 +134,12 @@ public class AllLessonsFragment extends Fragment {
             dialogWindow.setWindowAnimations(R.style.lesson_buy_dialog_animation); // 添加动画
             WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
             lp.x = 0; // 新位置X坐标
-            lp.y = -30; // 新位置Y坐标
+            lp.y = 0; // 新位置Y坐标
             view.measure(0, 0);
             lp.width = getResources().getDisplayMetrics().widthPixels; // 宽度
             lp.height = (int) (getResources().getDisplayMetrics().heightPixels * 0.6); // 高度
 //            lp.height = view.getMeasuredHeight();
-            lp.alpha = 9f; // 透明度
+            lp.alpha = 1f; // 透明度
             dialogWindow.setAttributes(lp);
             lesson_buy_dialog.show();
         }
@@ -172,6 +171,7 @@ public class AllLessonsFragment extends Fragment {
             Button buyBtn = (Button) convertView.findViewById(R.id.all_lesson_item_buy);
             TextView textView = (TextView) convertView.findViewById(R.id.all_lesson_item_content);
             final LessonEvent.DataBean bean = mList.get(position);
+            Log.i("getView", "getView: "+bean.getCourse_name());
             textView.setText(bean.getCourse_name());
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -59,10 +59,12 @@ public class ConsultTypeMode {
 //        ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_icon_weixi,"婚姻维系",26889,MODE_weixi);
 //        ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_icon_baituo,"摆脱单身",52521,MODE_baituo);
 //        ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_icon_wanhui,"失恋挽回",36965,MODE_wanhui);
-          ConsultTypeMode mode1 = new ConsultTypeMode(R.drawable.consult_tuijin);
-          ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_weixi);
-          ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_baituo);
-          ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_wanhui);
+
+        ConsultTypeMode mode1 = new ConsultTypeMode(R.drawable.consult_wanhui);
+        ConsultTypeMode mode2 = new ConsultTypeMode(R.drawable.consult_weixi);
+        ConsultTypeMode mode3 = new ConsultTypeMode(R.drawable.consult_baituo);
+        ConsultTypeMode mode4 = new ConsultTypeMode(R.drawable.consult_tuijin);
+
 
         modes.add(mode1);
         modes.add(mode2);

@@ -2,17 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/media_list_background">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/lesson_tab"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x30" />
+        android:layout_height="@dimen/x30"
+        android:background="@null"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/lesson_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@null"/>
 
 
     <!--<Button-->

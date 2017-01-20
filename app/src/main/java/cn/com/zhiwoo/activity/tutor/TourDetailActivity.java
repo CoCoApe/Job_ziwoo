@@ -68,7 +68,6 @@ public class TourDetailActivity extends BaseActivity {
         iconImageView = (ImageView) linearLayout.findViewById(R.id.detail_icon_imageview);
         nameTextView = (TextView) linearLayout.findViewById(R.id.detail_name_textview);
         shortintroTextView = (TextView) linearLayout.findViewById(R.id.detail_shortintro_textview);
-        dividerView = linearLayout.findViewById(R.id.detail_divider_view);
         relationImpelImageView = (ImageView) linearLayout.findViewById(R.id.detail_relationImpel_imageview);
         matrimonyHoldImageView = (ImageView) linearLayout.findViewById(R.id.detail_matrimonyHold_imageview);
         retrieveLoverImageView = (ImageView) linearLayout.findViewById(R.id.detail_retrieveLover_imageview);
@@ -86,10 +85,8 @@ public class TourDetailActivity extends BaseActivity {
         adapter = new CommentAdapter();
         listView.setAdapter(adapter);
         nameTextView.setText(tour.getNickName());
+        Glide.with(this).load(tour.getHeadImageUrl()).into(iconImageView);
         shortintroTextView.setText(tour.getShort_intro());
-        if (tour.getLong_intro().length() <= 0) {
-            dividerView.setVisibility(View.GONE);
-        }
         dispenseSingleImageView.setImageResource(getRatingRes(points.getDispenseSingle()));
         matrimonyHoldImageView.setImageResource(getRatingRes(points.getMatrimonyHold()));
         relationImpelImageView.setImageResource(getRatingRes(points.getRelationImpel()));
@@ -159,17 +156,17 @@ public class TourDetailActivity extends BaseActivity {
     private int getRatingRes(int rating){
         switch (rating){
             case 1:
-                return R.drawable.new_star_1;
+                return R.drawable.new_star_love_1;
             case 2:
-                return R.drawable.new_star_2;
+                return R.drawable.new_star_love_2;
             case 3:
-                return R.drawable.new_star_3;
+                return R.drawable.new_star_love_3;
             case 4:
-                return R.drawable.new_star_4;
+                return R.drawable.new_star_love_4;
             case 5:
-                return R.drawable.new_star_5;
+                return R.drawable.new_star_love_5;
             default:
-                return R.drawable.new_star_5;
+                return R.drawable.new_star_love_5;
         }
     }
 

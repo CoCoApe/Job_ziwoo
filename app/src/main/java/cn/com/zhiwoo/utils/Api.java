@@ -116,8 +116,9 @@ public class Api {
 
     /**
      *  GET
-     *  导师评论
-     *
+     *  导师评论(已登录传2参数，未登录只传tutorId)
+     *  param1:tutorId
+     *  param2:usId
      */
     public static final String COMMENTS = "http://api.zhiwoo.com.cn/own/control/tutorIf";
 

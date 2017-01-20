@@ -9,7 +9,7 @@ android {
         applicationId "cn.com.zhiwoo"
         minSdkVersion 14
         //noinspection OldTargetApi
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 11
         versionName "3.0.2"
         multiDexEnabled true

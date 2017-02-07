@@ -187,7 +187,7 @@ public class ChatTool {
                                 LogUtils.log("融云token无效");
                             }
                             @Override
-                            public void onSuccess(String s) {
+                            public void onSuccess(String userId) {
                                 LogUtils.log("融云登录成功!");
                                 if (RongIM.getInstance() != null) {
                                     //配置连接状态监听

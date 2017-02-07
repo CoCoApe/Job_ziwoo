@@ -213,7 +213,7 @@ public class SlideCutListView extends ListView {
 //                    recycleVelocityTracker();
 //                    // 手指离开的时候就不响应左右滚动
 //                    isSlide = false;
-                    if (itemView.getScrollX() >= screenWidth / 4 || itemView.getScrollX() <= -screenWidth / 4 ){
+                    if (itemView.getScrollX() >= screenWidth / 6 || itemView.getScrollX() <= -screenWidth / 6 ){
                         mRemoveListener.removeItem(removeDirection,slidePosition-1);
                     }else {
                         itemView.scrollTo(0, 0);

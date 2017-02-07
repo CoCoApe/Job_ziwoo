@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -48,6 +49,7 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
         }
     };
 
+
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             int position = mediaPlayer.getCurrentPosition();
@@ -83,6 +85,7 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
         mList = (List<LessonEvent.DataBean>) intent.getSerializableExtra("toPlayList");
         LessonEvent.DataBean currentBean = mList.get(current_position);
         initPlayer();
+        Log.i("aaaaa", "initData: 11111"+ currentBean.getCourse_href());
         setUrl(currentBean);
     }
 
@@ -187,8 +190,10 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
     }
 
     public void setUrl(LessonEvent.DataBean bean) {
+        Log.i("aaaaa", "initData: 22222"+ bean.getCourse_href());
         try {
             mediaPlayer.setDataSource(bean.getCourse_href()); // 设置数据源
+            Log.i("aaaaa", "initData: 33333"+ bean.getCourse_href());
             mediaPlayer.prepare(); // prepare自动播放
         } catch (IOException e) {
             e.printStackTrace();
@@ -218,4 +223,7 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
         }
         return min + ":" + sec.trim().substring(0, 2);
     }
+
+
+
 }

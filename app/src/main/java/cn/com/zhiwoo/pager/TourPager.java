@@ -22,6 +22,8 @@ import com.google.gson.reflect.TypeToken;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +33,14 @@ import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.activity.tutor.ReservationActivity;
 import cn.com.zhiwoo.activity.tutor.TourDetailActivity;
 import cn.com.zhiwoo.adapter.tutor.TourAdapter;
+import cn.com.zhiwoo.bean.react.LessonEvent;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.pager.base.BasePager;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -66,6 +71,7 @@ public class TourPager extends BasePager {
     @Override
     public void initView() {
         super.initView();
+        EventBus.getDefault().register(this);
         RelativeLayout relativeLayout = (RelativeLayout) View.inflate(mActivity, R.layout.tour_content,null);
         flContent.addView(relativeLayout);
         mDrawerLayout.removeView(drawerView);
@@ -87,7 +93,7 @@ public class TourPager extends BasePager {
 
     @Override
     public void onDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -140,23 +146,26 @@ public class TourPager extends BasePager {
 
     @Override
     public void initTitleBar() {
+        leftImageView.setVisibility(View.GONE);
         leftImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (mViewPager.getVisibility()) {
-                    case View.VISIBLE:
-                        mViewPager.setVisibility(View.GONE);
-                        pageLeft.setVisibility(View.GONE);
-                        pageRight.setVisibility(View.GONE);
-                        break;
-                    case View.GONE:
+//                switch (mViewPager.getVisibility()) {
+//                    case View.VISIBLE:
+//                        mViewPager.setVisibility(View.GONE);
+//                        pageLeft.setVisibility(View.GONE);
+//                        pageRight.setVisibility(View.GONE);
+//                        leftImageView.setVisibility(View.GONE);
+//                        break;
+//                    case View.GONE:
+                        leftImageView.setVisibility(View.GONE);
                         mViewPager.setVisibility(View.VISIBLE);
                         pageLeft.setVisibility(View.VISIBLE);
                         pageRight.setVisibility(View.VISIBLE);
-                        break;
-                    case View.INVISIBLE:
-                        break;
-                }
+//                        break;
+//                    case View.INVISIBLE:
+//                        break;
+//                }
             }
         });
     }
@@ -252,6 +261,17 @@ public class TourPager extends BasePager {
         @Override
         public int getCount() {
             return fragments == null ? 0 : fragments.size();
+        }
+    }
+
+
+    @Subscribe
+    public void onEvent(String str){
+        if ("change".equals(str)){
+            mViewPager.setVisibility(View.GONE);
+            pageLeft.setVisibility(View.GONE);
+            pageRight.setVisibility(View.GONE);
+            leftImageView.setVisibility(View.VISIBLE);
         }
     }
 }

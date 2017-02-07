@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x150"
+        android:layout_height="@dimen/x149"
         android:paddingBottom="@dimen/x10"
         android:paddingTop="@dimen/x10"
         android:background="@drawable/tutor_detai_top_background">
@@ -18,15 +18,15 @@
             android:gravity="center">
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/detail_icon_imageview"
-                android:layout_width="@dimen/x80"
-                android:layout_height="@dimen/x80"
+                android:layout_width="@dimen/y50"
+                android:layout_height="@dimen/y50"
                 android:layout_margin="@dimen/x5"
                 android:src="@drawable/default_user_icon"
                 app:civ_border_color="@color/globalBgColor"
                 app:civ_border_width="@dimen/x1" />
             <LinearLayout
-                android:layout_width="@dimen/x60"
-                android:layout_height="@dimen/x20"
+                android:layout_width="@dimen/x54"
+                android:layout_height="@dimen/x15"
                 android:background="@null"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/x10">
@@ -55,58 +55,107 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x5"
-            android:layout_marginRight="@dimen/x5"
+            android:layout_marginRight="@dimen/x15"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/detail_name_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/x5"
                 android:layout_marginTop="@dimen/x5"
                 android:text="@string/tutor"
                 android:textColor="@color/white"
-                android:textSize="@dimen/x18" />
+                android:textSize="@dimen/x16" />
 
             <TextView
                 android:id="@+id/detail_shortintro_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lines="3"
-                android:textSize="@dimen/x12"
+                android:lines="2"
+                android:textSize="@dimen/x11"
+                android:layout_marginTop="@dimen/x14"
                 android:textColor="@color/white"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/x10"
+                android:layout_marginBottom="@dimen/x10"
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/x5">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/x5"
-                    android:layout_marginTop="@dimen/x5"
                     android:gravity="center_vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/x10"
                         android:gravity="center_vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tuijin"
-                            android:textSize="@dimen/x10"
+                            android:textSize="@dimen/x9"
                             android:textColor="@color/white"/>
 
                         <ImageView
                             android:id="@+id/detail_relationImpel_imageview"
-                            android:layout_width="@dimen/x45"
-                            android:layout_height="@dimen/x8"
+                            android:layout_width="@dimen/x49"
+                            android:layout_height="@dimen/x7"
+                            android:scaleType="fitXY"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/x10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weixi"
+                            android:textSize="@dimen/x9"
+                            android:textColor="@color/white"/>
+
+                        <ImageView
+                            android:id="@+id/detail_matrimonyHold_imageview"
+                            android:layout_width="@dimen/x49"
+                            android:layout_height="@dimen/x7"
+                            android:scaleType="fitXY"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/x5">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/x5"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/baituo"
+                            android:textSize="@dimen/x9"
+                            android:textColor="@color/white"/>
+
+                        <ImageView
+                            android:id="@+id/detail_dispenseSingle_imageview"
+                            android:layout_width="@dimen/x49"
+                            android:layout_height="@dimen/x7"
                             android:scaleType="fitXY"/>
                     </LinearLayout>
 
@@ -119,80 +168,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/weixi"
-                            android:textSize="@dimen/x10"
-                            android:textColor="@color/white"/>
-
-                        <ImageView
-                            android:id="@+id/detail_matrimonyHold_imageview"
-                            android:layout_width="@dimen/x45"
-                            android:layout_height="@dimen/x8"
-                            android:scaleType="fitXY"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/x5"
-                    android:layout_marginTop="@dimen/x5"
-                    android:gravity="center_vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/x5"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/baituo"
-                            android:textSize="@dimen/x10"
-                            android:textColor="@color/white"/>
-
-                        <ImageView
-                            android:id="@+id/detail_dispenseSingle_imageview"
-                            android:layout_width="@dimen/x45"
-                            android:layout_height="@dimen/x8"
-                            android:scaleType="fitXY"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x10"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="@string/wanhui"
-                            android:textSize="@dimen/x10"
+                            android:textSize="@dimen/x9"
                             android:textColor="@color/white"/>
 
                         <ImageView
                             android:id="@+id/detail_retrieveLover_imageview"
-                            android:layout_width="@dimen/x45"
-                            android:layout_height="@dimen/x8"
+                            android:layout_width="@dimen/x49"
+                            android:layout_height="@dimen/x7"
                             android:scaleType="fitXY"/>
                     </LinearLayout>
                 </LinearLayout>
-
-                <!--<View-->
-                <!--android:id="@+id/detail_divider_view"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/x1"-->
-                <!--android:layout_marginBottom="@dimen/x3"-->
-                <!--android:layout_marginTop="@dimen/x3"-->
-                <!--android:background="#88888888" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/detail_longintro_textview"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="@dimen/x5"-->
-                <!--android:textSize="@dimen/x16" />-->
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -200,40 +186,58 @@
     <Button
         android:id="@+id/detail_consult_button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x30"
+        android:layout_height="@dimen/x36"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/x15"
+        android:layout_marginTop="@dimen/x10"
         android:background="@drawable/detail_consult_button_shape"
         android:text="@string/consult_promptly"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/x18" />
+        android:textSize="@dimen/x16" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/x15"
+        android:layout_marginTop="@dimen/x20"
         android:background="@null">
         <TextView
             android:layout_width="@dimen/x50"
             android:layout_height="wrap_content"
             android:textSize="@dimen/x12"
             android:text="用户评论"
-            android:layout_marginLeft="@dimen/x15"/>
+            android:layout_marginLeft="@dimen/x12"/>
         <View
             android:layout_width="@dimen/x50"
-            android:layout_height="@dimen/x2"
+            android:layout_height="@dimen/x1"
             android:background="@color/globalBgColor"
-            android:layout_marginLeft="@dimen/x15"/>
+            android:layout_marginLeft="@dimen/x12"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x1"
+            android:layout_height="1px"
             android:background="@color/moulde_underline"/>
     </LinearLayout>
     <ListView
         android:id="@+id/comment_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/x10" />
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:id="@+id/comment_button_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x36"
+        android:gravity="center"
+        android:background="#E6E6E6">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x20"
+            android:src="@drawable/comment_button_icon"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/x18"
+            android:layout_marginLeft="@dimen/x5"
+            android:text="@string/comment"/>
+    </LinearLayout>
 </LinearLayout>

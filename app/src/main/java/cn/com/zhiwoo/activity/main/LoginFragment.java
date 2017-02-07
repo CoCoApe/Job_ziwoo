@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             param.put("password", MD5Utils.MD5(password, Global.ZW_SALT));
             param.put("platform", "1");
             param.put("mobile", phone);
+            Log.i("password", "loginByPhone: "+MD5Utils.MD5(password, Global.ZW_SALT));
             OkGo.post(Api.PHONE_LOGIN)
                     .params(param)
                     .execute(new StringCallback() {
@@ -87,7 +89,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 }
                                 ChatTool.sharedTool().login();
                                 Intent intent1 = new Intent("userinfo_change");
-                                getContext().sendBroadcast(intent1);
+                                getActivity().sendBroadcast(intent1);
                                 getActivity().onBackPressed();
                             } else {
                                 Toast.makeText(getContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();

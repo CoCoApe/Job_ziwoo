@@ -58,6 +58,7 @@ public class TourDetailActivity extends BaseActivity {
     private CommentAdapter adapter;
     private Account account;
     private List<Comments.CodeBean> mList = new ArrayList<>();
+    private LinearLayout comment_ll;
 
 
     @Override
@@ -75,6 +76,7 @@ public class TourDetailActivity extends BaseActivity {
         likerateTextView = (TextView) linearLayout.findViewById(R.id.detail_likerate_textview);
         consultButton = (Button) linearLayout.findViewById(R.id.detail_consult_button);
         listView = (ListView) linearLayout.findViewById(R.id.comment_list);
+        comment_ll = (LinearLayout) linearLayout.findViewById(R.id.comment_button_ll);
     }
 
     @Override
@@ -146,6 +148,28 @@ public class TourDetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        comment_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AccountTool.isLogined(getBaseContext())) {
+                    Toast.makeText(getBaseContext(), "您还没有登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.main_login_show, 0);
+                    return;
+                }
+                if (AccountTool.getCurrentAccount(getBaseContext()).isTour()) {
+                    Toast.makeText(getBaseContext(),"您已经是导师了,请不要调戏同行!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent(TourDetailActivity.this, CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("tutor", tour);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -197,7 +221,7 @@ public class TourDetailActivity extends BaseActivity {
             TextView tv_name = (TextView) convertView.findViewById(R.id.comment_item_name);
             TextView tv_content = (TextView) convertView.findViewById(R.id.comment_item_content);
             final CheckBox box_like = (CheckBox) convertView.findViewById(R.id.comment_item_likes);
-            TextView tv_popularity = (TextView) convertView.findViewById(R.id.comment_item_popularity);
+//            TextView tv_popularity = (TextView) convertView.findViewById(R.id.comment_item_popularity);
             if (!TextUtils.isEmpty(bean.getUser_headimg())){
                 Glide.with(TourDetailActivity.this)
                         .load(bean.getUser_headimg())
@@ -206,7 +230,7 @@ public class TourDetailActivity extends BaseActivity {
             }
             tv_name.setText(bean.getUser_nickname());
             tv_content.setText(bean.getUser_pl());
-            tv_popularity.setText(String.valueOf(bean.getPl_hot()));
+//            tv_popularity.setText(String.valueOf(bean.getPl_hot()));
             box_like.setText(String.valueOf(bean.getDz_sum()));
             box_like.setChecked(AccountTool.isLogined(TourDetailActivity.this) && bean.isIs_dz());
             box_like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

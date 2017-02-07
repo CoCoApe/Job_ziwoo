@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/x5">
+    android:padding="@dimen/x10">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_item_icon"
-        android:layout_width="@dimen/x48"
-        android:layout_height="@dimen/x48"
+        android:layout_width="@dimen/x35"
+        android:layout_height="@dimen/x35"
         android:scaleType="centerCrop"
         android:src="@drawable/default_user_icon" />
 
@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginRight="@dimen/x20"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginRight="@dimen/x10"
             android:layout_marginTop="@dimen/x3"
             android:gravity="center_vertical">
 
@@ -31,36 +32,39 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/x14" />
+                android:textSize="@dimen/x12" />
 
             <CheckBox
                 android:id="@+id/comment_item_likes"
                 style="@style/comment_checkBox"
                 android:layout_width="@dimen/x30"
                 android:layout_height="@dimen/x18"
-                android:layout_marginRight="@dimen/x20"
                 android:gravity="center_vertical"
+                android:layout_marginRight="@dimen/x10"
                 android:paddingLeft="@dimen/x2"
                 android:text="998"
-                android:textSize="@dimen/x9"
+                android:textSize="@dimen/x8"
                 android:layout_gravity="end"/>
 
-            <CheckBox
-                android:id="@+id/comment_item_popularity"
-                android:layout_width="@dimen/x30"
-                android:layout_height="@dimen/x18"
-                android:button="@drawable/comment_popularity_checked"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/x2"
-                android:textSize="@dimen/x9" android:layout_gravity="end"/>
+            <!--<CheckBox-->
+                <!--android:id="@+id/comment_item_popularity"-->
+                <!--android:layout_width="@dimen/x30"-->
+                <!--android:layout_height="@dimen/x18"-->
+                <!--android:button="@drawable/comment_popularity_checked"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="@dimen/x2"-->
+                <!--android:textSize="@dimen/x9"-->
+                <!--android:layout_gravity="end"/>-->
         </LinearLayout>
 
         <TextView
             android:id="@+id/comment_item_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x12"
-            android:layout_marginTop="@dimen/x10"/>
+            android:textSize="@dimen/x10"
+            android:layout_marginTop="@dimen/x10"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginRight="@dimen/x10"/>
 
     </LinearLayout>
 </RelativeLayout>

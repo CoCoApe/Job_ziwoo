@@ -149,6 +149,9 @@
         <activity
             android:name=".activity.tutor.ReservationActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.tutor.CommentActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 个人中心 -->
         <activity

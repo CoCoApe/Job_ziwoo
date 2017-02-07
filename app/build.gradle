@@ -10,8 +10,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 22
-        versionCode 11
-        versionName "3.0.2"
+        versionCode 12
+        versionName "3.0.3"
         multiDexEnabled true
         manifestPlaceholders = [
                 GETUI_APP_ID : "1Kk2dDz8G08W60CRF7OTn7",

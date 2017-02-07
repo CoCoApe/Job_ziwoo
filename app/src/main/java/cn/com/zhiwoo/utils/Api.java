@@ -116,7 +116,7 @@ public class Api {
 
     /**
      *  GET
-     *  导师评论(已登录传2参数，未登录只传tutorId)
+     *  导师评论(获取评论列表，已登录传两参数（有对应usId的点赞效果），未登录只传tutorId（默认赞全灭）)
      *  param1:tutorId
      *  param2:usId
      */
@@ -125,8 +125,12 @@ public class Api {
     /**
      *  GET
      *  评论赞状态改变发送此请求
+     *  param1:plId
+     *  param2:userId
+     *  param3:userDz(点赞：1，取消赞：0)
      */
     public static final String COMMENT_LIKES = "http://api.zhiwoo.com.cn/own/control/userPl";
+
 
     /**
      *  GET
@@ -191,4 +195,13 @@ public class Api {
      *  上传图片
      */
     public static final String UPLOAD_IMAGE = "http://121.201.7.33/zero/api/v1/qiniu/uptoken";
+
+    /**
+     *  POST
+     *  上传用户评论
+     *  param1:tutorId  （导师的id）
+     *  param2:userId    （用户的id）
+     *  param3:plContent   （用户评论的内容）
+     */
+    public static final String COMMENT_COMMIT = "http://api.zhiwoo.com.cn/own/control/tutorCom";
 }

@@ -25,6 +25,8 @@ import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.activity.tutor.ReservationActivity;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.tool.AccountTool;
+import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 @SuppressLint("ValidFragment")
@@ -41,6 +43,7 @@ public class TourSubFragment extends Fragment {
     private Button phoneBtn;
     private Activity mActivity;
     private Context mContext;
+    private CircleImageView tutor_change;
 
     public static TourSubFragment newInstance(Tour tour,Activity mActivity) {
         TourSubFragment tourSubFragment = new TourSubFragment(mActivity);
@@ -116,6 +119,12 @@ public class TourSubFragment extends Fragment {
                 mActivity.startActivity(intent);
             }
         });
+        tutor_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post("change");
+            }
+        });
     }
 
     private void setData() {
@@ -145,6 +154,7 @@ public class TourSubFragment extends Fragment {
         ratingBar4 = (ImageView) view.findViewById(R.id.ratingBar_4);
         consultBtn = (Button) view.findViewById(R.id.tour_sub_consult_btn);
         phoneBtn = (Button) view.findViewById(R.id.tour_sub_phone_btn);
+        tutor_change = (CircleImageView) view.findViewById(R.id.tutor_change);
     }
 
     private int getRatingRes(int rating){

@@ -148,7 +148,7 @@ public class AccountTool {
         HashMap<String,String> params = new HashMap<>();
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
-        params.put("gender", ""+sex);
+        params.put("gender", String.valueOf(sex));
         OkGo.put(Api.UPDATE)
                 .params(params)
                 .execute(new StringCallback() {

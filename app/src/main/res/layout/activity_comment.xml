@@ -4,51 +4,61 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true">
+
     <LinearLayout
         android:id="@+id/comment_bar_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x45"
+        android:background="#fafafa"
         android:gravity="center"
-        android:padding="@dimen/x10"
-        android:background="#fafafa">
+        android:padding="@dimen/x10">
+
         <ImageView
             android:id="@+id/comment_bar_close"
             android:layout_width="@dimen/x15"
             android:layout_height="@dimen/x15"
             android:scaleType="centerCrop"
-            android:src="@drawable/comment_cancel"/>
+            android:src="@drawable/comment_cancel" />
+
         <TextView
             android:id="@+id/comment_bar_tutorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="@dimen/x18"
             android:gravity="center"
             android:text="Pony的评论"
-            android:textColor="@color/globalBgColor"/>
+            android:textColor="@color/globalBgColor"
+            android:textSize="@dimen/x18" />
+
         <TextView
             android:id="@+id/comment_bar_commit"
-            android:gravity="center"
             android:layout_width="@dimen/x40"
             android:layout_height="@dimen/x20"
-            android:textSize="@dimen/x12"
             android:background="@color/globalBgColor"
+            android:gravity="center"
+            android:text="发布"
             android:textColor="@color/white"
-            android:text="发布"/>
+            android:textSize="@dimen/x12" />
     </LinearLayout>
+
     <View
         android:id="@+id/comment_divider_view"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#e5e5e5"
-        android:layout_below="@+id/comment_bar_ll"/>
+        android:layout_below="@+id/comment_bar_ll"
+        android:background="#e5e5e5" />
+
     <EditText
-        android:layout_below="@+id/comment_divider_view"
         android:id="@+id/comment_content_et"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="@dimen/x15"
+        android:layout_below="@+id/comment_divider_view"
         android:background="@null"
         android:gravity="start"
-        android:hint="写下你的评论..."/>
+        android:hint="写下你的评论..."
+        android:paddingTop="@dimen/x5"
+        android:paddingLeft="@dimen/x15"
+        android:paddingRight="@dimen/x15"
+        android:paddingBottom="@dimen/x5"
+        android:textSize="@dimen/x15" />
 </RelativeLayout>

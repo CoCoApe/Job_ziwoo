@@ -1,6 +1,7 @@
 package cn.com.zhiwoo.activity.home;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -13,6 +14,7 @@ import com.lzy.okgo.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.base.BaseActivity;
@@ -45,7 +47,7 @@ public class OrdersActivity extends BaseActivity {
     public void initData() {
         titleView.setText("我的订单");
         progressHUD.showWithStatus("正在加载订单...");
-        HashMap<String,String> params = new HashMap<>();
+        Map<String,String> params = new HashMap<>();
         Account account = AccountTool.getCurrentAccount(getBaseContext());
         params.put("access_token",account.getAccessToken());
         params.put("user_id", account.getId());

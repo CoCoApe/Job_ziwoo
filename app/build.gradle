@@ -10,8 +10,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 22
-        versionCode 12
-        versionName "3.0.3"
+        versionCode 13
+        versionName "3.0.4"
         multiDexEnabled true
         manifestPlaceholders = [
                 GETUI_APP_ID : "1Kk2dDz8G08W60CRF7OTn7",
@@ -45,8 +45,15 @@ android {
 //    }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
+            zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

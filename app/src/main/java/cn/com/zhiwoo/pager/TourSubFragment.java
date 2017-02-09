@@ -23,6 +23,7 @@ import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.consult.ConsultChatActivity;
 import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.activity.tutor.ReservationActivity;
+import cn.com.zhiwoo.activity.tutor.TourDetailActivity;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.tool.AccountTool;
 import de.greenrobot.event.EventBus;
@@ -123,6 +124,28 @@ public class TourSubFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post("change");
+            }
+        });
+
+        icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity,TourDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("tour",tour);
+                intent.putExtras(bundle);
+                mActivity.startActivity(intent);
+            }
+        });
+
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity,TourDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("tour",tour);
+                intent.putExtras(bundle);
+                mActivity.startActivity(intent);
             }
         });
     }

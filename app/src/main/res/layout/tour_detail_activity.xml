@@ -229,14 +229,14 @@
         android:gravity="center"
         android:background="#E6E6E6">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/x20"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/x16"
             android:src="@drawable/comment_button_icon"
             android:scaleType="fitXY"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x18"
+            android:textSize="@dimen/x16"
             android:layout_marginLeft="@dimen/x5"
             android:text="@string/comment"/>
     </LinearLayout>

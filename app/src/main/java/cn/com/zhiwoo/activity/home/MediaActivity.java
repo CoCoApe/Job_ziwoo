@@ -3,7 +3,9 @@ package cn.com.zhiwoo.activity.home;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,42 +27,57 @@ import cn.com.zhiwoo.bean.react.LessonEvent;
  * Created by 25820 on 2017/1/12.
  */
 
-public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnPreparedListener {
+public class MediaActivity extends BaseActivity{
     private TextView current_time;
     private TextView end_time;
     private SeekBar seekBar;
     private Button start_btn;
     private Button last_btn;
     private Button next_btn;
-    private MediaPlayer mediaPlayer;
-    private Timer mTimer = new Timer(); // 计时器
+    private MediaPlayer player;
+    private SimpleDateFormat format = new SimpleDateFormat("mm:ss");
     private int current_position;
     private List<LessonEvent.DataBean> mList;
-
-    // 计时器
-    private TimerTask timerTask = new TimerTask() {
-
-        @Override
-        public void run() {
-            if (mediaPlayer == null)
-                return;
-            if (mediaPlayer.isPlaying() && !seekBar.isPressed()) {
-                handler.sendEmptyMessage(0); // 发送消息
-            }
-        }
-    };
+    public static final int MUSIC_DURATION = 0X324;
+    public static final int MUSIC_POSITION = 0X325;
+    private int totalNum;
 
 
-    private Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            int position = mediaPlayer.getCurrentPosition();
-            int duration = mediaPlayer.getDuration();
+/*
+public void handleMessage(android.os.Message msg) {
+            int position = player.getCurrentPosition();
+            int duration = player.getDuration();
             if (duration > 0) {
                 // 计算进度（获取进度条最大刻度*当前音乐播放位置 / 当前音乐时长）
-                long pos = seekBar.getMax() * position / duration;
-                seekBar.setProgress((int) pos);
+                int pos = seekBar.getMax() * position / duration;
+                seekBar.setProgress(pos);
                 current_time.setText(formatTime(position));
+            }
+        }
+ */
+    private final Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MUSIC_DURATION:
+                    if (player != null) {
+                        seekBar.setMax(player.getDuration() / 1000);
+                        Log.i("asdasd", "handleMessage: "+player.getDuration());
+                        end_time.setText(format.format(new Date(player.getDuration())));
+                    }
+                    break;
+                case MUSIC_POSITION:
+                    if (player != null) {
+                        try {
+                            seekBar.setProgress(player.getCurrentPosition()/1000);
+                            current_time.setText(format.format(new Date(player.getCurrentPosition())));
+                            handler.sendEmptyMessageDelayed(MUSIC_POSITION, 1000);
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                        }
+                    }
+                    break;
             }
         }
     };
@@ -85,27 +104,54 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
         mList = (List<LessonEvent.DataBean>) intent.getSerializableExtra("toPlayList");
         LessonEvent.DataBean currentBean = mList.get(current_position);
         initPlayer();
-        Log.i("aaaaa", "initData: 11111"+ currentBean.getCourse_href());
-        setUrl(currentBean);
+        startPlay(currentBean);
     }
 
     private void initPlayer() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
-        mediaPlayer.setOnBufferingUpdateListener(this);
-        mediaPlayer.setOnPreparedListener(this);
+        player = new MediaPlayer();
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
     }
 
     @Override
     public void initListener() {
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+//                    mp.start();//播放
+                handler.sendEmptyMessage(MUSIC_DURATION);
+                handler.sendEmptyMessage(MUSIC_POSITION);
+            }
+        });
+
+        player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                seekBar.setSecondaryProgress(percent);
+            }
+        });
+
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                int num = mList.size();//获得音乐的数目
+                if (current_position == num - 1) {
+                    current_position = 0;//如果已经是最后一首，则播放第一首
+                } else {
+                    current_position += 1;//否则播放下一首
+                }
+                startPlay( mList.get(current_position));//开始播放
+                player.start();
+            }
+        });
+
         start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mediaPlayer && !mediaPlayer.isPlaying()){
-                    mediaPlayer.start();
+                if (null != player && !player.isPlaying()){
+                    player.start();
                     start_btn.setBackgroundResource(R.drawable.pause_icon);
-                }else if (null != mediaPlayer && mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
+                }else if (null != player && player.isPlaying()){
+                    player.pause();
                     start_btn.setBackgroundResource(R.drawable.play_icon);
                 }
 
@@ -114,7 +160,10 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                if (fromUser) {
+                    player.seekTo(progress * 1000);
+                    current_time.setText(format.format(new Date(seekBar.getProgress() * 1000)));
+                }
             }
 
             @Override
@@ -124,46 +173,33 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (null != mediaPlayer && mediaPlayer.isPlaying()){
-                    mediaPlayer.seekTo(seekBar.getProgress()*1000);
-                    current_time.setText(formatTime(seekBar.getProgress()*1000));
-                }
+
             }
         });
         last_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (current_position>0 && null != mediaPlayer){
-                    current_position -= 1;
-                    LessonEvent.DataBean currentBean = mList.get(current_position);
-                    mediaPlayer.release();
-                    mediaPlayer.reset();
-                    setUrl(currentBean);
-                    mediaPlayer.start();
-                    if (current_position == 0){
-                        last_btn.setEnabled(false);
-                    }else {
-                        last_btn.setEnabled(true);
-                    }
+                totalNum = mList.size();
+                if (current_position == 0) {
+                    current_position = totalNum - 1;//如果已经时第一首则播放最后一首
+                } else {
+                    current_position -= 1;//否则播放上一首
                 }
+                startPlay(mList.get(current_position));
+                player.start();
             }
         });
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (current_position < mList.size() && null != mediaPlayer){
-                    current_position += 1;
-                    LessonEvent.DataBean currentBean = mList.get(current_position);
-                    mediaPlayer.release();
-                    mediaPlayer.reset();
-                    setUrl(currentBean);
-                    mediaPlayer.start();
-                    if (current_position == mList.size()-1){
-                        next_btn.setEnabled(false);
-                    }else {
-                        next_btn.setEnabled(true);
-                    }
+                totalNum = mList.size();//获得音乐的数目
+                if (current_position == totalNum - 1) {
+                    current_position = 0;//如果已经是最后一首，则播放第一首
+                } else {
+                    current_position += 1;//否则播放下一首
                 }
+                startPlay(mList.get(current_position));
+                player.start();
             }
         });
     }
@@ -173,57 +209,27 @@ public class MediaActivity extends BaseActivity implements MediaPlayer.OnBufferi
 
     }
 
-    @Override
-    public void onBufferingUpdate(MediaPlayer mp, int percent) {
-        seekBar.setSecondaryProgress(percent);
-    }
 
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        end_time.setText(formatTime(mediaPlayer.getDuration()));
-        seekBar.setMax(mediaPlayer.getDuration()/1000);
-    }
-
-    public void setUrl(LessonEvent.DataBean bean) {
-        Log.i("aaaaa", "initData: 22222"+ bean.getCourse_href());
+    private void startPlay(LessonEvent.DataBean currentBean) {
+        String url = currentBean.getCourse_href();
+        player.reset();//重置,第一次不需要重置
+        if (player.isPlaying()) {
+            player.release();
+        }
         try {
-            mediaPlayer.setDataSource(bean.getCourse_href()); // 设置数据源
-            Log.i("aaaaa", "initData: 33333"+ bean.getCourse_href());
-            mediaPlayer.prepare(); // prepare自动播放
-        } catch (IOException e) {
+            player.setDataSource(this,Uri.parse(url));//设置播放的文件的路径
+            player.prepare();//加载准备
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        mTimer.schedule(timerTask, 0, 1000);// 每一秒触发一次
     }
 
-    /**
-     * 格式化时间，将毫秒转换为分:秒格式
-     */
-    public static String formatTime(long time) {
-        String min = time / (1000 * 60) + "";
-        String sec = time % (1000 * 60) + "";
-        if (min.length() < 2) {
-            min = "0" + time / (1000 * 60) + "";
-        } else {
-            min = time / (1000 * 60) + "";
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player.isPlaying()) {
+            player.release();
         }
-        if (sec.length() == 4) {
-            sec = "0" + (time % (1000 * 60)) + "";
-        } else if (sec.length() == 3) {
-            sec = "00" + (time % (1000 * 60)) + "";
-        } else if (sec.length() == 2) {
-            sec = "000" + (time % (1000 * 60)) + "";
-        } else if (sec.length() == 1) {
-            sec = "0000" + (time % (1000 * 60)) + "";
-        }
-        return min + ":" + sec.trim().substring(0, 2);
+        handler.removeCallbacksAndMessages(null);
     }
-
-
-
 }

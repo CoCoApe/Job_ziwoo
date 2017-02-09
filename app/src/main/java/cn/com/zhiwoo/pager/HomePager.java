@@ -139,8 +139,15 @@ public class HomePager extends BasePager {
                     }
                     break;
                     case 2 : {
-                        intent = new Intent(mActivity, TalkShowActivity.class);
-//                        Toast.makeText(mActivity, "该功能暂未开放，敬请期待下版本更新。", Toast.LENGTH_SHORT).show();
+                        if (!AccountTool.isLogined(mActivity)) {
+                            Toast.makeText(mActivity, "您还没有登录", Toast.LENGTH_SHORT).show();
+                            Intent intent1 = new Intent(mActivity, LoginActivity.class);
+                            mActivity.startActivity(intent1);
+                            mActivity.overridePendingTransition(R.anim.main_login_show, 0);
+                            return;
+                        }
+//                        intent = new Intent(mActivity, TalkShowActivity.class);
+                        Toast.makeText(mActivity, "该功能暂未开放，敬请期待下版本更新。", Toast.LENGTH_SHORT).show();
                     }
                     break;
                     case 3 : {

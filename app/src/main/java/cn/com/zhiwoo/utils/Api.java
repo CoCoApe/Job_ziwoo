@@ -44,7 +44,6 @@ public class Api {
 
     /**
      *  GET
-     *  订单 （目前版本无用）
      *  param1: access_token
      *  param2: user_id
      */

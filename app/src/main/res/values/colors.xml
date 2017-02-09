@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <color name="colorPrimary">#73a7a9</color>
     <color name="colorPrimaryDark">#73a7a9</color>
     <color name="colorAccent">#73a7a9</color>
     <color name="globalBgColor">#73a7a9</color>

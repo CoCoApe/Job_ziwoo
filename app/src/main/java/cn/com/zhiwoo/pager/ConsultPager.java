@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,6 +21,7 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -339,6 +341,7 @@ public class ConsultPager extends BasePager{
         public View createView(Context context) {
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageResource(R.drawable.react_article_bg_placeholer);
             return imageView;
         }
 
@@ -347,7 +350,6 @@ public class ConsultPager extends BasePager{
             Glide.with(context)
                     .load(data.getApp_pic())
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .placeholder(R.drawable.react_article_bg_placeholer)
                     .into(imageView);
 //            bitmapUtils.display(imageView,data.getApp_pic());
             imageView.setOnClickListener(new View.OnClickListener() {

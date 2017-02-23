@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,7 +80,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         finish();
     }
     public void titleBarRightBtnClick() {
-        MessageTipPopup.showMessageTipPopup(this,rightImageView);
+        MessageTipPopup.showMessageTipPopup(getApplicationContext(),rightImageView);
+        BaseAdapter adapter = (BaseAdapter) MessageTipPopup.newInstance(this).mListView.getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
     public class MyBroadCastReceiver extends BroadcastReceiver {
@@ -88,6 +91,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             int count = ChatTool.sharedTool().getTipMessages().size();
             LogUtils.log("进入新控制器-查询到的未读消息数 : " + count);
             rightImageView.setSelected(count>0);
+
         }
     }
 

@@ -18,5 +18,5 @@
         android:layout_height="@dimen/x40"
         android:layout_gravity="end"
         android:layout_marginLeft="@dimen/x20"
-        android:text="购买" />
+        android:text="播放" />
 </LinearLayout>

@@ -91,7 +91,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private void commitClick(){
         if (!TextUtils.isEmpty(content)){
             postComment();
-            showCommitDialog();
+
         }else {
             showToInputDialog();
         }
@@ -107,7 +107,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        showCommitDialog();
                     }
                 });
     }

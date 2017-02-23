@@ -81,6 +81,9 @@ repositories {
     flatDir{
         dirs 'libs'
     }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 
@@ -123,4 +126,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile files('libs/MobCommons-2016.0816.1507.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.iammert:MusicPlayerView:e3b937c729'
 }

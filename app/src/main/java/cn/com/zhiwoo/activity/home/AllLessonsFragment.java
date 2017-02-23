@@ -3,6 +3,7 @@ package cn.com.zhiwoo.activity.home;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.zhiwoo.R;
+import cn.com.zhiwoo.activity.course.MediaActivity;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.LessonEvent;
 import cn.com.zhiwoo.tool.AccountTool;
@@ -176,9 +179,12 @@ public class AllLessonsFragment extends Fragment {
             buyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (AccountTool.isLogined(mActivity)){
-                        showDialog(bean,position);
-                    }
+                    Intent intent = new Intent(mActivity,MediaActivity.class);
+                    Bundle bundle = new Bundle();
+                    intent.putExtra("currentPosition",position);
+                    bundle.putSerializable("toPlayList", (Serializable) mList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             });
             return convertView;

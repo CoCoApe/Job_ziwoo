@@ -31,6 +31,12 @@
             android:text="@string/react" />
 
         <RadioButton
+            android:id="@+id/tabbar_item_course"
+            style="@style/TabBarButtonItemTheme"
+            android:drawableTop="@drawable/tabbar_button_react_selector"
+            android:text="节目" />
+
+        <RadioButton
             android:id="@+id/tabbar_item_tour"
             style="@style/TabBarButtonItemTheme"
             android:drawableTop="@drawable/tabbar_button_tour_selector"

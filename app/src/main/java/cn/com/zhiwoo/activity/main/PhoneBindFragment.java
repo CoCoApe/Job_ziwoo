@@ -20,13 +20,14 @@ import org.json.JSONObject;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.bean.main.Account;
+import cn.com.zhiwoo.tool.AccountTool;
+import cn.com.zhiwoo.tool.UploadTool;
 import cn.com.zhiwoo.utils.Global;
 import cn.com.zhiwoo.utils.LogUtils;
 import cn.com.zhiwoo.utils.MyUtils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-
-
+import de.greenrobot.event.EventBus;
 
 
 public class PhoneBindFragment extends Fragment implements View.OnClickListener{
@@ -77,10 +78,21 @@ public class PhoneBindFragment extends Fragment implements View.OnClickListener{
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case SUBMIT_CODE_SUCCESS : {
-                    Toast.makeText(getActivity(), "验证码验证成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent("phone_bind");
-                    intent.putExtra("phone",phone);
-                    getActivity().sendBroadcast(intent);
+//                    Toast.makeText(getActivity(), "验证码验证成功", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent("phone_bind");
+//                    intent.putExtra("phone",phone);
+//                    getActivity().sendBroadcast(intent);
+                    AccountTool.updatePhone(phone, mContext, new AccountTool.UpdateResultListener() {
+                        @Override
+                        public void updateSuccess() {
+                            Toast.makeText(mContext, "手机号绑定成功！", Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().post("info_next");
+                        }
+                        @Override
+                        public void updateFailure() {
+                            Toast.makeText(mContext, "手机号绑定失败！请稍后再试。", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 break;
 

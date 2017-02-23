@@ -1,9 +1,6 @@
 package cn.com.zhiwoo.activity.home;
 
 
-
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +8,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.base.BaseActivity;
 
-public class TalkShowActivity extends BaseActivity{
+public class TalkShowActivity extends BaseActivity {
 
 
     private TabLayout tabLayout;
@@ -32,7 +28,7 @@ public class TalkShowActivity extends BaseActivity{
     public void initView() {
         super.initView();
         fm = getSupportFragmentManager();
-        View view = View.inflate(this,R.layout.home_talk_show,null);
+        View view = View.inflate(this, R.layout.home_talk_show, null);
         tabLayout = (TabLayout) view.findViewById(R.id.lesson_tab);
         viewPager = (ViewPager) view.findViewById(R.id.lesson_pager);
         flContent.addView(view);
@@ -59,7 +55,7 @@ public class TalkShowActivity extends BaseActivity{
 
     }
 
-    class LessonPagerAdapter extends FragmentPagerAdapter{
+    class LessonPagerAdapter extends FragmentPagerAdapter {
 
         LessonPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -67,7 +63,7 @@ public class TalkShowActivity extends BaseActivity{
 
         @Override
         public Fragment getItem(int position) {
-            return fragments == null ? null :fragments.get(position);
+            return fragments == null ? null : fragments.get(position);
         }
 
         @Override
@@ -87,22 +83,6 @@ public class TalkShowActivity extends BaseActivity{
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //public class TalkShowActivity extends BaseWebViewActivity {

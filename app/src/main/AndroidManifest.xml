@@ -121,6 +121,8 @@
         <activity
             android:name=".activity.main.NotificationActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.main.InfoPerfectActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 首页 -->
         <activity
@@ -142,6 +144,12 @@
             android:name=".activity.base.PhotoActivity"
             android:screenOrientation="portrait" />
 
+        <!--节目-->
+        <activity android:name=".activity.course.CourseSeriesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.course.MediaActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- 导师 -->
         <activity
             android:name=".activity.tutor.TourDetailActivity"
@@ -154,9 +162,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 个人中心 -->
-        <activity
-            android:name=".activity.home.MediaActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.home.CustomActivity"
             android:screenOrientation="portrait" />
@@ -327,6 +332,8 @@
             android:name=".service.GeIntentService"
             android:enabled="true"
             android:exported="true"/>
+        <service android:name=".service.MediaService"/>
+
     </application>
 
 </manifest>

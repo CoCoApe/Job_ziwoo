@@ -21,6 +21,7 @@ import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.react.ArticleDetailActivity;
 import cn.com.zhiwoo.bean.react.ReactArticle;
 import cn.com.zhiwoo.pager.ConsultPager;
+import cn.com.zhiwoo.pager.CoursePager;
 import cn.com.zhiwoo.pager.HomePager;
 import cn.com.zhiwoo.pager.ReactPager;
 import cn.com.zhiwoo.pager.TourPager;
@@ -83,6 +84,10 @@ public class MainActivity extends AppCompatActivity{
         mPagers.add(consultPager);
         reactPager = new ReactPager(this);
         mPagers.add(reactPager);
+        //add 2.13 新加入节目模块
+        CoursePager coursePager = new CoursePager(this);
+        mPagers.add(coursePager);
+
         TourPager tourPager = new TourPager(this);
         mPagers.add(tourPager);
         HomePager homePager = new HomePager(this);
@@ -119,30 +124,28 @@ public class MainActivity extends AppCompatActivity{
                 }
                 switch (checkedId) {
                     case R.id.tabbar_item_consult: {
-                        viewPager.setCurrentItem(0, false);
-                        setSelectedPager(mPagers.get(0));
-                        mPagers.get(0).onSelected();
+                        setPager(0);
                     }
                     break;
+
                     case R.id.tabbar_item_react: {
-                        viewPager.setCurrentItem(1, false);
-                        setSelectedPager(mPagers.get(1));
-                        mPagers.get(1).onSelected();
+                        setPager(1);
                         reactPager.reactImage.setVisibility(View.VISIBLE);
-
-
                     }
                     break;
+
+                    case R.id.tabbar_item_course: {
+                        setPager(2);
+                    }
+                    break;
+
                     case R.id.tabbar_item_tour: {
-                        viewPager.setCurrentItem(2, false);
-                        setSelectedPager(mPagers.get(2));
-                        mPagers.get(2).onSelected();
+                        setPager(3);
                     }
                     break;
+
                     case R.id.tabbar_item_home: {
-                        viewPager.setCurrentItem(3, false);
-                        setSelectedPager(mPagers.get(3));
-                        mPagers.get(3).onSelected();
+                        setPager(4);
                     }
                     break;
                     default:
@@ -241,4 +244,9 @@ public class MainActivity extends AppCompatActivity{
         this.selectedPager = selectedPager;
     }
 
+    private void setPager(int position){
+        viewPager.setCurrentItem(position, false);
+        setSelectedPager(mPagers.get(position));
+        mPagers.get(position).onSelected();
+    }
 }

@@ -24,6 +24,8 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ import cn.com.zhiwoo.bean.tutor.Comments;
 import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.utils.Api;
+import cn.com.zhiwoo.utils.MyUtils;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -121,6 +125,12 @@ public class TourDetailActivity extends BaseActivity {
                             adapter.notifyDataSetChanged();
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        mList.clear();
+                        adapter.notifyDataSetChanged();
+                    }
                 });
     }
 
@@ -198,7 +208,7 @@ public class TourDetailActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return null != mList ? mList.size() : 0;
+            return mList != null ? mList.size() : 0;
         }
 
         @Override
@@ -221,16 +231,19 @@ public class TourDetailActivity extends BaseActivity {
             TextView tv_name = (TextView) convertView.findViewById(R.id.comment_item_name);
             TextView tv_content = (TextView) convertView.findViewById(R.id.comment_item_content);
             final CheckBox box_like = (CheckBox) convertView.findViewById(R.id.comment_item_likes);
-//            TextView tv_popularity = (TextView) convertView.findViewById(R.id.comment_item_popularity);
-            if (!TextUtils.isEmpty(bean.getUser_headimg())){
+            if (!TextUtils.isEmpty(bean.getHeadimgurl())){
                 Glide.with(TourDetailActivity.this)
-                        .load(bean.getUser_headimg())
+                        .load(bean.getHeadimgurl())
                         .override(120,120)
                         .into(image_icon);
             }
-            tv_name.setText(bean.getUser_nickname());
+            String name = bean.getNickname();
+            if (MyUtils.isPhoneNumberValid(name)){
+                name = new StringBuilder(name).replace(3,7,"****").toString();
+            }
+            tv_name.setText(name);
             tv_content.setText(bean.getUser_pl());
-//            tv_popularity.setText(String.valueOf(bean.getPl_hot()));
+//            tv_popularity.setText(String.valueOf(bean.getPl_hot()));//删除了评论人气
             box_like.setText(String.valueOf(bean.getDz_sum()));
             box_like.setChecked(AccountTool.isLogined(TourDetailActivity.this) && bean.isIs_dz());
             box_like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -253,7 +266,7 @@ public class TourDetailActivity extends BaseActivity {
                     }else {
                         box_like.setChecked(false);
                         IntentFilter likeIntentFilter = new IntentFilter();
-                        likeIntentFilter.addAction("like_change");
+                        likeIntentFilter.addAction("like_change");//点赞变动
                         //注册广播
                         registerReceiver(new LikeUpdateBroadCast(), likeIntentFilter);
                         Toast.makeText(TourDetailActivity.this,"您还没有登录",Toast.LENGTH_SHORT).show();
@@ -298,4 +311,11 @@ public class TourDetailActivity extends BaseActivity {
             unregisterReceiver(this);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
 }

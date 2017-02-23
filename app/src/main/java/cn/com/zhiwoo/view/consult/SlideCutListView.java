@@ -215,13 +215,11 @@ public class SlideCutListView extends ListView {
 //                    isSlide = false;
                     if (itemView.getScrollX() >= screenWidth / 6 || itemView.getScrollX() <= -screenWidth / 6 ){
                         mRemoveListener.removeItem(removeDirection,slidePosition-1);
-                    }else {
-                        itemView.scrollTo(0, 0);
                     }
+                    itemView.scrollTo(0, 0);
                     break;
             }
         }
-
         //否则直接交给ListView来处理onTouchEvent事件
         return super.onTouchEvent(ev);
     }
@@ -276,7 +274,7 @@ public class SlideCutListView extends ListView {
     }
 
     /**
-     * 当ListView item滑出屏幕1/2时，进行相关逻辑
+     * 当ListView item滑出屏幕1/6时，进行相关逻辑
      * 我们需要在回调方法removeItem()实现跳转
      */
     public interface RemoveListener {

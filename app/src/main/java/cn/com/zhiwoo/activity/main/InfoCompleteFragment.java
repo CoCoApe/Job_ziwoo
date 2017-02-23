@@ -24,6 +24,7 @@ import cn.com.zhiwoo.activity.home.ProvincesPickerDialog;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
 import cn.com.zhiwoo.utils.LogUtils;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by 25820 on 2016/12/12.
@@ -39,18 +40,13 @@ public class InfoCompleteFragment extends Fragment implements View.OnClickListen
     private Button nextBtn;
     private Context mContext;
     private int ageInt;
-    private String phone;
     private String birth;
     private static final String[] expectations= new String[]{
             "挽回真命","自我提升","提升情商","长期关系"
     };
 
-    public static InfoCompleteFragment newInstance(String phone){
-        InfoCompleteFragment fragment = new InfoCompleteFragment();
-        Bundle bundle = new Bundle();
-        bundle.putCharSequence("phone",phone);
-        fragment.setArguments(bundle);
-        return fragment;
+    public static InfoCompleteFragment newInstance(){
+        return new InfoCompleteFragment();
     }
 
 
@@ -58,7 +54,6 @@ public class InfoCompleteFragment extends Fragment implements View.OnClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
-        this.phone = (String) getArguments().get("phone");
     }
 
     @Nullable
@@ -134,19 +129,11 @@ public class InfoCompleteFragment extends Fragment implements View.OnClickListen
                 if (TextUtils.isEmpty(age)||TextUtils.isEmpty(area)){
                     Toast.makeText(mContext, "请选择年龄和地区", Toast.LENGTH_SHORT).show();
                 }else {
-                    AccountTool.updateAllInfo(phone, birth, area, expectation, mContext, new AccountTool.UpdateResultListener() {
+                    AccountTool.updateAllInfo(birth, area, expectation, mContext, new AccountTool.UpdateResultListener() {
                         @Override
                         public void updateSuccess() {
-                            if (AccountTool.isLogined(mContext)) {
-                                //新账号登录成功,配置好聊天工具
-                                LogUtils.log("新账号登录,配置聊天工具");
-                                APP app = (APP) getActivity().getApplication();
-                                ChatTool.config(app.getMainActivity());
-                            }
-                            ChatTool.sharedTool().login();
-                            Intent intent1 = new Intent("userinfo_change");
-                            mContext.sendBroadcast(intent1);
-                            getActivity().onBackPressed();
+                            Toast.makeText(mContext, "信息已完善！", Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().post("info_done");
                         }
                         @Override
                         public void updateFailure() {

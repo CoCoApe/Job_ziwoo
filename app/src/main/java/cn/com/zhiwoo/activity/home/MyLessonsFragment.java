@@ -18,8 +18,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.zhiwoo.R;
+import cn.com.zhiwoo.activity.course.MediaActivity;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.LessonEvent;
 import cn.com.zhiwoo.tool.AccountTool;
@@ -49,7 +48,6 @@ public class MyLessonsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         mActivity = getActivity();
     }
 
@@ -138,12 +136,6 @@ public class MyLessonsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void onEvent(LessonEvent.DataBean bean){
-        mList.add(bean);
-        adapter.notifyDataSetChanged();
-    }
 }

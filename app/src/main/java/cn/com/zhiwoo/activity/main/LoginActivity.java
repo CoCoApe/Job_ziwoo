@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,12 +54,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Bitmap bitmap;
     private IWXAPI iwxapi;
     private MyBroadCastRecevier broadcastReceiver;
-    private PhoneBindCastRecevier phoneBindCastRecevier;
     private ImageView bgImageView;
+    private Button just_look;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private LoginFragmentAdapter loginPagerAdapter;
-    private InfoCompleteFragment infoCompleteFragment;
-    private PhoneBindFragment phoneBindFragment;
     public String phone;
 
     @Override
@@ -69,13 +68,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         iwxapi.registerApp(Constants.APP_ID);
         SMSSDK.initSDK(getApplicationContext(), Global.SMS_APPKEY, Global.SMS_SECRET);
         IntentFilter filter1 = new IntentFilter();
-        IntentFilter filter2 = new IntentFilter();
         filter1.addAction("wx_code");
-        filter2.addAction("phone_bind");
         broadcastReceiver = new MyBroadCastRecevier();
-        phoneBindCastRecevier = new PhoneBindCastRecevier();
         registerReceiver(broadcastReceiver, filter1);
-        registerReceiver(phoneBindCastRecevier, filter2);
         initView();
         initData();
     }
@@ -86,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         closeImage = (ImageView) findViewById(R.id.close_imageview);
         weiLogin = (ImageView) findViewById(R.id.weixin_login_iamgeview);
         viewPager = (NoScrollViewPager) findViewById(R.id.scroll_viewpager);
+        just_look = (Button) findViewById(R.id.just_have_look);
         InputStream is = null;
         try {
             is = this.getAssets().open("login_bg.png");
@@ -99,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tipTextView.setOnClickListener(this);
         closeImage.setOnClickListener(this);
         weiLogin.setOnClickListener(this);
+        just_look.setOnClickListener(this);
     }
     private void initData() {
         LoginFragment loginFragment = new LoginFragment(new LoginFragment.LoginFragmentLoginListener() {
@@ -150,10 +147,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.close_imageview : {
+            case R.id.just_have_look:
+            case R.id.close_imageview :
                 finish();
                 overridePendingTransition(0,R.anim.main_login_dismiss);
-            }
             break;
             case R.id.weixin_login_iamgeview : {
                 loginByWeixin();
@@ -193,7 +190,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         iwxapi.unregisterApp();
         unregisterReceiver(broadcastReceiver);
-        unregisterReceiver(phoneBindCastRecevier);
+//        unregisterReceiver(phoneBindCastRecevier);
         super.onDestroy();
     }
     private void loginByWeixin() {
@@ -218,7 +215,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Gson gson = new Gson();
                             Account account = gson.fromJson(s, Account.class);
                             if (account != null && account.getAccessToken() != null) {
-                                if (!TextUtils.isEmpty(account.getMobile())){
                                     AccountTool.saveAsCurrentAccount(getBaseContext(), account);
                                     if (AccountTool.isLogined(getBaseContext())) {
                                         //新账号登录成功,配置好聊天工具
@@ -231,12 +227,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Intent intent1 = new Intent("userinfo_change");
                                     sendBroadcast(intent1);
                                     onBackPressed();
-                                } else {
-                                    AccountTool.saveAsCurrentAccount(getBaseContext(), account);
-                                    phoneBindFragment = PhoneBindFragment.newInstance(account);
-                                    fragments.add(phoneBindFragment);
-                                    loginPagerAdapter.notifyDataSetChanged();
-                                    viewPager.setCurrentItem(2);
+                                if (TextUtils.isEmpty(account.getMobile())){
+                                    Intent intent2 = new Intent(LoginActivity.this,InfoPerfectActivity.class);
+                                    intent2.putExtra("account",account);
+                                    startActivity(intent2);
                                 }
                             }else {
                                 Toast.makeText(getBaseContext(),"登录失败1",Toast.LENGTH_SHORT).show();
@@ -250,17 +244,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     });
         }
     }
-    private class PhoneBindCastRecevier extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String phone = intent.getStringExtra("phone");
-            infoCompleteFragment = InfoCompleteFragment.newInstance(phone);
-            fragments.add(infoCompleteFragment);
-            loginPagerAdapter.notifyDataSetChanged();
-            viewPager.setCurrentItem(3);
-        }
-    }
-
 
     private void isLoginFromLike(){
         sendBroadcast(new Intent("like_change"));

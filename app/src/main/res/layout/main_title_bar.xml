@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/topBar_left_image"
-        android:layout_width="@dimen/x15"
-        android:layout_height="@dimen/x15"
+        android:layout_width="@dimen/x20"
+        android:layout_height="@dimen/x20"
         android:src="@drawable/nav_btn_logo_left" />
 
     <FrameLayout

@@ -252,14 +252,13 @@ public class AccountTool {
         void updateFailure();
     }
 
-    public static void updateAllInfo(final String phone, final String birth,final String area,final String demand_infos,final Context context, final UpdateResultListener updateResultListener) {
-        if (phone == null) return;
+    public static void updateAllInfo(final String birth,final String area,final String demand_infos,final Context context, final UpdateResultListener updateResultListener) {
+
         final String province = area.substring(0,area.indexOf(" "));
         final String city = area.substring(area.indexOf(" "),area.length()).replace(" ","");
         HashMap<String,String> params = new HashMap<>();
         params.put("access_token",currentAccount.getAccessToken());
         params.put("user_id", currentAccount.getId());
-        params.put("mobile",phone);
         params.put("birth",birth);
         params.put("province",province);
         params.put("city", city);
@@ -269,7 +268,6 @@ public class AccountTool {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        currentAccount.setMobile(phone);
                         currentAccount.setBirth(birth);
                         currentAccount.setProvince(province);
                         currentAccount.setCity(city);

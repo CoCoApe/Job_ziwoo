@@ -8,10 +8,9 @@ import java.util.List;
 
 public class Comments {
 
-
     /**
-     * code : [{"user_nickname":"新的用户","user_headimg":"","id":21,"user_id":2,"user_pl":"第二个评论","dz_sum":56,"pl_hot":62,"is_dz":true},{"user_nickname":"Nick","user_headimg":"http://wx.qlogo.cn/mmopen/UOlZKghBxaYvtzT5yJkL8jDlj9jkibRdjHnI5nUxoa4C1Alb4ibyAknt6MILliaZnibpOMLZGKRI2XIkVCxIZIRYFAfFswN6UrU2vPmKQO3Lbp4/0","id":9,"user_id":1,"user_pl":"第一个评论","dz_sum":41,"pl_hot":29,"is_dz":true}]
-     * tutors : 9
+     * code : [{"nickname":"💜大何ariel💓","headimgurl":"http://wx.qlogo.cn/mmopen/DBmAcyhE3e8HibuLQZc3F87qPZEfp5WcdiboqXtkjHib7ick7oflPcDtNoQ9ppjs5g5sicpuJxxEibCWGfC4W557sCOA/0","id":67,"user_id":9016,"user_pl":"小暖男一枚，很负责任的分析师！大爱！","dz_sum":0,"pl_hot":0},{"nickname":"13989337938","headimgurl":"http://zhiwoo.com.cn/zero/images/user.png","id":66,"user_id":9979,"user_pl":"总是那么一针见血 非常有耐心的好导师！","dz_sum":0,"pl_hot":0},{"nickname":"Nickつ 暮光","headimgurl":"http://wx.qlogo.cn/mmopen/UOlZKghBxaYvtzT5yJkL8jDlj9jkibRdjHnI5nUxoa4C1Alb4ibyAknt6MILliaZnibpOMLZGKRI2XIkVCxIZIRYFAfFswN6UrU2vPmKQO3Lbp4/0","id":52,"user_id":1,"user_pl":"很感激老师这段时间对我的耐心教导","dz_sum":51,"pl_hot":0,"is_dz":true},{"nickname":"忘了呔爱","headimgurl":"http://wx.qlogo.cn/mmopen/DBmAcyhE3e8cicvkyFZCRczrIbzjPyK0g7hsw3ApPfYiatCxManNjMcKkb6licePe5WocOZs9Aa6LuI1WpRXicicibfRXkk43qiaYqK/0","id":39,"user_id":5,"user_pl":"声音那么好听，那么温柔，讲课那么有条理，爱你么么哒！","dz_sum":142,"pl_hot":30,"is_dz":true},{"nickname":"没有感觉了","headimgurl":"","id":1,"user_id":2,"user_pl":"老师的开导与指导，帮助我走出困局\u2026跟男朋友分手非常绝望，可在老师的指导明白先要重拾自我才能挽回感情，现在跟男朋友情况好转，以后也需要老师教我更多如何提升自己的技巧！","dz_sum":79,"pl_hot":21,"is_dz":true}]
+     * tutors : 3775
      */
 
     private String tutors;
@@ -35,18 +34,18 @@ public class Comments {
 
     public static class CodeBean {
         /**
-         * user_nickname : 新的用户
-         * user_headimg :
-         * id : 21
-         * user_id : 2
-         * user_pl : 第二个评论
-         * dz_sum : 56
-         * pl_hot : 62
+         * nickname : 💜大何ariel💓
+         * headimgurl : http://wx.qlogo.cn/mmopen/DBmAcyhE3e8HibuLQZc3F87qPZEfp5WcdiboqXtkjHib7ick7oflPcDtNoQ9ppjs5g5sicpuJxxEibCWGfC4W557sCOA/0
+         * id : 67
+         * user_id : 9016
+         * user_pl : 小暖男一枚，很负责任的分析师！大爱！
+         * dz_sum : 0
+         * pl_hot : 0
          * is_dz : true
          */
 
-        private String user_nickname;
-        private String user_headimg;
+        private String nickname;
+        private String headimgurl;
         private int id;
         private int user_id;
         private String user_pl;
@@ -54,20 +53,20 @@ public class Comments {
         private int pl_hot;
         private boolean is_dz;
 
-        public String getUser_nickname() {
-            return user_nickname;
+        public String getNickname() {
+            return nickname;
         }
 
-        public void setUser_nickname(String user_nickname) {
-            this.user_nickname = user_nickname;
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
 
-        public String getUser_headimg() {
-            return user_headimg;
+        public String getHeadimgurl() {
+            return headimgurl;
         }
 
-        public void setUser_headimg(String user_headimg) {
-            this.user_headimg = user_headimg;
+        public void setHeadimgurl(String headimgurl) {
+            this.headimgurl = headimgurl;
         }
 
         public int getId() {

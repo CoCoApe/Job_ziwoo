@@ -2,10 +2,13 @@ package cn.com.zhiwoo.pager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,7 @@ import java.util.List;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.consult.ConsultChatActivity;
+import cn.com.zhiwoo.activity.main.InfoPerfectActivity;
 import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.activity.react.LessonDetailActivity;
 import cn.com.zhiwoo.bean.consult.Banner;
@@ -43,23 +47,19 @@ import cn.com.zhiwoo.pager.base.BasePager;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import cn.com.zhiwoo.utils.MyUtils;
 import cn.com.zhiwoo.view.consult.SlideCutListView;
 import okhttp3.Call;
 import okhttp3.Response;
-
-//import cn.com.zhiwoo.activity.react.LessonDetailActivity;
 
 
 public class ConsultPager extends BasePager{
 
     private SlideCutListView listView;
     private ConvenientBanner banner;
-//    private ViewPager viewPager;
     private ArrayList<ConsultTypeMode> modes;
     private SVProgressHUD mHud = new SVProgressHUD(mActivity);
     private List<Banner.DataBean> bannerList = new ArrayList<>();
-//    private ArrayList<LessonImageView> lessonImageViews = new ArrayList<>();
-//    private ArrayList<Lesson> lessons = Lesson.allLessons();
     private Lesson lesson;
     private static int Msg_Update_Count = 111;
     private ConsultTypesAdapter consultTypesAdapter;
@@ -148,18 +148,9 @@ public class ConsultPager extends BasePager{
     @Override
     public void initData() {
         titleView.setText("咨询");
-//        initImageLoader();
         loadLessonImageViews();
-//        viewPager.setAdapter(new HeaderPagerAdapter());
-//        CirclePageIndicator indicator = (CirclePageIndicator) listView.findViewById(R.id.header_indicator);
-//        indicator.setViewPager(viewPager);
-
     }
 
-//    private void initImageLoader() {
-//        bitmapUtils = new BitmapUtils(mActivity);
-//        bitmapUtils.configDefaultLoadingImage(R.drawable.react_article_bg_placeholer);
-//    }
 
     private void loadLessonImageViews() {
         OkGo.post(Api.BANNER)
@@ -292,48 +283,6 @@ public class ConsultPager extends BasePager{
 //            LogUtils.log("取消选中咨询");
 //        }
     }
-//    private class HeaderPagerAdapter extends PagerAdapter {
-//        HeaderPagerAdapter() {
-//            super();
-//        }
-//        @Override
-//        public int getCount() {
-//            return lessons.size();
-//        }
-//
-//        @Override
-//        public boolean isViewFromObject(View view, Object object) {
-//            return view == object;
-//        }
-//        @Override
-//        public Object instantiateItem(ViewGroup container, int position) {
-//            LessonImageView imageView = lessonImageViews.get(position);
-//            container.addView(imageView);
-//            imageView.displayImage();
-//            imageView.setOnClickListener(new LessonOnClickListener(position));
-//            return imageView;
-//        }
-//        @Override
-//        public void destroyItem(ViewGroup container, int position, Object object) {
-//            container.removeView((View) object);
-//        }
-//    }
-//    private class LessonOnClickListener implements View.OnClickListener {
-//        private int position;
-//        LessonOnClickListener(int position) {
-//            this.position = position;
-//        }
-//        @Override
-//        public void onClick(View v) {
-//            LogUtils.log(mActivity,"onClick");
-//            Lesson lesson = lessons.get(position);
-//            Intent intent = new Intent(mActivity, LessonDetailActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("lesson",lesson);
-//            intent.putExtras(bundle);
-//            mActivity.startActivity(intent);
-//        }
-//    }
 
     private class BannerImageHolderView implements Holder<Banner.DataBean> {
         private ImageView imageView;
@@ -351,7 +300,6 @@ public class ConsultPager extends BasePager{
                     .load(data.getApp_pic())
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(imageView);
-//            bitmapUtils.display(imageView,data.getApp_pic());
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -366,5 +314,4 @@ public class ConsultPager extends BasePager{
 
         }
     }
-
 }

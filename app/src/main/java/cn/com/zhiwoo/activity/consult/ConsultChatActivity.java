@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,15 +28,19 @@ import java.util.Random;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.base.BaseActivity;
+import cn.com.zhiwoo.activity.tutor.TourDetailActivity;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.Commend;
+import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.bean.tutor.User;
 import cn.com.zhiwoo.tool.AccountTool;
 import cn.com.zhiwoo.tool.ChatTool;
 import cn.com.zhiwoo.tool.PayTool;
 import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import cn.com.zhiwoo.utils.MyUtils;
 import cn.com.zhiwoo.view.consult.PayTipSelectDialog;
+import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.MessageTag;
 import io.rong.imlib.RongIMClient;
@@ -63,6 +69,7 @@ public class ConsultChatActivity extends BaseActivity{
     private String expect;
     private int send;
     private boolean sendOrBack;
+    private boolean isFirstAsk;//每次进入第一次提问，如果没有绑定手机号，会弹出对话框
     private Map<String,String> params = new HashMap<>();
     private Handler resHandler = new Handler();
     private  Runnable runnable = new Runnable() {
@@ -145,6 +152,9 @@ public class ConsultChatActivity extends BaseActivity{
             public Message onSend(Message message) {
                 sendOrBack = false;
                 sendAutoResponed(message.getTargetId());
+                if (TextUtils.isEmpty(account.getMobile()) && isFirstAsk){
+                    MyUtils.showInfoPerfectDialog(getApplicationContext());
+                }
                 return message;
             }
 
@@ -168,11 +178,12 @@ public class ConsultChatActivity extends BaseActivity{
     @Override
     public void initView() {
         super.initView();
+        EventBus.getDefault().register(this);
         RelativeLayout relativeLayout = (RelativeLayout) View.inflate(this, R.layout.consult_chat_activity1,null);
         flContent.addView(relativeLayout);
-        getIntentInfo(getIntent());
         rightImageView.setImageResource(R.drawable.nav_write);
         rightImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        getIntentInfo(getIntent());
     }
 
     @Override
@@ -185,6 +196,7 @@ public class ConsultChatActivity extends BaseActivity{
         registerReceiver(broadcastReceiver, filter);
         account = AccountTool.getCurrentAccount(this);
     }
+
 
     @Override
     public void initListener() {
@@ -370,6 +382,7 @@ public class ConsultChatActivity extends BaseActivity{
     }
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         ChatTool.sharedTool().targetToRead(mTargetId,user.getNickName(),user.getHeadImageUrl());
         unregisterReceiver(broadcastReceiver);
         LogUtils.log(getBaseContext(), "聊天界面销毁!");
@@ -405,5 +418,17 @@ public class ConsultChatActivity extends BaseActivity{
 
                     }
                 });
+    }
+
+    @Subscribe
+    public void onEvent(String str){
+        if ("go_tutor".equals(str)){
+            Intent intent = new Intent(this,TourDetailActivity.class);
+            Bundle bundle = new Bundle();
+            Tour tour = (Tour) user;
+            bundle.putSerializable("tour",tour);
+            intent.putExtras(bundle);
+            ConsultChatActivity.this.startActivity(intent);
+        }
     }
 }

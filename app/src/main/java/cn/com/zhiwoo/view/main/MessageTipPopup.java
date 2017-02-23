@@ -58,13 +58,13 @@ public class MessageTipPopup extends PopupWindow {
 	private boolean mIsDirty;
 
 	// 定义列表对象
-	private ListView mListView;
+	public ListView mListView;
 
 	// 定义弹窗子类项列表
 	private ArrayList<Message> mTipMessages = new ArrayList<>();
 	private static MessageTipPopup instance = null;
 
-	private static MessageTipPopup newInstance(Context context){
+	public static MessageTipPopup newInstance(Context context){
 		if (null == instance){
 			instance = new MessageTipPopup(context, ChatTool.sharedTool().getTipMessages());
 		}
@@ -142,6 +142,7 @@ public class MessageTipPopup extends PopupWindow {
 		filter.addAction("message_change");
 		MyBroadCastRecevier broadcastReceiver = new MyBroadCastRecevier();
 		mContext.registerReceiver(broadcastReceiver, filter);
+
 	}
 
 	/**

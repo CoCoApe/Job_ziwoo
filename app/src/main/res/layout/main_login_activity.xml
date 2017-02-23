@@ -107,4 +107,15 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:id="@+id/just_have_look"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x30"
+        android:text="随便逛逛"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:textColor="@color/globalBgColor"
+        android:textSize="@dimen/x12"/>
 </RelativeLayout>

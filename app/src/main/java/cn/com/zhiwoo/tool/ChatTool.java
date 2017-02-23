@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
@@ -33,13 +34,16 @@ import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.activity.main.MainActivity;
 import cn.com.zhiwoo.activity.main.NotificationActivity;
 import cn.com.zhiwoo.activity.react.ArticleDetailActivity;
+import cn.com.zhiwoo.activity.tutor.TourDetailActivity;
 import cn.com.zhiwoo.bean.home.Message;
 import cn.com.zhiwoo.bean.main.Account;
 import cn.com.zhiwoo.bean.react.ReactArticle;
+import cn.com.zhiwoo.bean.tutor.Tour;
 import cn.com.zhiwoo.bean.tutor.User;
 import cn.com.zhiwoo.utils.APPStatusUtils;
 import cn.com.zhiwoo.utils.Api;
 import cn.com.zhiwoo.utils.LogUtils;
+import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongIMClientWrapper;
@@ -201,7 +205,6 @@ public class ChatTool {
                                         };
                                         RongIM.resetInputExtensionProvider(Conversation.ConversationType.PRIVATE, provider);
                                         RongIM.setConversationBehaviorListener(new ClickMessageListener());
-
                                     }
                                 }
                             }
@@ -216,12 +219,10 @@ public class ChatTool {
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
-                        LogUtils.log("获取融云token出错： " + response.body());
                         String result = response.body().toString();
                         JsonParser parser = new JsonParser();
                         JsonObject jsonObj = parser.parse(result.replace(" ","")).getAsJsonObject();
                         if (jsonObj.get("error_code").getAsInt() == 1) {
-                            // token 失效
                             AccountTool.unregistCurrentAccount(mContext);
                             Toast.makeText(mContext,"您的账号在其他设备登录过，请重新登录",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(mContext, LoginActivity.class);
@@ -236,9 +237,6 @@ public class ChatTool {
 
         @Override
         public UserInfo getUserInfo(final String s) {
-            if (s==null) {
-                return null;
-            }
             UserInfo userInfo = userInfos.get(s);
             if (userInfo != null) {
                 return userInfo;
@@ -251,6 +249,7 @@ public class ChatTool {
         private void GetUserInfoFromNet(final String s) {
             HashMap<String,String> params = new HashMap<>();
             params.put("access_token","Z:0:!:5");
+//            params.put("access_token",AccountTool.getCurrentAccount(mContext).getAccessToken());
             params.put("friend_id",s);
             OkGo.get(Api.GET_USERINFO)
                     .params(params)
@@ -264,6 +263,7 @@ public class ChatTool {
                                     User user = gson.fromJson(s, User.class);
                                     UserInfo userInfo1 = new UserInfo(user.getId(),user.getNickName(), Uri.parse(user.getHeadImageUrl()));
                                     userInfos.put(s,userInfo1);
+                                    RongIM.getInstance().refreshUserInfoCache(userInfo1);
                                 }
                             }
                         }
@@ -675,7 +675,6 @@ public class ChatTool {
             LogUtils.log("收到推送消息");
             return false;
         }
-
     }
     private static ClickMessageListener messageListener;
     public ClickMessageListener getMessageListener(){
@@ -688,6 +687,10 @@ public class ChatTool {
 
         @Override
         public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
+            if (!userInfo.getUserId().equals(AccountTool.getCurrentAccount(context).getId())){
+                EventBus.getDefault().post("go_tutor");//ConsultChatActivity接接收消息实现跳转对应导师界面
+                return true;
+            }
             return false;
         }
 

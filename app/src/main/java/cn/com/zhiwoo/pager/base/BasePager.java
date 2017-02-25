@@ -17,12 +17,12 @@ import cn.com.zhiwoo.view.main.MessageTipPopup;
 
 
 public abstract class BasePager implements View.OnClickListener {
-    private long loginShowTime = 0;
+    public long loginShowTime = 0;
     public Activity mActivity;
     public View mRootView;
     public TextView titleView;
     protected ImageView leftImageView;
-    private ImageView rightImageView;
+    public ImageView rightImageView;
     public FrameLayout flContent;
     public boolean didInitData = false;
     public DrawerLayout mDrawerLayout;

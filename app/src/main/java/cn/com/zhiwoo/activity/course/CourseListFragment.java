@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,7 +46,7 @@ import okhttp3.Response;
  * Created by 25820 on 2017/2/15.
  */
 
-public class CourseListFragment extends Fragment implements OnMediaChangeListener{
+public class CourseListFragment extends Fragment implements OnMediaChangeListener,View.OnClickListener{
     private Context mContext;
     private ListView courseListView;
     private List<LessonEvent.DataBean> mList = new ArrayList<>();
@@ -54,12 +57,10 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
     private MediaService.MediaBinder mMediaBinder;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext =getContext();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
-
-
 
     @Nullable
     @Override
@@ -67,7 +68,6 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.course_list_frg,container,false);
         courseListView = (ListView) view.findViewById(R.id.course_list_frg_listView);
-        connect();
         initView();
         initData();
         initListener();
@@ -103,6 +103,10 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
     }
 
 
+    class CourseViewHolder{
+        Button byButton;
+        TextView textView;
+    }
 
     class CourseAdapter extends BaseAdapter {
 
@@ -123,32 +127,49 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            LessonEvent.DataBean bean = mList.get(position);
+            final CourseViewHolder holder;
             if (convertView == null){
+                holder = new CourseViewHolder();
                 convertView = View.inflate(mContext,R.layout.all_lesson_item,null);
+                holder.byButton = (Button) convertView.findViewById(R.id.all_lesson_item_buy);
+                holder.textView = (TextView) convertView.findViewById(R.id.all_lesson_item_content);
+                convertView.setTag(holder);
+            }else {
+                holder = (CourseViewHolder) convertView.getTag();
             }
-            Button buyBtn = (Button) convertView.findViewById(R.id.all_lesson_item_buy);
-            buyBtn.setText("播放");
-            final TextView textView = (TextView) convertView.findViewById(R.id.all_lesson_item_content);
-            final LessonEvent.DataBean bean = mList.get(position);
-            textView.setText(bean.getCourse_name());
-            buyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startService(position);
-                }
-            });
+            holder.byButton.setTag(position);
+            holder.byButton.setText("播放");
+            holder.textView.setText(bean.getCourse_name());
+            holder.byButton.setOnClickListener(CourseListFragment.this);
             if (current_position == position){
-                buyBtn.setText("暂停");
-                buyBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMediaBinder.pause();
-                    }
-                });
+                if (mMediaBinder.isPlaying()){
+                    holder.byButton.setText("暂停");
+                }else {
+                    holder.byButton.setText("继续");
+                }
             }
             return convertView;
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        Button button = (Button) view;
+        int position = (int) view.getTag();
+        if (position != mMediaBinder.getCurrentListPosition()){
+            startService(position);
+        }else {
+            if (mMediaBinder.isPlaying()){
+                mMediaBinder.pause();
+                button.setText("继续");
+            }else {
+                mMediaBinder.start();
+                button.setText("暂停");
+            }
+        }
+    }
+
 
     private void startService(int position){
 //        先启动服务
@@ -157,8 +178,8 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
         intent.putExtra("current_position",position);
         intent.putExtra("course_list", (Serializable) mList);
         mContext.startService(intent);
+        current_position = mMediaBinder.getCurrentListPosition();
     }
-
 
 
     ServiceConnection mConnection = new ServiceConnection() {
@@ -170,9 +191,11 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
         public void onServiceConnected(ComponentName name, IBinder service) {
             mMediaBinder = (MediaService.MediaBinder) service;
             mMediaBinder.addOnMediaChangeListener(CourseListFragment.this);
-            courseAdapter.notifyDataSetChanged();
+            current_position = mMediaBinder.getCurrentListPosition();
+
         }
     };
+
 
     /** 绑定服务*/
     private void connect() {
@@ -186,32 +209,53 @@ public class CourseListFragment extends Fragment implements OnMediaChangeListene
 
     @Override
     public void onMediaPlay() {
-        courseAdapter.notifyDataSetChanged();
+        int position = mMediaBinder.getCurrentListPosition();
+        for (int i=0;i < courseListView.getChildCount();i++){
+            CourseViewHolder holder = (CourseViewHolder) courseListView.getChildAt(i).getTag();
+            if (position != i){
+                holder.byButton.setText("播放");
+            }else {
+                holder.byButton.setText("暂停");
+            }
+        }
     }
 
     @Override
     public void onMediaStart() {
-
+        ((CourseViewHolder) courseListView.getChildAt(mMediaBinder.getCurrentListPosition())
+                .getTag()).byButton.setText("暂停");
     }
 
     @Override
     public void onMediaPause() {
-        courseAdapter.notifyDataSetChanged();
+        ((CourseViewHolder) courseListView.getChildAt(mMediaBinder.getCurrentListPosition())
+                .getTag()).byButton.setText("继续");
     }
 
     @Override
     public void onMediaStop() {
-
+        for (int i = 0; i < courseListView.getChildCount(); i++) {
+            ((CourseViewHolder) courseListView.getChildAt(i).getTag()).byButton.setText("播放");
+        }
+        current_position = -1;
     }
 
     @Override
     public void onMediaCompletion() {
+        ((CourseViewHolder) courseListView.getChildAt(mMediaBinder.getCurrentListPosition())
+                .getTag()).byButton.setText("播放");
+    }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        connect();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         disconnect();
     }
 }

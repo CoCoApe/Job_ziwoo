@@ -1,9 +1,14 @@
 package cn.com.zhiwoo.pager;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +21,38 @@ import java.util.List;
 
 import cn.com.zhiwoo.R;
 import cn.com.zhiwoo.activity.course.CourseSeriesActivity;
+import cn.com.zhiwoo.activity.course.MediaActivity;
+import cn.com.zhiwoo.activity.main.LoginActivity;
 import cn.com.zhiwoo.pager.base.BasePager;
+import cn.com.zhiwoo.service.MediaService;
+import cn.com.zhiwoo.service.OnMediaChangeListener;
+import cn.com.zhiwoo.tool.AccountTool;
+import cn.com.zhiwoo.view.main.MessageTipPopup;
 
 /**
  * Created by 25820 on 2017/2/13.
  */
 
-public class CoursePager extends BasePager {
+public class CoursePager extends BasePager implements OnMediaChangeListener{
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
     private List<String> mList = new ArrayList<>();
+    private MediaService.MediaBinder mMediaBinder;
 
     public CoursePager(Activity activity) {
         super(activity);
     }
 
     @Override
-    public void onDeselected() {
+    public void onSelected() {
+        super.onSelected();
+        connect();
+    }
 
+    @Override
+    public void onDeselected() {
+        disconnect();
     }
 
 
@@ -48,6 +66,11 @@ public class CoursePager extends BasePager {
         recyclerAdapter = new RecyclerAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 
 
@@ -84,8 +107,59 @@ public class CoursePager extends BasePager {
 
     }
 
+
     @Override
-    public void onDestroy() {
+    public void onMediaPlay() {
+        rightImageView.setImageResource(R.drawable.nav_back2);
+        rightImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity,MediaActivity.class);
+                mActivity.startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onMediaStart() {
+        rightImageView.setImageResource(R.drawable.nav_back2);
+        rightImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity,MediaActivity.class);
+                mActivity.startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onMediaPause() {
+
+    }
+
+    @Override
+    public void onMediaStop() {
+        rightImageView.setImageResource(R.drawable.navbar_message_selector);
+        rightImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccountTool.isLogined(mActivity)) {
+                    MessageTipPopup.showMessageTipPopup(mActivity, rightImageView);
+                } else {
+                    if (System.currentTimeMillis() - loginShowTime >= 2000) {
+                        loginShowTime = System.currentTimeMillis();
+                        titleBarLeftBtnClick();
+                        Intent intent = new Intent(mActivity, LoginActivity.class);
+                        mActivity.startActivity(intent);
+                        mActivity.overridePendingTransition(R.anim.main_login_show, 0);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onMediaCompletion() {
 
     }
 
@@ -124,6 +198,41 @@ public class CoursePager extends BasePager {
         @Override
         public int getItemCount() {
             return mList == null ? 0 : mList.size();
+        }
+    }
+
+    /** 绑定服务*/
+    private void connect() {
+        Intent intent = new Intent(mActivity, MediaService.class);
+        mActivity.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+    /** 断开服务*/
+    private void disconnect() {
+        mActivity.unbindService(mConnection);
+    }
+
+    ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMediaBinder = (MediaService.MediaBinder) service;
+            mMediaBinder.addOnMediaChangeListener(CoursePager.this);
+            Log.i("asdasd", "onServiceConnected: 11111111111");
+            changeButton();
+        }
+    };
+
+    private void changeButton() {
+        if(mMediaBinder == null) {
+            return;
+        }
+        if(mMediaBinder.isPlaying()) {
+            onMediaPlay();
+        } else {
+            onMediaStop();
         }
     }
 

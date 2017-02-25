@@ -46,7 +46,6 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
     private List<String> tabs = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
     private CourseSeriesAdapter adapter;
-    private Button bottom_start;
     private MediaService.MediaBinder mMediaBinder;
     private final String MEDIA_BROADCAST_ACTION = "cn.com.zhiwoo.activity.course";
 
@@ -65,9 +64,7 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
         bottom_buy = (LinearLayout) view.findViewById(R.id.course_series_bottom_buy);
         tabLayout = (TabLayout) view.findViewById(R.id.course_series_tabLayout);
         viewPager = (ViewPager) view.findViewById(R.id.course_series_viewPager);
-        bottom_start = (Button) view.findViewById(R.id.bottom_start);
         flContent.addView(view);
-        register();
         connect();
         initAdapter();
     }
@@ -90,12 +87,7 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
 
     @Override
     public void initListener() {
-        bottom_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMediaBinder.stop();
-            }
-        });
+
     }
 
     @Override
@@ -134,12 +126,17 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
                 titleBarRightBtnClick();
             }
         });
-
     }
 
     @Override
     public void onMediaCompletion() {
-
+        rightImageView.setImageResource(R.drawable.navbar_message_selector);
+        rightImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                titleBarRightBtnClick();
+            }
+        });
     }
 
     private class CourseSeriesAdapter extends FragmentPagerAdapter {
@@ -177,26 +174,7 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
         }
     };
 
-    /** 注册广播*/
-    private void register() {
-        IntentFilter filter = new IntentFilter(MEDIA_BROADCAST_ACTION);
-        registerReceiver(mServiceReciver, filter);
-    }
 
-    /** 注销广播*/
-    private void unregister() {
-        unregisterReceiver(mServiceReciver);
-    }
-    /** 从MediaService里收到广播，就去绑定服务*/
-    BroadcastReceiver mServiceReciver = new BroadcastReceiver(){
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //只接收一次
-            unregister();
-            //服务已经启动了，那就要绑定服务
-//            connect();
-        }};
 
     /** 绑定服务*/
     private void connect() {
@@ -218,5 +196,11 @@ public class CourseSeriesActivity extends BaseActivity implements OnMediaChangeL
         } else {
             onMediaStop();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disconnect();
     }
 }

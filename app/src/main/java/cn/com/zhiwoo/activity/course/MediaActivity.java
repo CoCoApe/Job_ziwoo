@@ -283,9 +283,6 @@ public class MediaActivity extends BaseActivity implements SeekBar.OnSeekBarChan
         if(!isplaying) {
             Intent intent = new Intent(this, MediaService.class);
             stopService(intent);
-        } else {
-            //如果还在播放，则显示在通知栏显示,这里就不写了
-            // TODO: 2017/2/20
         }
         super.onStop();
     }

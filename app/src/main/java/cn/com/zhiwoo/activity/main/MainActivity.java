@@ -247,6 +247,6 @@ public class MainActivity extends AppCompatActivity{
     private void setPager(int position){
         viewPager.setCurrentItem(position, false);
         setSelectedPager(mPagers.get(position));
-        mPagers.get(position).onSelected();
+        selectedPager.onSelected();
     }
 }

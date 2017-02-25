@@ -10,51 +10,51 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import cn.com.zhiwoo.R;
-import cn.com.zhiwoo.activity.course.CourseSeriesActivity;
+import cn.com.zhiwoo.activity.course.MediaActivity;
 import cn.com.zhiwoo.bean.react.LessonEvent;
-import de.greenrobot.event.EventBus;
+import cn.com.zhiwoo.utils.APPStatusUtils;
 
 /**
  * Created by 25820 on 2017/2/17.
  */
 
-public class MediaService extends Service implements MediaPlayer.OnBufferingUpdateListener,MediaPlayer.OnPreparedListener{
+public class MediaService extends Service{
     private MediaPlayer mediaPlayer;
     private HashSet<OnMediaChangeListener> listeners;
     private MediaBinder mBinder;
     private LessonEvent.DataBean bean;
     private List<LessonEvent.DataBean> courseList = new ArrayList<>();
-    private int current_position;
+    private int current_position = -1;
     private static final int REQUEST_CODE = 100;
     private static final String ACTION_PLAY = "play";
     private static final String ACTION_PAUSE = "pause";
     private static final String ACTION_NEXT = "next";
     private static final String ACTION_EXIT = "exit";
+    private static final String ACTION_START_ACTIVITY = "start_activity";
+
     private PlayerReceiver playerReceiver;
 
     MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {
             notifyAllCompletion();
+            changeNotificationButton();
         }
     };
     private RemoteViews remoteViews;
@@ -69,6 +69,8 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
         mBinder = new MediaBinder();
         registerPlayerReceiver();
         setRemoteViews();
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        tm.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     private void registerPlayerReceiver() {
@@ -78,6 +80,7 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
         mFilter.addAction(ACTION_PAUSE);
         mFilter.addAction(ACTION_NEXT);
         mFilter.addAction(ACTION_EXIT);
+        mFilter.addAction(ACTION_START_ACTIVITY);
         registerReceiver(playerReceiver, mFilter);
     }
 
@@ -111,18 +114,23 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.icon)
                 .setContentTitle("最简单的Notification")
-                .setContentText("内容");
+                .setContentText("内容")
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+        notification = builder.build();
         remoteViews = new RemoteViews(this.getPackageName(), R.layout.notification_player_layout);
+        PendingIntent pIntent_start_activity = PendingIntent.getBroadcast(this.getApplicationContext(),
+                REQUEST_CODE,new Intent(ACTION_START_ACTIVITY),PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent pIntent_play = PendingIntent.getBroadcast(this.getApplicationContext(),
                 REQUEST_CODE,new Intent(ACTION_PLAY),PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent pIntent_next = PendingIntent.getBroadcast(this.getApplicationContext(),
                 REQUEST_CODE,new Intent(ACTION_NEXT),PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent pIntent_exit = PendingIntent.getBroadcast(this.getApplicationContext(),
                 REQUEST_CODE,new Intent(ACTION_EXIT),PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.notification_player_icon,pIntent_start_activity);
         remoteViews.setOnClickPendingIntent(R.id.notification_player_start,pIntent_play);
         remoteViews.setOnClickPendingIntent(R.id.notification_player_next,pIntent_next);
         remoteViews.setOnClickPendingIntent(R.id.notification_player_exit,pIntent_exit);
-        notification = builder.build();
         notification.contentView = remoteViews;
     }
 
@@ -134,7 +142,7 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
 
     private void notifyAllStart(){
         for (OnMediaChangeListener listener : listeners) {
-            listener.onMediaPlay();
+            listener.onMediaStart();
         }
     }
 
@@ -154,16 +162,6 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
         for (OnMediaChangeListener listener : listeners) {
             listener.onMediaCompletion();
         }
-    }
-
-    @Override
-    public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-
     }
 
 
@@ -196,6 +194,7 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
                     e.printStackTrace();
                 }
                 mediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                current_position = position;
             }
             mediaPlayer.start();
             notifyAllPlay();
@@ -296,37 +295,75 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
         } catch(Exception e) {
             e.printStackTrace();
         }
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        tm.listen(mPhoneStateListener,0);
+        stopForeground(true);
     }
 
+    /**
+     *  接收通知栏指令的广播接收器
+     *
+     */
     public class PlayerReceiver extends BroadcastReceiver {
         private final String TAG = PlayerReceiver.class.getSimpleName();
-        public PlayerReceiver() {}
+        public PlayerReceiver() {
+        }
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();// 获取对应Action
-            Log.d(TAG, "action:" + action);
             if (action.equals(MediaService.ACTION_PLAY)) {
-                    if (mBinder == null){
-                        return;
-                    }
-                    if (mBinder.isPlaying()){
-                        mBinder.pause();
-                    }else {
-                        mBinder.start();
-                    }
-                } else if (action.equals(MediaService.ACTION_NEXT)) {
-                    if (mBinder != null){
-                        mBinder.toNext();
-                    }
-                } else if (action.equals(MediaService.ACTION_EXIT)) {
-                    if (mBinder != null){
-                        mBinder.stop();
-                    }
-                    stopSelf();
-                    notifyManager.cancel(666);
+                if (mBinder == null) {
+                    return;
                 }
+                if (mBinder.isPlaying()) {
+                    mBinder.pause();
+                } else {
+                    mBinder.start();
+                }
+            } else if (action.equals(MediaService.ACTION_NEXT)) {
+                Log.i(TAG, "onReceive: " + "next");
+                if (mBinder != null) {
+                    mBinder.init();
+                    mBinder.toNext();
+                }
+            } else if (action.equals(MediaService.ACTION_START_ACTIVITY)) {
+                if (APPStatusUtils.isAppRunningOnTop(context, getPackageName())) {
+                    directStartActivity(context);
+                } else {
+                    indirectStartActivity(context);
+                }
+            } else if (action.equals(MediaService.ACTION_EXIT)) {
+                if (mBinder != null) {
+                    mBinder.stop();
+                }
+                stopSelf();
             }
+        }
     }
+
+    /**
+     *  app在前台时，直接到播放界面
+     */
+    private void directStartActivity(Context context) {
+        Intent intent1 = new Intent(context, MediaActivity.class);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent1);
+    }
+    /**
+     *  app不在前台时，先启动程序，在跳转播放界面
+     */
+    private void indirectStartActivity(Context context) {
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("cn.com.zhiwoo");
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        Intent playerIntent = new Intent(getApplicationContext(),MediaActivity.class);
+        Intent[] intents = {launchIntent,playerIntent};
+        context.startActivities(intents);
+    }
+
+    /**
+     *  更新通知栏播放状态图标
+     *
+     */
     private void changeNotificationButton(){
         if (mBinder != null){
             if (mBinder.isPlaying()){
@@ -334,6 +371,41 @@ public class MediaService extends Service implements MediaPlayer.OnBufferingUpda
             }else {
                 remoteViews.setImageViewResource(R.id.notification_player_start,R.drawable.play_icon);
             }
+            notifyManager.notify(666,notification);
         }
     }
+
+    /**
+     *  来电状态监听
+     *  来电响铃，接起，播出时暂停
+     *  空闲时再继续
+     */
+    private boolean mResumeAfterCall = false;
+    private PhoneStateListener mPhoneStateListener = new PhoneStateListener(){
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+                switch (state){
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        if (mResumeAfterCall){
+                            mBinder.start();
+                            mResumeAfterCall = false;
+                        }
+                        break;
+                    case TelephonyManager.CALL_STATE_RINGING:
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+                        if (mBinder.isPlaying()){
+                            mBinder.pause();
+                            mResumeAfterCall = true;
+                        }
+                        break;
+                }
+            super.onCallStateChanged(state, incomingNumber);
+        }
+    };
+
+
+
+
+
+
 }
